@@ -1,6 +1,7 @@
 /* nav-bar.component.css */
 .navbar {
-    background-color: #f8f9fa; /* Color de fondo de la NavBar */
+    padding: 0px 20px;
+    background: var(--c5); /* Color de fondo de la NavBar */
   }
   
   .navbar-brand {
@@ -11,16 +12,16 @@
   .navbar-nav .nav-link {
     font-size: 1.1rem;
     padding: 10px 15px;
-    color: #343a40; /* Color del texto de los enlaces */
+    color: var(--c2); /* Color del texto de los enlaces */
   }
   
   .navbar-nav .nav-link:hover {
-    color: #007bff; /* Color del texto de los enlaces al pasar el mouse */
+    color: var(--c3); /* Color del texto de los enlaces al pasar el mouse */
   }
   
   .nav-item.active .nav-link {
     font-weight: bold;
-    color: #007bff; /* Color del texto del enlace activo */
+    color: var(--c2); /* Color del texto del enlace activo */
   }
   
   .navbar-toggler {

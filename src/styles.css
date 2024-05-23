@@ -1,4 +1,4 @@
-/* 
+ 
     html, body{
         --c1:#000;
         --c2:#044;
@@ -13,11 +13,12 @@
         color: var(--c5);
     }
     app-root *{
-        padding: 10px;
+        padding: 0px;
         margin: 0;
         transition: 0.3s;
         font-size: 2.5vh;
     }
+/*
     article{
         background: var(--st);
     }

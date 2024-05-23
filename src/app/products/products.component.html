@@ -1,1 +1,30 @@
-<p>products works!</p>
+<div class="cardsContainer">
+
+    <div *ngFor="let item of items">
+        <div *ngIf=" item.title!=('Mario') ">
+
+            <mat-card class="example-card">
+                <header>
+                    <!-- <div mat-card-avatar 
+                    [ngStyle]="{backgroundImage: url('https://material.angular.io/assets/img/examples/shiba1.jpg')}"
+                    ></div> -->
+                    <mat-card-title>{{item.title}}</mat-card-title>
+                    <mat-card-subtitle>{{item.subtitle}}</mat-card-subtitle>
+                </header>
+            
+                <img mat-card-image src={{item.URLimage}} alt="Photo of a Shiba Inu">
+                
+                <div class="description">
+                    <p>{{item.description}}</p>
+                </div>
+            
+                <mat-card-actions>
+                    <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button>
+                </mat-card-actions>
+            </mat-card>
+            
+        </div>
+    </div>
+
+</div>
