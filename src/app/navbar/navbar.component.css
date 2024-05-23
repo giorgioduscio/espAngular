@@ -1,0 +1,40 @@
+/* nav-bar.component.css */
+.navbar {
+    background-color: #f8f9fa; /* Color de fondo de la NavBar */
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    color: #343a40; /* Color del texto de los enlaces */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #007bff; /* Color del texto de los enlaces al pasar el mouse */
+  }
+  
+  .nav-item.active .nav-link {
+    font-weight: bold;
+    color: #007bff; /* Color del texto del enlace activo */
+  }
+  
+  .navbar-toggler {
+    border: none;
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280, 123, 255, 1%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .navbar-nav .nav-link {
+      font-size: 1rem;
+    }
+  }
+  
