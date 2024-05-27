@@ -21,13 +21,14 @@
 
     
 .cardsContainer{
-    padding: 10px;
+    margin: auto;
+
+    padding: 5px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 30vw);
     gap: 10px;
 }
     .example-card {
-        max-width: 300px;
         background: linear-gradient(30deg, var(--c3), transparent);
         color: var(--c5);
     }
