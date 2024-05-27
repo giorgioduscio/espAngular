@@ -1,9 +1,11 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
-import products from '../datas/products';
+import { FormsModule } from '@angular/forms';
+import { ProductsService } from '../service/products.service';
+import { Product } from './../interfaces/product';
 
 @Component({
   selector: 'app-products',
@@ -13,12 +15,23 @@ import products from '../datas/products';
     MatButtonModule,
     NgFor,
     NgIf,
+    FormsModule,
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
 
-export class ProductsComponent {
-  items=products;
-  // filter='';
+export class ProductsComponent implements OnInit {
+  products: Product[]=[];
+  filter: string='';
+
+  ngOnInit(): void {
+    this.productsService.getProducts().subscribe(data=> {
+      this.products= data;
+     })
+    throw new Error('Method not implemented.');
+  }
+
+  constructor (private productsService: ProductsService){ }
+
 }
