@@ -1,41 +1,39 @@
- 
-    html, body{
-        --c1:#000;
-        --c2:#044;
-        --c3:#088;
-        --c4:#0cc;
-        --c5:#0ff;
-        --st:#00000050;
+html, body{
+    --c1:#000;
+    --c2:#044;
+    --c3:#088;
+    --c4:#0cc;
+    --c5:#0ff;
+    --st:#00000050;
 
-        margin: 0;
-        min-height: 100vh;
-        background: linear-gradient(30deg, var(--c1), var(--c2));
-        color: var(--c5);
-    }
-    app-root *{
-        padding: 0px;
-        margin: 0;
-        transition: 0.3s;
-        font-size: 2.5vh;
-    }
-/*
-    article{
-        background: var(--st);
-    }
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(30deg, var(--c1), var(--c2));
+    color: var(--c5);
+}
+app-root *{
+    padding: 0px;
+    margin: 0;
+    transition: 0.3s;
+    font-size: 2.5vh;
+}
+
+html, body { min-height: 100vh; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-    h1{font-size: 6vh;}
-    h2{font-size: 5vh;}
-    h3{font-size: 4vh;}
-    h4{font-size: 3vh;}
-    button{
-        background: var(--c2);
-        color: var(--c4);
-        border-radius: 5px;
-        border: 0;
-    } button:hover{
-        background: var(--c1);
-    }
-    html, body { height: 100%; }
-    body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } 
-*/
+
+
+
+h1{font-size: 6vh;}
+h2{font-size: 5vh;}
+h3{font-size: 4vh;}
+h4{font-size: 3vh;}
+button{
+    background: var(--c2);
+    color: var(--c4);
+    border-radius: 5px;
+    border: 0;
+} button:hover{
+    background: var(--c1);
+}

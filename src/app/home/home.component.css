@@ -1,0 +1,43 @@
+header{
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--c1);
+    background: var(--c3);
+}
+    header button{
+        padding: 10px 20px;
+        border-radius: 50px;
+    }
+
+
+    
+section{
+    margin: auto;
+    width: 80vw;
+    padding: 100px 20px 300px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    gap: 10px;
+
+    color: var(--c5);
+}
+    article{
+        padding: 5px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        border: 2px solid;
+        border-radius: 10px;
+    }
+    article:hover{
+        background: var(--c2);
+    }
