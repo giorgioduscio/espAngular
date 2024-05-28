@@ -5,13 +5,13 @@ header{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 
     color: var(--c1);
     background: var(--c3);
 }
     header img{
         width: 200px;
-        transform: rotate(5deg);
     }
     header button{
         padding: 10px 20px;
@@ -19,7 +19,10 @@ header{
         font-weight: bold;
     }
 
-
+.hem{
+    height: 100px;
+    background: linear-gradient(2deg, transparent, transparent, transparent, transparent, var(--c3), var(--c3), var(--c3), var(--c3));
+}
     
 section{
     margin: auto;
@@ -42,7 +45,8 @@ section{
 
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 10px;
 
         border: 2px solid;
         border-radius: 10px;

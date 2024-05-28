@@ -9,6 +9,8 @@
     </a>
 </header>
 
+<div class="hem"></div>
+
 <section>
     <div>
         <h1>Titolo</h1> 
@@ -16,37 +18,54 @@
         <p>APIs with consistent cross platform behaviour.</p> 
     </div>
     <div>
-        <h1>Versatile</h1> 
-        <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
-        <p>Customizable within the bounds of the Material Design specification</p> 
+        <ng-template *ngIf="isVisible; then show else error"></ng-template>
+
+        <ng-template #show> <div>
+            <h1>Versatile</h1> 
+            <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
+            <p>Customizable within the bounds of the Material Design specification</p> 
+        </div></ng-template>
+        <ng-template #error> <div>
+            <p>Errore ⚠️</p>
+        </div></ng-template>
+        <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
     </div>
     <div>
         <h3>Two way binding</h3>
         <mat-form-field class="example-form-field">
             <mat-label>Clearable input</mat-label>
             <input matInput type="text" [(ngModel)]="text"/>
-            <button matSuffix mat-icon-button aria-label="Clear" >
-                <mat-icon>close</mat-icon>
-            </button>
         </mat-form-field>
-        <br>
-        <button (click)="onClick($event)">{{ text }}</button> 
-    </div>
-
+        
+        <div>
+            <button (click)="onClick()">{{ text }}</button> 
+        </div>
+        <div [ngSwitch]="text">
+            <p *ngSwitchCase="'mario'">{{text}} stato previsto</p>
+            <p *ngSwitchCase="'carlo'">{{text}} stato previsto</p>
+            <p *ngSwitchCase="'alfedo'">{{text}} stato previsto</p>
+            <p *ngSwitchDefault>❌</p>
+        </div>
+    </div>    
     
-    <article>
-        <h1>High quality</h1> 
-        <p>Internationalized and accessible components for everyone. Well tested to ensure performance and reliability.</p> 
-        <p>APIs with consistent cross platform behaviour.</p> 
+    <article *ngFor="
+        let card of cards; 
+        index as index; count as count; 
+        first as first; last as last
+        even as even; odd as odd
+    ">
+        <h3>{{index}}. {{ card.title }}</h3> 
+        <p [ngStyle]="{'color': card.isVisible? 'green' :'red'}">
+            {{ card.isVisible? 'Online ✔️' :'Offline ❌' }}
+        </p>
+        <p>
+            {{ even? "Pari" :"Dispari" }} /
+            {{ odd? "Dispari" :"Pari" }}
+            {{ first? "Primo dell'array" :"" }}
+            {{ last? "Ultimo dell'array" :"" }}
+            {{ card.description }}
+        </p> 
     </article>
-    <article>
-        <h1>Versatile</h1> 
-        <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
-        <p>Customizable within the bounds of the Material Design specification</p> 
-    </article>
-    <article>
-        <h1>Frictionless</h1> 
-        <p>Built by the Angular team to integrate seamlessly with Angular</p> 
-        <p>Start from scratch or drop into your existing applications</p> 
-    </article>
+    
+    
 </section>

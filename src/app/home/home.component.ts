@@ -6,11 +6,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule, 
+    NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault,
+    NgStyle
+  ],
 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -18,10 +22,21 @@ import { MatCardModule } from '@angular/material/card';
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
 
+  cards=[
+    {title:"Usabilità", isVisible:true, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
+    {title:"Efficenza", isVisible:true, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
+    {title:"Adattabilità", isVisible:false, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
+  ]
+
+  isVisible=true;
+  setIsVisible(){ this.isVisible= !this.isVisible }
+
   text='Invio';
-  onClick(e:Event){
+  onClick(){
     this.text='Click';
   }
+
+  stringa='aaa'
 
   constructor(){
     //console.log('constructor')
