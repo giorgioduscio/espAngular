@@ -3,15 +3,6 @@
     <h1>Angular Materials</h1>
     <p>Material Design components for Angular</p>
 
-    <mat-form-field class="example-form-field">
-        <mat-label>Clearable input</mat-label>
-        <input matInput type="text" [(ngModel)]="inputValue">
-        @if (inputValue) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="inputValue=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        }
-    </mat-form-field>
 
     <a href="https://material.angular.io/components/categories"> 
         <button>Angular site</button> 
@@ -20,7 +11,7 @@
 
 <section>
     <div>
-        <h1>{{  TTT  }}</h1> 
+        <h1>Titolo</h1> 
         <p>Internationalized and accessible components for everyone. Well tested to ensure performance and reliability.</p> 
         <p>APIs with consistent cross platform behaviour.</p> 
     </div>
@@ -28,6 +19,17 @@
         <h1>Versatile</h1> 
         <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
         <p>Customizable within the bounds of the Material Design specification</p> 
+    </div>
+    <div>
+        <mat-form-field class="example-form-field">
+            <mat-label>Clearable input</mat-label>
+            <input matInput type="text" [(ngModel)]="text"/>
+            <button matSuffix mat-icon-button aria-label="Clear" >
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <br>
+        <button (click)="onClick($event)">{{ text }}</button> 
     </div>
 
     

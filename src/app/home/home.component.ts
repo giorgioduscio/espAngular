@@ -15,37 +15,36 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
-[x: string]: any;
 
-  TTT='Titolo'
-  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
-  inputValue = '';
+export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
+
+  text='Invio';
+  onClick(e:Event){
+    this.text='Click';
+  }
 
   constructor(){
-    console.log('constructor')
+    //console.log('constructor')
   }
   ngOnInit(): void {
-    console.log('ngOnInit')
+    //console.log('ngOnInit')
   }
   ngAfterContentChecked(): void {
-    console.log('ngAfterContentChecked')
+    //console.log('ngAfterContentChecked')
   }
   ngAfterContentInit(): void {
-    console.log('ngAfterContentInit')
+    //console.log('ngAfterContentInit')
   }
   ngAfterViewChecked(): void {
-    console.log('ngAfterViewChecked')
+    //console.log('ngAfterViewChecked')
   }
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit')
+    //console.log('ngAfterViewInit')
   }
   ngDoCheck(): void {
-    console.log('ngDoCheck')
+    //console.log('ngDoCheck')
   }
   ngOnDestroy(): void {
-    console.log('ngOnDestroy')
+    //console.log('ngOnDestroy')
   }
 }
