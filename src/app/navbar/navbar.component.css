@@ -1,13 +1,13 @@
 nav{
     position: sticky; top: 0; z-index: 10;
-    padding:1px 20px;
+    padding:3px 20px;
     
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
 
-    background:linear-gradient(30deg, var(--c3), var(--c3), var(--c2));
+    background:linear-gradient(2deg, var(--c3), var(--c3), var(--c2));
     color: var(--c1);
 }
 
@@ -18,13 +18,17 @@ nav{
         #logo{
             font-weight: bold;
             font-size: 3vh;
+            color: var(--c4);
         }        
         a{
             padding:0 10px;
             font-size: 2vh;
+            
             color: var(--c5);
             text-decoration: none;
+            border-bottom: 2px solid transparent;
         }
         a:hover{
             color: var(--c4);
+            border-bottom-color: var(--c4);
         }
