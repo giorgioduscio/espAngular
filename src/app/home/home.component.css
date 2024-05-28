@@ -9,9 +9,14 @@ header{
     color: var(--c1);
     background: var(--c3);
 }
+    header img{
+        width: 200px;
+        transform: rotate(5deg);
+    }
     header button{
         padding: 10px 20px;
-        border-radius: 50px;
+        border-radius: 20px;
+        font-weight: bold;
     }
 
 
@@ -28,8 +33,12 @@ section{
 
     color: var(--c5);
 }
+    .exampleCard{
+        max-width: 300px;
+        background: var(--c1);
+    }
     article{
-        padding: 5px;
+        padding: 10px;
 
         display: flex;
         flex-direction: column;
@@ -37,7 +46,6 @@ section{
 
         border: 2px solid;
         border-radius: 10px;
-    }
-    article:hover{
-        background: var(--c2);
+        background: var(--c5);
+        color: var(--c1);
     }
