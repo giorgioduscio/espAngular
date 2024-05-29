@@ -1,6 +1,6 @@
 nav{
     position: sticky; top: 0; z-index: 10;
-    padding:3px 20px;
+    padding: 0px 20px;
     
     display: flex;
     justify-content: flex-start;
@@ -16,19 +16,20 @@ nav{
         gap: 10px;
     }
         #logo{
+            padding: 0;
             font-weight: bold;
-            font-size: 3vh;
+            font-size: 4vh;
             color: var(--c4);
         }        
         a{
-            padding:0 10px;
-            font-size: 2vh;
+            padding:10px;
+            font-size: 3vh;
             
             color: var(--c5);
             text-decoration: none;
-            border-bottom: 2px solid transparent;
+            border-radius: 10px;
         }
         a:hover{
-            color: var(--c4);
-            border-bottom-color: var(--c4);
+            background: var(--st);
+            background: linear-gradient(3deg, var(--st), transparent);
         }
