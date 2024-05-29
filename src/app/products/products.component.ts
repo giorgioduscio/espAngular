@@ -6,6 +6,7 @@ import {MatCardModule} from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { ProductsService } from '../service/products.service';
 import { Product } from './../interfaces/product';
+import { ProductComponent } from '../product/product.component';
 
 @Component({
   selector: 'app-products',
@@ -16,6 +17,7 @@ import { Product } from './../interfaces/product';
     NgFor,
     NgIf,
     FormsModule,
+    ProductComponent,
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
@@ -33,5 +35,9 @@ export class ProductsComponent implements OnInit {
   }
 
   constructor (private productsService: ProductsService){ }
+  handleEvent(event:String){
+    console.log('event', event);
+    
+  }
 
 }

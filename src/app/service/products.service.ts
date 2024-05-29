@@ -6,6 +6,7 @@ import { Product } from '../interfaces/product';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductsService {
   private apiURL='https://server-node-igna.vercel.app/shops';
 

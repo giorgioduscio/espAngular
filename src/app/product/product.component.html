@@ -1,0 +1,14 @@
+<article class="example-card">
+    <header>
+      <h3>{{ product.denominazione }}</h3>
+      <p>{{ product.citta }}</p>
+    </header>
+
+    <div class="description">
+      <p>{{ product.indirizzo }}</p>
+    </div>
+
+    <button>LIKE</button>
+    <button>SHARE</button>
+    <button (click)="emitEvent()">Output</button>
+</article>
