@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import users from '../datas/users';
-import { User } from '../interfaces/user';
-import { filterUser } from '../pipes/filter-user.pipe';
+import users from '../../datas/users';
+import { User } from '../../interfaces/user';
+import { filterUser } from '../../pipes/filter-user.pipe';
 import { FormsModule } from '@angular/forms';
 
 @Component({

@@ -4,8 +4,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../service/products.service';
-import { Product } from './../interfaces/product';
+import { ProductsService } from '../../service/products.service';
+import { Product } from '../../interfaces/product';
 import { ProductComponent } from '../product/product.component';
 
 @Component({
@@ -37,7 +37,5 @@ export class ProductsComponent implements OnInit {
   constructor (private productsService: ProductsService){ }
   handleEvent(event:String){
     console.log('event', event);
-    
   }
-
 }
