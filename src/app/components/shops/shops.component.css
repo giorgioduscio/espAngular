@@ -1,0 +1,56 @@
+.searchBar{
+    padding: 30px 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    background: var(--c3);
+}
+    .searchBar>div{
+        padding: 10px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        background: var(--c5);
+        border-radius: 5px;
+    }
+    .searchBar input{
+        padding: 10px 20px;
+
+        border: 0;
+        outline: 0;
+        border-radius: 5px;
+        background: var(--c1);
+        color: var(--c5);
+    }
+    .searchBar input::placeholder{color: var(--c5);}
+
+
+    
+.cardsContainer{
+    margin: auto;
+    padding: 30px 10px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 30vw);
+    gap: 10px;
+}
+    .example-card {
+        background: linear-gradient(30deg, var(--c3), transparent);
+        color: var(--c5);
+    }
+
+        header{
+            padding: 10px;
+        }
+        .cardsContainer img{
+        }
+        .description{
+            padding: 10px;
+        }
+

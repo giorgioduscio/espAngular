@@ -23,19 +23,6 @@ import { ProductComponent } from '../product/product.component';
   styleUrl: './products.component.css'
 })
 
-export class ProductsComponent implements OnInit {
-  products: Product[]=[];
-  filter: string='';
+export class ProductsComponent {
 
-  ngOnInit(): void {
-    this.productsService.getProducts().subscribe(data=> {
-      this.products= data;
-     })
-    throw new Error('Method not implemented.');
-  }
-
-  constructor (private productsService: ProductsService){ }
-  handleEvent(event:String){
-    console.log('event', event);
-  }
 }
