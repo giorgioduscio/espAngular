@@ -1,6 +1,11 @@
 <div class="searchBar">
-  <input placeholder="Filtro" type="text" [(ngModel)]="filter" />
+  <div>
+    <h1>Ristoranti</h1>
+    <p>Cerca i tuoi ristoranti preferiti</p>
+    <input placeholder="Cerca" type="text" [(ngModel)]="filter" />
+  </div>
 </div>
+
 <div class="cardsContainer">
   @for (product of products; track $index) { 
     @if(product.denominazione.toLocaleLowerCase().includes(filter)) {
