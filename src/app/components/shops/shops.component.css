@@ -36,11 +36,13 @@
     margin: auto;
     padding: 30px 10px;
 
-    display: grid;
-    grid-template-columns: repeat(3, 30vw);
+    display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
     .example-card {
+        width: 300px;
         background: linear-gradient(30deg, var(--c3), transparent);
         color: var(--c5);
     }

@@ -9,10 +9,19 @@
 <div class="cardsContainer">
 @for (product of products; track $index) { 
     @if(product.denominazione.toLocaleLowerCase().includes(filter)) {
-    <app-product 
-        [product]="product"
-        (myEvent)="handleEvent($event)"
-    ></app-product> 
-} }
+        <article class="example-card">
+            <header>
+              <h3>{{ product.denominazione }}</h3>
+              <p>{{ product.citta }}</p>
+            </header>
+        
+            <div class="description">
+              <p>{{ product.indirizzo }}</p>
+            </div>
+        
+            <button>LIKE</button>
+            <button>SHARE</button>
+            <button (click)="emitEvent()">Output</button>
+        </article>} }
 </div>
   

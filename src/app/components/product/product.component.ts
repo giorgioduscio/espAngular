@@ -9,16 +9,10 @@ import { Product } from '../../interfaces/product';
   selector: 'app-product',
   standalone: true,
   imports: [
-    MatCardModule, 
-    MatButtonModule,
   ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
 export class ProductComponent {
-  @Input() product!: Product;
-  @Output() myEvent= new EventEmitter<string>
-  emitEvent(){
-    this.myEvent.emit("Hello world")
-  }
+  
 }

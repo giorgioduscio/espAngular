@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
@@ -19,10 +19,13 @@ import { ProductComponent } from '../product/product.component';
     NgIf,
     FormsModule,
     ProductComponent,
+    MatCardModule, 
+    MatButtonModule,
   ],
   templateUrl: './shops.component.html',
   styleUrl: './shops.component.css'
 })
+
 export class ShopsComponent {
   products: Product[]=[];
   filter: string='';
@@ -39,4 +42,9 @@ export class ShopsComponent {
     console.log('event', event);
   }
 
+  @Input() product!: Product;
+  @Output() myEvent= new EventEmitter<string>
+  emitEvent(){
+    this.myEvent.emit("Hello world")
+  }
 }
