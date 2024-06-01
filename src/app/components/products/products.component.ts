@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../service/products.service';
+import { ShopsService } from '../../service/shops.service';
 import { Product } from '../../interfaces/product';
 import { ProductComponent } from '../product/product.component';
 

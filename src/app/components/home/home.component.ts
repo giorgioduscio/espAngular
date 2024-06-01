@@ -7,13 +7,24 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { HomeService } from '../../service/home.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule, 
-    NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault,
-    NgStyle
+  imports: [
+    MatFormFieldModule, 
+    MatInputModule, 
+    FormsModule, 
+    MatButtonModule, 
+    MatIconModule, 
+    NgIf, 
+    NgFor, 
+    NgSwitch, 
+    NgSwitchCase, 
+    NgSwitchDefault,
+    NgStyle,
+    
   ],
 
   templateUrl: './home.component.html',
@@ -22,11 +33,7 @@ import { NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
 
-  cards=[
-    {title:"Usabilità", isVisible:true, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
-    {title:"Efficenza", isVisible:true, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
-    {title:"Adattabilità", isVisible:false, description:"Lorem ipsum dolor sit amet consectetur adipisicing elit"},
-  ]
+
 
   isVisible=true;
   setIsVisible(){ this.isVisible= !this.isVisible }
@@ -36,14 +43,15 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
     this.text='Click';
   }
 
-  stringa='aaa'
+  oggi= Date.now()
 
-  constructor(){
-    //console.log('constructor')
-  }
+  // SERVICE
+  constructor(private homeService: HomeService){}
   ngOnInit(): void {
-    //console.log('ngOnInit')
+    console.log('serv', this.homeService.homeCards)
   }
+
+
   ngAfterContentChecked(): void {
     //console.log('ngAfterContentChecked')
   }

@@ -14,9 +14,11 @@
 <section>
     <div>
         <h1>Titolo</h1> 
+        <!-- <p>{{ oggi | date }}</p>  -->
         <p>Internationalized and accessible components for everyone. Well tested to ensure performance and reliability.</p> 
         <p>APIs with consistent cross platform behaviour.</p> 
     </div>
+
     <div>
         <ng-template *ngIf="isVisible; then show else error"></ng-template>
 
@@ -30,6 +32,7 @@
         </div></ng-template>
         <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
     </div>
+
     <div>
         <h3>Two way binding</h3>
         <mat-form-field class="example-form-field">
@@ -46,10 +49,10 @@
             <p *ngSwitchCase="'alfedo'">{{text}} stato previsto</p>
             <p *ngSwitchDefault>❌</p>
         </div>
-    </div>    
+    </div>
     
     <article *ngFor="
-        let card of cards; 
+        let card of ca; 
         index as index; count as count; 
         first as first; last as last
         even as even; odd as odd

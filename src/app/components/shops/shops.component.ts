@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../service/products.service';
+import { ShopsService } from '../../service/shops.service';
 import { Product } from '../../interfaces/product';
 import { ProductComponent } from '../product/product.component';
 
@@ -31,13 +31,13 @@ export class ShopsComponent {
   filter: string='';
 
   ngOnInit(): void {
-    this.productsService.getProducts().subscribe(data=> {
+    this.shopsService.getProducts().subscribe(data=> {
       this.products= data;
      })
     throw new Error('Method not implemented.');
   }
 
-  constructor (private productsService: ProductsService){ }
+  constructor (private shopsService: ShopsService){ }
   handleEvent(event:String){
     console.log('event', event);
   }

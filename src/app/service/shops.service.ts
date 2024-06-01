@@ -7,7 +7,7 @@ import { Product } from '../interfaces/product';
   providedIn: 'root'
 })
 
-export class ProductsService {
+export class ShopsService {
   private apiURL='https://server-node-igna.vercel.app/shops';
 
   constructor(private http:HttpClient) {}
