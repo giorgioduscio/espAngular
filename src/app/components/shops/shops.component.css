@@ -17,6 +17,7 @@
         gap: 10px;
 
         background: var(--c5);
+        color: var(--c1);
         border-radius: 5px;
     }
     .searchBar input{
@@ -37,22 +38,23 @@
     padding: 30px 10px;
 
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 20px;
 }
     .example-card {
+        padding: 10px;
         width: 300px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+
         background: linear-gradient(30deg, var(--c3), transparent);
         color: var(--c5);
     }
-
-        header{
-            padding: 10px;
-        }
-        .cardsContainer img{
-        }
-        .description{
-            padding: 10px;
-        }
+    .example-card button{
+        padding: 10px;
+    }
 

@@ -13,6 +13,7 @@ nav{
 
     nav>*{
         display: flex;
+        flex-wrap: wrap;
         gap: 10px;
     }
         #logo{
@@ -23,7 +24,6 @@ nav{
         }        
         a{
             padding:10px;
-            font-size: 3vh;
             
             color: var(--c5);
             text-decoration: none;

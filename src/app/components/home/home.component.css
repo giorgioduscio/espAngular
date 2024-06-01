@@ -19,26 +19,27 @@ header{
         font-weight: bold;
     }
 
+    
 .hem{
     height: 100px;
     background: linear-gradient(2deg, transparent, transparent, transparent, transparent, var(--c3), var(--c3), var(--c3), var(--c3));
 }
     
+
 section{
     margin: auto;
     width: 80vw;
     padding: 100px 20px 300px;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 20px;
 
     color: var(--c5);
 }
-    .exampleCard{
-        max-width: 300px;
-        background: var(--c1);
+    section>*{
+        width: 300px;
     }
     article{
         padding: 10px;
