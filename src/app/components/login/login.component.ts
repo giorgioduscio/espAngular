@@ -1,22 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../interfaces/user';
+import { FormControl, FormGroup, ReactiveFormsModule, Validator, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+  ],
 templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   constructor(private http: HttpClient){}
+  ngOnInit(): void {
+    this.loginForm =new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    })
+    throw new Error('Method not implemented.');
+  }
 
-  url =`https:/server.com/api/login`;
+  url =`http://localhost:3000/api/login`;
+  loginForm: any;
   errorMessage: string='errore';
-  username: string='';
-  password: string='';
+  username: string='admin';
+  password: string='password123';
 
   login(){
     // DATI DA INVIARE
@@ -44,5 +55,5 @@ export class LoginComponent {
         }
       }
     )
-  } //login
+  }
 }
