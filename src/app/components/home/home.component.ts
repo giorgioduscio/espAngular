@@ -28,7 +28,7 @@ import { HomeService } from '../../service/home.service';
   ],
 
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
@@ -47,8 +47,10 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
 
   // SERVICE
   constructor(private homeService: HomeService){}
+  cards =this.homeService.homeCards
+  
   ngOnInit(): void {
-    console.log('serv', this.homeService.homeCards)
+
   }
 
 
