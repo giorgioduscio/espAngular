@@ -9,10 +9,15 @@
     
     <div>
         <a routerLink="/chi-siamo">Chi siamo</a>
-    
         <a routerLink="/dashboard">Dashboard</a>
-    
         <a routerLink="/products">Products</a>
         <a routerLink="/shops">Shops</a>
+        
+        @if(logged){
+            <a routerLink="/login">Login</a>
+        } @else {
+            <a routerLink="/login">Logout</a>
+        }
     </div>
+
 </nav>
