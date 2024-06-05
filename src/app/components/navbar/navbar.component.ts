@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { RouterLink } from '@angular/router';
 import { routes } from './../../app.routes';
 
@@ -13,6 +14,8 @@ templateUrl: './navbar.component.html',
 })
 
 export class NavbarComponent {
+  dropdown =false
+
   logged =true
 
   private R:any =routes;

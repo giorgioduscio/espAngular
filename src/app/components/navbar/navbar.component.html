@@ -8,11 +8,17 @@
     </a>
     
     <div>
-        <a routerLink="/chi-siamo">Chi siamo</a>
-        <a routerLink="/dashboard">Dashboard</a>
-        <a routerLink="/products">Products</a>
-        <a routerLink="/shops">Shops</a>
+        <button (click)="dropdown =!dropdown">Articoli</button>
         
+        @if(dropdown){
+            <div class="dropdown" (click)="dropdown =false">
+                <a routerLink="/chi-siamo">Chi siamo</a>
+                <a routerLink="/dashboard">Dashboard</a>
+                <a routerLink="/products">Products</a>
+                <a routerLink="/shops">Shops</a>
+            </div>
+        }
+
         @if(logged){
             <a routerLink="/login">Login</a>
         } @else {

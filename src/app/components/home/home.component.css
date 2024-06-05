@@ -22,8 +22,22 @@ header{
     
 .hem{
     height: 100px;
-    background: linear-gradient(2deg, transparent, transparent, transparent, transparent, var(--c3), var(--c3), var(--c3), var(--c3));
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+    .hem::after{
+        width: 110%;
+        height: 110%;
+        position: absolute; bottom: 50px;
+
+        content: '';
+        transform: rotate(3deg);
+        background: var(--c3);
+    }
     
 
 section{

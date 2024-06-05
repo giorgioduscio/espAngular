@@ -22,14 +22,23 @@ nav{
             font-size: 4vh;
             color: var(--c4);
         }        
-        a{
+        a, button{
             padding:10px;
             
+            background: transparent;
+            border: 0;
             color: var(--c5);
-            text-decoration: none;
-            border-radius: 10px;
         }
-        a:hover{
+        button:hover, a:hover{
             background: var(--st);
             background: linear-gradient(3deg, var(--st), transparent);
+        }
+
+        .dropdown{
+            position: absolute; top: 50px;
+
+            display: flex;
+            flex-direction: column;
+
+            background: var(--c2);
         }

@@ -28,18 +28,23 @@ h2{font-size: 5vh;}
 h3{font-size: 4vh;}
 h4{font-size: 3vh;}
 
-button{
+button, input{
+    padding: 10px;
+    outline: 0;
+
     background: var(--c1);
     color: var(--c3);
     border-radius: 5px;
-    border: 0;
+    border: 1px solid var(--st);
 } 
-    button:hover{
+    button:hover, input:hover{
         background: var(--c2);
     }
     button:disabled{
         background: var(--st);
     }
+    input::placeholder{ color: var(--c5); }
+
 
 a{
     color: var(--c4);
