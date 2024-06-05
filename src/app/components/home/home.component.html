@@ -13,23 +13,25 @@
 
 <section>
     <div>
-        <h1>Titolo</h1> 
-        <!-- <p>{{ oggi | date }}</p>  -->
+        <h1>{{ "variable" | uppercase }}</h1> 
         <p>Internationalized and accessible components for everyone. Well tested to ensure performance and reliability.</p> 
         <p>APIs with consistent cross platform behaviour.</p> 
     </div>
 
     <div>
         <ng-template *ngIf="isVisible; then show else error"></ng-template>
-
-        <ng-template #show> <div>
+        <ng-template #show> 
+        <div>
             <h1>Versatile</h1> 
             <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
             <p>Customizable within the bounds of the Material Design specification</p> 
-        </div></ng-template>
-        <ng-template #error> <div>
+        </div>
+        </ng-template>
+        <ng-template #error> 
+        <div>
             <p>Errore ⚠️</p>
-        </div></ng-template>
+        </div>
+        </ng-template>
         <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
     </div>
 
@@ -37,7 +39,7 @@
         <h3>Two way binding</h3>
         <mat-form-field class="example-form-field">
             <mat-label>Clearable input</mat-label>
-            <input matInput type="text" [(ngModel)]="text"/>
+            <input matInput type="text" [(ngModel)]="text" (change)="handleChange()"/>
         </mat-form-field>
         
         <div>

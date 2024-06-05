@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {MatIconModule} from '@angular/material/icon';
@@ -6,8 +6,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { HomeService } from '../../service/home.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ import { HomeService } from '../../service/home.service';
     NgSwitchCase, 
     NgSwitchDefault,
     NgStyle,
+    CommonModule
     
   ],
 
@@ -32,17 +34,21 @@ import { HomeService } from '../../service/home.service';
 })
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
-
-
-
+  // NASCONDI CARD
   isVisible=true;
   setIsVisible(){ this.isVisible= !this.isVisible }
 
+  // TWO WAY BUINDING
   text='Invio';
   onClick(){
     this.text='Click';
   }
+  @Output() sendData =new EventEmitter<string>()
+  handleChange(){
+    this.sendData.emit( this.text )
+  }
 
+  // FUNZIONI PIPE
   oggi= Date.now()
 
   // SERVICE

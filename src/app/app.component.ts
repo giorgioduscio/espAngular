@@ -20,5 +20,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 })
 export class AppComponent {
   title ='ggg-ng';
+  onCatchData(value: string){
+    this.title =value
+  }
   
 }
