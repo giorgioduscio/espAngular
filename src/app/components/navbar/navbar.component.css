@@ -24,6 +24,10 @@ nav{
         }        
         a, button{
             padding:10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
             
             background: transparent;
             border: 0;

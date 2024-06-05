@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 import { routes } from './../../app.routes';
@@ -14,6 +14,8 @@ templateUrl: './navbar.component.html',
 })
 
 export class NavbarComponent {
+  @Input() title:any
+
   dropdown =false
 
   logged =true
