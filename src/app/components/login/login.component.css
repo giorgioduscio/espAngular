@@ -1,0 +1,37 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80vh;
+}
+    .container>div{
+        padding: 10px;
+        background: var(--c2);
+    }
+    .container>div:hover{
+        box-shadow: 0 0 20px 10px var(--st);
+    }
+
+form input {
+	width: 100%;
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid transparent;
+}
+
+form{
+	margin-top: 30px;
+}
+
+form button[type="submit"] {
+	max-width: 300px;
+	padding: 10px;
+
+	border: none;
+	color: var(--c1);
+	background: var(--c4);
+	text-transform: uppercase;
+	cursor: pointer;
+  }
+  
+  

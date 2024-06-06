@@ -3,5 +3,5 @@ export interface User {
     username: string,
     email: string,
     role: string,
-    // token: string,
+    token?: string,
 }

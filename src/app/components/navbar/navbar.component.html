@@ -1,4 +1,4 @@
-<nav>
+<nav (click)="dropdown_f($event)">
     <a routerLink="/home" id="logo">
         <img 
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" 
@@ -9,22 +9,26 @@
     </a>
     
     <div>
-        <button (click)="dropdown =!dropdown">Articoli</button>
-        
-        @if(dropdown){
-            <div class="dropdown" (click)="dropdown =false">
+        <button class="dropdownButton">
+            Articoli
+
+            <div class="dropdown">
                 <a routerLink="/chi-siamo">Chi siamo</a>
                 <a routerLink="/dashboard">Dashboard</a>
                 <a routerLink="/products">Products</a>
                 <a routerLink="/shops">Shops</a>
             </div>
-        }
+            
+        </button>
+        
 
-        @if(logged){
-            <a routerLink="/login">Login</a>
+        
+        @if([token]){
+            <a routerLink="/login" (click)="logout()">Logout</a>
         } @else {
-            <a routerLink="/login">Logout</a>
+            <a routerLink="/login">Login</a>
         }
+        
     </div>
 
 </nav>
