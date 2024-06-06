@@ -9,6 +9,7 @@ nav{
 
     background:linear-gradient(2deg, var(--c3), var(--c3), var(--c2));
     color: var(--c1);
+    /* box-shadow: 0 0 20px 5px #00000080; */
 }
 
     nav>*{

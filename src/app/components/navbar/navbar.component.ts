@@ -9,7 +9,7 @@ import { routes } from './../../app.routes';
   imports: [
     RouterLink,
   ],
-templateUrl: './navbar.component.html',
+  templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 

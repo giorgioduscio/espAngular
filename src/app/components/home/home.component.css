@@ -17,28 +17,7 @@ header{
         padding: 10px 20px;
         border-radius: 20px;
         font-weight: bold;
-    }
-
-    
-.hem{
-    height: 100px;
-    position: relative;
-    overflow: hidden;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-    .hem::after{
-        width: 110%;
-        height: 110%;
-        position: absolute; bottom: 50px;
-
-        content: '';
-        transform: rotate(3deg);
-        background: var(--c3);
-    }
-    
+    }    
 
 section{
     margin: auto;
