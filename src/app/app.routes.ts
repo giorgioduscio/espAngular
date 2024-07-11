@@ -5,13 +5,14 @@ import { ProductsComponent } from './components/products/products.component';
 import { ShopsComponent } from './components/shops/shops.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignalComponent } from './components/signal/signal.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes :Routes =[
     { path: 'home', component: HomeComponent },
     { path: 'signal', component: SignalComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'products', component: ProductsComponent },
-    { path: 'shops', component: ShopsComponent },
+    { path: 'shops', component: ShopsComponent, canActivate:[authGuard], canActivateChild:[authGuard] },
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
