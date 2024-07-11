@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   isLoggedIn =true
-  isAdmin =false
+  isAdmin =true
 
   isAuthenticated(){return this.isLoggedIn}
   isRuoleAdmin(){return this.isAdmin}

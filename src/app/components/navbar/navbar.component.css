@@ -36,7 +36,7 @@ nav{
         }
         button:hover, a:hover{
             background: var(--st);
-            background: linear-gradient(3deg, var(--st), transparent);
+            background: var(--st);
         }
 
         summary{

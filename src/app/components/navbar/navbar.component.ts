@@ -2,7 +2,6 @@ import { Component, Input, OnInit, input } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 import { routes } from './../../app.routes';
-import { AuthService } from '../../service/auth.service';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
@@ -19,12 +18,6 @@ import { NgFor, NgIf } from '@angular/common';
 
 export class NavbarComponent {
   routerClone =routes
-  constructor( private authService :AuthService ){
-    // console.log(`this.routerClone`, this.routerClone);
-    
-  }
-
-
   @Input() title:any
 
 }

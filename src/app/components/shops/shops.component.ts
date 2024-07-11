@@ -4,10 +4,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 
 import { FormsModule } from '@angular/forms';
-import { ShopsService } from '../../service/shops.service';
+import { ShopsService } from '../../services/shops.service';
 import { Product } from '../../interfaces/product';
-import { ProductComponent } from '../product/product.component';
-
+import { ProductsService } from '../../services/products.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-shops',
@@ -18,7 +18,6 @@ import { ProductComponent } from '../product/product.component';
     NgFor,
     NgIf,
     FormsModule,
-    ProductComponent,
     MatCardModule, 
     MatButtonModule,
   ],
@@ -27,17 +26,27 @@ import { ProductComponent } from '../product/product.component';
 })
 
 export class ShopsComponent {
-  products: Product[]=[];
+  constructor (
+    private shopsService: ShopsService,
+    private productsService: ProductsService,
+    private usersService: UsersService,
+  ){ 
+      shopsService.getProducts()
+        .subscribe(data=>console.log("shops:", data)),
+      productsService.getProducts()
+        .subscribe(data=>console.log("products:", data))
+      usersService.getUsers()
+        .subscribe(data=>console.log("users:", data)) 
+  }
+  products: Product[] =[];
   filter: string='';
 
   ngOnInit(): void {
     this.shopsService.getProducts().subscribe(data=> {
       this.products= data;
      })
-    throw new Error('Method not implemented.');
   }
 
-  constructor (private shopsService: ShopsService){ }
   handleEvent(event:String){
     console.log('event', event);
   }
