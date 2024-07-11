@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { ChiSiamoComponent } from './components/chi-siamo/chi-siamo.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @Component({
@@ -12,7 +11,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     RouterOutlet,
     NavbarComponent,
     HomeComponent,
-    ChiSiamoComponent,
     DashboardComponent,
   ],
   templateUrl: './app.component.html',

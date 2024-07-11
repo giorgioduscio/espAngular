@@ -1,0 +1,22 @@
+<article class="signal">
+  <h3>{{ signalString() }}</h3>
+  <div>
+      <input type="text" (change)="setSignal($event)" placeholder="setSignal">
+  </div>
+  <div>
+      <input type="text" (change)="updateSignal($event)" placeholder="updateSignal">
+  </div>
+  <button 
+    *ngIf="!computedSignal()" 
+    (click)="setSignal($event, 'Signal')"
+    >Reset</button>
+    
+  <h3>Persone</h3>
+  <input type="text" (change)="addPerson($event)" placeholder="Nome">
+    <p *ngFor="let person of signalPeople()">
+      <button (click)="deletePerson(person)">❌</button>
+      <input type="checkbox" [checked]="person.online">
+      {{person.id}}: 
+      {{person.name}} 
+    </p>
+</article>
