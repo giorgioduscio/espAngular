@@ -16,7 +16,7 @@ app-root *{
     padding: 0px;
     margin: 0;
     transition: 0.3s;
-    font-size: 2.5vh;
+    font-size: 20px;
     box-sizing: border-box;
 }
 
@@ -42,10 +42,10 @@ app-root *{
 
 
 
-h1{font-size: 6vh;}
-h2{font-size: 5vh;}
-h3{font-size: 4vh;}
-h4{font-size: 3vh;}
+h1{font-size: 40px;}
+h2{font-size: 35px;}
+h3{font-size: 30px;}
+h4{font-size: 25px;}
 
 button, input{
     padding: 10px;
@@ -63,7 +63,7 @@ button, input{
     button:disabled{
         background: var(--st);
     }
-    input::placeholder{ color: var(--c5); }
+    input::placeholder{ color: var(--c3); }
 
 
 a{

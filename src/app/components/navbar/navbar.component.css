@@ -20,7 +20,7 @@ nav{
         #logo{
             padding: 0;
             font-weight: bold;
-            font-size: 4vh;
+            font-size: 30px;
             color: var(--c4);
         }        
         a, button{
@@ -47,5 +47,5 @@ nav{
         .dropdown{
             position: absolute; 
             flex-direction: column;
-            background: var(--c2);
+            background: var(--c3);
         }
