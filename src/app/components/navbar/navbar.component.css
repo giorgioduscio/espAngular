@@ -39,11 +39,13 @@ nav{
             background: linear-gradient(3deg, var(--st), transparent);
         }
 
+        summary{
+            padding: 10px;
+            cursor: pointer;
+            color: var(--c5);
+        }
         .dropdown{
-            position: absolute; top: 50px;
-
-            display: none;
+            position: absolute; 
             flex-direction: column;
-
             background: var(--c2);
         }
