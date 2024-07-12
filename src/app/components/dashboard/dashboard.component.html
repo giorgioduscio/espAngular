@@ -1,11 +1,17 @@
-<h1>dashboard works!</h1>
-<header>
-    <select [(ngModel)]="filter">
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-    </select>
-
-    @for (user of users |filterUser: filter; track $index) {
-        <p>{{ user.username }}: {{ user.role }}</p>
-    }
-</header>
+<article class="dashboard">
+    <h3 style="padding: 20px 0 30px; text-align: center;">Unresponsive Dashboard</h3>
+    
+    <table>
+        <caption>
+            Tabella degli utenti
+        </caption>
+        <thead>
+            <th *ngFor="let key of userKeys; let i=index">{{ key }}</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users; index as a">
+                <td *ngFor="let key of userKeys; let b=index" [class]="key">{{ user[key] }}</td>
+            </tr>
+        </tbody>
+    </table>
+</article>
