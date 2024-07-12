@@ -1,40 +1,26 @@
-.searchBar{
-    padding: 30px 10px;
+    /* TODO FILTRO   */
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
+header{
+    padding: 50px;
     background: var(--c3);
-}
-    .searchBar>div{
-        padding: 10px;
-
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        background: var(--c5);
-        color: var(--c1);
-        border-radius: 5px;
-    }
-    .searchBar input{
-        padding: 10px 20px;
-
-        border: 0;
-        outline: 0;
-        border-radius: 5px;
-        background: var(--c1);
-        color: var(--c5);
-    }
-    .searchBar input::placeholder{color: var(--c5);}
-
-
-    
-.cardsContainer{
+}   
+.filterCard{
+    min-width: 200px;
+    max-width: 300px;
+    padding: 10px;
     margin: auto;
+
+    border-radius: 10px;
+    background: var(--c5);
+    color: var(--c1);
+}
+.filterCard input{
+    width: 100%;
+    color: var(--c5);
+}
+
+    /* TODO SHOPS */
+.shopsContainer{
     padding: 30px 10px;
 
     display: flex;
@@ -42,19 +28,27 @@
     justify-content: space-evenly;
     gap: 20px;
 }
-    .example-card {
-        padding: 10px;
+    .card {
         width: 300px;
 
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-
-        background: linear-gradient(30deg, var(--c3), transparent);
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 0 20px black;
+        background: var(--c2);
         color: var(--c5);
     }
-    .example-card button{
+    .card aside{
+        padding: 5px;
+        margin: 10px;
+        position: absolute; 
+        background: var(--c4);
+    }
+    .card img{
+        height: 150px;
+        width: 300px;
+        object-fit: cover;
+    }
+    .card .text{
         padding: 10px;
     }
 

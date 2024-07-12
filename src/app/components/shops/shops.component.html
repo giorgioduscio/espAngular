@@ -1,29 +1,22 @@
-<div class="searchBar">
-    <div>
-        <h1>Ristoranti</h1>
-        <p>Cerca i tuoi ristoranti preferiti</p>
-        <input placeholder="Cerca" type="text" [(ngModel)]="filter" />
-    </div>
-</div>
-
-<div class="line"></div>
-  
-<div class="cardsContainer">
-@for (product of products; track $index) { 
-    @if(product.denominazione.toLocaleLowerCase().includes(filter)) {
-        <article class="example-card">
-            <header>
-              <h3>{{ product.denominazione }}</h3>
-              <p>{{ product.citta }}</p>
-            </header>
-        
-            <div class="description">
-              <p>{{ product.indirizzo }}</p>
+<article class="shops">
+    <header>
+        <div class="filterCard">
+            <p style="padding: 10px; text-align: center;">Filtro</p>
+            <input type="text" [(ngModel)]="filter">
+        </div>
+    </header>
+    
+    <div class="line"></div>
+    
+    <h1 style="text-align: center;">Ristoranti</h1>
+    <section class="shopsContainer"> @for (shop of shops; track shop) {
+        <div class="card" *ngIf="shop.denominazione.toLocaleLowerCase().includes(filter)">
+            <aside>{{ shop.citta }}</aside>
+            <img src="https://img.freepik.com/foto-premium/mcdonald-s-ha-ordinato-delizioso-e-fresco_148840-148408.jpg?w=1380" alt="">
+            <div class="text">
+                <h5>{{ shop.denominazione }}</h5>
+                <p>{{ shop.indirizzo }}</p>
             </div>
-        
-            <button>LIKE</button>
-            <button>SHARE</button>
-            <button (click)="emitEvent()">Output</button>
-        </article>} }
-</div>
-  
+        </div>
+    }</section>
+</article>
