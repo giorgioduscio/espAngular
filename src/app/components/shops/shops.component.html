@@ -11,12 +11,12 @@
     <h1 style="text-align: center;">Ristoranti</h1>
     <section class="shopsContainer"> @for (shop of shops; track shop) {
         <a routerLink="{{shop.id}}">
-            <div class="card" *ngIf="shop.denominazione.toLocaleLowerCase().includes(filter)">
-                <aside>{{ shop.citta }}</aside>
-                <img src="https://img.freepik.com/foto-premium/mcdonald-s-ha-ordinato-delizioso-e-fresco_148840-148408.jpg?w=1380" alt="">
+            <div class="card" *ngIf="shop.title.toLocaleLowerCase().includes(filter)">
+                <aside>{{ shop.title }}</aside>
+                <img src="{{ shop.imageUrl }}" alt="">
                 <div class="text">
-                    <h5>{{ shop.denominazione }}</h5>
-                    <p>{{ shop.indirizzo }}</p>
+                    <h5>{{ shop.title }}</h5>
+                    <p>{{ shop.description }}</p>
                 </div>
             </div>
         </a>

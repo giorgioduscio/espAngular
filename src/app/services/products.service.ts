@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProductsService {
-  private productsURL ="https://dummyjson.com/products"
+  private url ="https://dummyjson.com/products"
   constructor(private http: HttpClient) {}
 
-  getProducts(){return this.http.get <any[]> (this.productsURL)}
+  getProducts(){return this.http.get <any> (this.url)}
 }

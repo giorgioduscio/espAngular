@@ -1,11 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-
 import { FormsModule } from '@angular/forms';
-import { ShopsService } from '../../services/shops.service';
 import { RouterModule } from '@angular/router';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-shops',
@@ -21,12 +18,17 @@ import { RouterModule } from '@angular/router';
 })
 
 export class ShopsComponent {
-  shops :any
+  shops :any[] =[]
   filter =''
-  constructor (private shopsService: ShopsService){ 
-      shopsService.getShops().subscribe(data =>{ 
-        this.shops =data
-        console.log('this.shops', this.shops);
+  constructor (private productsService: ProductsService){ 
+    productsService.getProducts().subscribe(data =>{ 
+      const products :any[] =data.products
+      products.map((product, i)=>{ 
+        product.brand !=undefined && this.shops.push(
+          {id:i+1, title:product.brand, description:product.description, imageUrl:product.images[0]}
+        )
       })
+      console.log('this.shops', products, this.shops);
+    })
   }
 }
