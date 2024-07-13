@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, input } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { routes } from './../../app.routes';
 import { NgFor, NgIf } from '@angular/common';
@@ -18,6 +17,13 @@ import { NgFor, NgIf } from '@angular/common';
 
 export class NavbarComponent {
   routerClone =routes
-  @Input() title:any
 
+  // QUANDO SI CLICCA SUI PULSANTI O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
+  constructor(){
+    document.addEventListener('click', (e:Event)=>{
+      let result =(e.target as HTMLInputElement).className
+      let dropdown =document.querySelector("details.auto-dropdown")
+      if (result!="auto-dropdown") dropdown?.removeAttribute("open")
+    })
+  }
 }

@@ -2,23 +2,18 @@
   <a routerLink="/home" id="logo">
     <img 
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" 
-      alt="" 
+      alt="logo" 
       height="50px" 
     />
-    <p>{{ title }}</p>
   </a>
     
   <div>
-    <details>
-      <summary> Articoli </summary> 
+    <details class="auto-dropdown">
+      <summary class="auto-dropdown"> Articoli </summary> 
 
-      <div class="dropdown" >
-        @for (page of routerClone; track $index) {
-          @if (page.path!='') {
-            <a [routerLink]="page.path">{{ page.path }}</a>
-          }
-        }
-      </div>
+      <div class="dropdown">  @for (page of routerClone; track page) {
+        <a [routerLink]="page.path" *ngIf="page.show">{{ page.path }}</a>
+      }</div>
     </details>
   </div>
 </nav>
