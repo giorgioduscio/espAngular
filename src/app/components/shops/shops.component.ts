@@ -5,18 +5,16 @@ import {MatCardModule} from '@angular/material/card';
 
 import { FormsModule } from '@angular/forms';
 import { ShopsService } from '../../services/shops.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-shops',
   standalone: true,
   imports: [
-    MatCardModule, 
-    MatButtonModule,
     NgFor,
     NgIf,
+    RouterModule,
     FormsModule,
-    MatCardModule, 
-    MatButtonModule,
   ],
   templateUrl: './shops.component.html',
   styleUrl: './shops.component.css'
@@ -24,12 +22,11 @@ import { ShopsService } from '../../services/shops.service';
 
 export class ShopsComponent {
   shops :any
+  filter =''
   constructor (private shopsService: ShopsService){ 
       shopsService.getShops().subscribe(data =>{ 
         this.shops =data
         console.log('this.shops', this.shops);
       })
   }
-
-  filter =''
 }
