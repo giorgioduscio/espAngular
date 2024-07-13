@@ -9,6 +9,7 @@ header{
 
     color: var(--c1);
     background: var(--c3);
+    text-align: center;
 }
     header img{
         width: 200px;
@@ -19,9 +20,9 @@ header{
         font-weight: bold;
     }    
 
+
+    
 section{
-    margin: auto;
-    width: 80vw;
     padding: 100px 20px 300px;
 
     display: flex;
