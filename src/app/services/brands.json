@@ -1,0 +1,60 @@
+[
+    {
+      "brandId": 1,
+      "brandName": "Nike",
+      "brandImage": "https://www.nike.com/t/nike-logo-large/t_PDP_v1/f_auto/q_auto:eco",
+      "products": [
+        {
+          "productId": 11,
+          "productName": "Air Force 1 '07 Sneakers",
+          "productImage": "https://static.nike.com/a/images/t_PDP_v1/f_auto/q_auto:eco/w_640,h_360/AF11_82F520-101_700.png",
+          "productPrice": 99.99
+        },
+        {
+          "productId": 12,
+          "productName": "Air Jordan 1 Retro High OG Sneakers",
+          "productImage": "https://static.nike.com/a/images/t_PDP_v1/f_auto/q_auto:eco/w_640,h_360/553578-101_700.png",
+          "productPrice": 149.99
+        }
+      ]
+    },
+    {
+      "brandId": 2,
+      "brandName": "Adidas",
+      "brandImage": "https://www.adidas.com/static/icons/adidas_logo_black.svg",
+      "products": [
+        {
+          "productId": 21,
+          "productName": "NMD S1 Sneakers",
+          "productImage": "https://assets.adidas.com/images/w_640,f_auto,q_auto:eco/GZ5066/GZ5066_01_FWD_SL.png",
+          "productPrice": 139.99
+        },
+        {
+          "productId": 22,
+          "productName": "Ultraboost 23 Running Shoes",
+          "productImage": "https://assets.adidas.com/images/w_640,f_auto,q_auto:eco/GZ3866/GZ3866_01_FWD_SL.png",
+          "productPrice": 189.99
+        }
+      ]
+    },
+    {
+      "brandId": 3,
+      "brandName": "Gucci",
+      "brandImage": "https://www.gucci.com/it/it/content/dam/gucci/logos/gucci_logo_black.svg",
+      "products": [
+        {
+          "productId": 31,
+          "productName": "GG Marmont Matelassé Shoulder Bag",
+          "productImage": "https://www.gucci.com/it/it/image/287511_1_900_800.jpg",
+          "productPrice": 2499.00
+        },
+        {
+          "productId": 32,
+          "productName": "Ace Sneakers",
+          "productImage": "https://www.gucci.com/it/it/image/402390_C_900_800.jpg",
+          "productPrice": 699.00
+        }
+      ]
+    }
+  ]
+  
