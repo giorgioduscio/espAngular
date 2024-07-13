@@ -1,1 +1,25 @@
-<p>products {{id}} works!</p>
+<article>
+    <div class="brand">
+        <figure>
+            <img [src]="brand.imageUrl" alt="">
+        </figure>
+        <div>
+            <h1>{{brand.title}}</h1>
+            <p>{{ brand.description }}</p>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="brandProducts">
+        <div class="card" *ngFor="let product of products">
+            <aside>{{ product.price }}€</aside>
+            <img [src]="product.images[0]" alt="">
+            <div class="text">
+                <h5>{{ product.title }}</h5>
+                <p class="description">{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+
+</article>

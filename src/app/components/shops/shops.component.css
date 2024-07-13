@@ -28,32 +28,30 @@ header{
     justify-content: space-evenly;
     gap: 20px;
 }
-    .shopsContainer a{}
-    .card {
-        width: 250px;
-        height: 100%;
+a:hover{ box-shadow: 0 0 20px var(--c3); }
 
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+.card {
+    width: 250px;
+    height: 100%;
 
-        overflow: hidden;
-        border-radius: 10px;
-        background: var(--c2);
-        color: var(--c5);
-    }
-    .card aside{
-        padding: 5px;
-        margin: 10px;
-        position: absolute; 
-        background: var(--c4);
-    }
-    .card img{
-        height: 150px;
-        width: 100%;
-        object-fit: cover;
-    }
-    .card .text{
-        margin: 10px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--c2);
+    color: var(--c5);
+}
+.card img{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+    background: linear-gradient(30deg, var(--c3), var(--c2));
+}
+.card .text{
+    margin: 10px;
+    height: 100px;
+    overflow: hidden;
+}
 

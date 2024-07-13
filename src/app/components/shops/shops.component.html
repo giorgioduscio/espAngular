@@ -8,11 +8,10 @@
     
     <div class="line"></div>
     
-    <h1 style="text-align: center;">Ristoranti</h1>
+    <h1 style="text-align: center;">Negozi</h1>
     <section class="shopsContainer"> @for (shop of shops; track shop) {
         <a routerLink="{{shop.id}}">
             <div class="card" *ngIf="shop.title.toLocaleLowerCase().includes(filter)">
-                <aside>{{ shop.title }}</aside>
                 <img src="{{ shop.imageUrl }}" alt="">
                 <div class="text">
                     <h5>{{ shop.title }}</h5>

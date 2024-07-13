@@ -1,0 +1,52 @@
+    /* TODO BRAND */
+.brand{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: var(--c3);
+    box-shadow: 0 0 20px black;
+}
+.brand img{
+    object-fit: cover;
+    height: 300px;
+    width: 300px;
+}
+.brand>div{
+    width: 300px;
+}
+
+
+    /* TODO CARD */
+.brandProducts{
+    padding: 100px 10px;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+.card{
+    width: 250px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px black;
+    border-radius: 10px;
+}
+
+aside{
+    padding: 10px;
+    position: absolute;
+    background: var(--c4);
+}
+.card img{
+    object-fit: cover;
+    width: 100%;
+    height: 150px;
+}
+.text{
+    padding: 10px;
+}
+.description{
+    max-height: 100px;
+    overflow: hidden;
+}

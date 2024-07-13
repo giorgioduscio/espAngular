@@ -28,7 +28,7 @@ export class ShopsComponent {
           {id:i+1, title:product.brand, description:product.description, imageUrl:product.images[0]}
         )
       })
-      console.log('this.shops', products, this.shops);
+      // console.log('this.shops', products, this.shops);
     })
   }
 }
