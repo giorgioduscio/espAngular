@@ -21,7 +21,7 @@ export class ProductsComponent{
     // VALORE URL
     this.route.params.subscribe(params => {
       this.id =Number(params['id'])
-      console.log('router:id', this.id);
+      // console.log('router:id', this.id);
     });
     productsService.getProducts().subscribe(r=>{
       // NOME BRAND
@@ -29,7 +29,7 @@ export class ProductsComponent{
         if(product.id==this.id) this.brand ={id:this.id, title:product.brand, description:product.description, imageUrl:product.images[0]}
         if(product.id==this.id ||product.id%this.id==1) this.products.push(product)
       })
-      console.log("products", this.brand);
+      // console.log("products", this.brand);
     })
   }
 }

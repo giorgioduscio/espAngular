@@ -16,4 +16,3 @@ export const routes :Routes |any[] =[
     { show:false, path: 'shops/:id', component: ProductsComponent },
     { show:false, path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
-// router, details, react hooks

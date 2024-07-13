@@ -24,8 +24,7 @@ export class DashboardComponent{
       // MEMORIZZA SOLO LE CHIAVI CHE NON SONO OGGETTI
       this.userKeys =Object.keys(this.users[0])
         .filter(key =>typeof(this.users[0][key])!="object")
-
-      console.log("users", this.users, this.userKeys);
+      // console.log("users", this.users, this.userKeys);
     })
   }
 }

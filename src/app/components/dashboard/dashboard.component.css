@@ -1,13 +1,27 @@
-caption{
-    padding: 30px;
-}
-table{
-    width: min-content;
+.dashboard{
     padding: 10px;
-    margin: 10px auto;
-    box-shadow: 0 0 20px black;
+}
+.container{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
 }
 
-td{
-    padding: 5px;
+
+.row{
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: start;
+    line-height: 30px;
+}
+.listIndex{
+    width: 20px;
+    margin-right: 20px;
+}
+.content{
+    /* display: flex;
+    flex-flow: wrap;
+    gap: 10px; */
 }

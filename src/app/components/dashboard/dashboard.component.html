@@ -1,17 +1,15 @@
 <article class="dashboard">
     <h3 style="padding: 20px 0 30px; text-align: center;">Unresponsive Dashboard</h3>
     
-    <table>
-        <caption>
-            Tabella degli utenti
-        </caption>
-        <thead>
-            <th *ngFor="let key of userKeys; let i=index">{{ key }}</th>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users; index as a">
-                <td *ngFor="let key of userKeys; let b=index" [class]="key">{{ user[key] }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row" *ngFor="let user of users; index as a">
+            <p class="listIndex">{{user.id}}:</p>
+
+            <div class="content">@for (key of userKeys; track key) {
+                <p *ngIf="key!='id'" [class]="key">
+                    {{key}}: <strong>{{ user[key] }}</strong>
+                </p>
+            }</div>
+        </div>
+    </div>
 </article>
