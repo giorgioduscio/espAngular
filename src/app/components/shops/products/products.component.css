@@ -11,26 +11,24 @@
 }
 .brand img{
     object-fit: cover;
-    height: 250px;
+    height: 200px;
     width: 250px;
 }
 .brand>div{
     width: 300px;
 }
+.brand h1{
+    position: sticky;
+    top: 0;
+}
 
 
     /* TODO CARD */
-.brandProducts{
-    padding: 100px 10px;
-    display: flex;
-    flex-flow: wrap;
-    justify-content: space-around;
-    gap: 20px;
+.slider{
+    padding: 50px 10px;
+    width: 100%;
 }
 .card{
-    width: 250px;
-    position: relative;
-    overflow: hidden;
     box-shadow: 0 0 20px black;
     border-radius: 10px;
 }
@@ -51,4 +49,12 @@ aside{
 .description{
     max-height: 100px;
     overflow: hidden;
+}
+
+@media only screen and (min-width:600px){
+.brandProducts{
+    overflow: auto;
+    flex-flow: wrap;
+    justify-content: space-around;
+}
 }

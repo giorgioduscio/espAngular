@@ -42,7 +42,13 @@ app-root *{
 
 
 
-h1{font-size: 40px;}
+h1{
+    font-size: 40px;
+
+    background: linear-gradient(30deg, var(--c2), var(--c4));
+    background-clip: text;
+    color: transparent;
+}
 h2{font-size: 35px;}
 h3{font-size: 30px;}
 h4{font-size: 25px;}
@@ -73,3 +79,22 @@ a{
     a:hover{
         color: var(--c3);
     }
+
+input[type="text"]{
+    width: min(100px, 100%);
+}
+
+.slider{
+    min-width: 300px;
+    overflow-x: scroll;
+    display: flex;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+}
+.slider>*{
+    width: 250px;
+
+    flex-shrink: 0;
+    position: relative;
+    scroll-snap-align: center;
+}
