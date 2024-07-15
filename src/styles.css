@@ -19,7 +19,9 @@ app-root *{
     font-size: 20px;
     box-sizing: border-box;
 }
-
+header{
+    background: var(--c3);
+}
 .line{
     height: 100px;
     position: relative;

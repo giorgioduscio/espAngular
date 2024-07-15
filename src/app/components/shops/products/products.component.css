@@ -6,7 +6,6 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    background: var(--c3);
     box-shadow: 0 0 20px black;
 }
 .brand img{
@@ -52,7 +51,7 @@ aside{
 }
 
 @media only screen and (min-width:600px){
-.brandProducts{
+.slider{
     overflow: auto;
     flex-flow: wrap;
     justify-content: space-around;
