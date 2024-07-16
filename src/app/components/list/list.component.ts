@@ -1,6 +1,6 @@
-import { Component, OnChanges, OnInit, SimpleChanges, ViewChild, viewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ListService } from '../../services/list.service';
-import { FormControl, FormGroup, FormsModule, NgForm, Validators } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { List } from '../../interfaces/list';
 import { NgFor } from '@angular/common';
 
@@ -18,7 +18,7 @@ import { NgFor } from '@angular/common';
 export class ListComponent{
   @ViewChild('formData') formData! :NgForm
 
-  // VISUALIZZA
+  // todo VISUALIZZA
   todos :List[] =[]
   constructor(private list:ListService){  
     list.getTodo().subscribe((responce:any)=>{
@@ -30,7 +30,7 @@ export class ListComponent{
     })
   }
 
-  // AGGIUNGE
+  //OPTIMIZE AGGIUNGE
   submit(formData:NgForm){
     const newTitle :string =formData.value.title
 
@@ -38,17 +38,24 @@ export class ListComponent{
       complete: false,
       title: newTitle,
     })
-    .subscribe(responce=>{ console.log("AGGIUNGE", responce) })
+    .subscribe(responce=>{ 
+      console.log("AGGIUNGE", responce) 
+      location.reload()
+    })
+    
   }
 
-  // ELIMINA
+  //FIX ELIMINA
   delete(index:number){
     const id =this.todos[index].id
     this.list.deleteTodo(id!)
-    .subscribe(responce =>console.log("ELIMINA", responce))
+    .subscribe(responce =>{
+      console.log("ELIMINA", responce)
+      location.reload()
+    })
   }
 
-  // PATCH
+  //OPTIMIZE PUT
   patch(event:Event, todo:List){
     const {value, id, checked} =(event.target as HTMLInputElement)
     const newField =id=='complete' ?checked :value
@@ -57,9 +64,9 @@ export class ListComponent{
       complete: todo.complete,
       title: todo.title,
       [id]: newField,
-    }).subscribe(responce =>console.log("PATCH", `[${id}]: ${newField}`))
-    
-    
+    }).subscribe(responce =>{
+      console.log("PUT", `[${id}]: ${newField}`)
+      location.reload()
+    })
   }
-
 }
