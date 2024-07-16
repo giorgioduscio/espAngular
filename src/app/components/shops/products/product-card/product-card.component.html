@@ -1,0 +1,19 @@
+<div class="card">
+    <aside>{{ product.price }}€</aside>
+
+    <img [src]="product.images[0]" alt="">
+
+    <section>
+      <div class="text">
+        <h5>{{ product.title }}</h5>
+        <p class="description">{{ product.description }}</p>
+      </div>
+      <div class="amount">
+        <button (click)="increment()" class="operation">+</button>
+        <button class="operation">{{ amount() }}</button>
+        <button (click)="decrement()" class="operation">-</button>
+        <button (click)="addToCart()" class="cart">Cart</button>
+      </div>
+    </section>
+
+</div>

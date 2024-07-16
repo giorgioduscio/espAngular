@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../../services/products.service';
 import { NgFor } from '@angular/common';
+import { ProductCardComponent } from './product-card/product-card.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [
     NgFor,
+    ProductCardComponent,
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'

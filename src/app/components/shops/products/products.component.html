@@ -12,14 +12,10 @@
     <div class="line"></div>
 
     <div class="slider">
-        <div class="card" *ngFor="let product of products">
-            <aside>{{ product.price }}€</aside>
-            <img [src]="product.images[0]" alt="">
-            <div class="text">
-                <h5>{{ product.title }}</h5>
-                <p class="description">{{ product.description }}</p>
-            </div>
-        </div>
+        <app-product-card 
+            *ngFor="let product of products" 
+            [product]="product"
+            ></app-product-card>
     </div>
 
 </article>
