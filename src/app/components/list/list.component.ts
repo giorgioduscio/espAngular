@@ -26,11 +26,11 @@ export class ListComponent{
         responce[key]["id"] =key
         return responce[key]
       }) 
-      console.log("responce", this.todos);
+      console.log("VISUALIZZA", this.todos);
     })
   }
 
-  // Aggiunge
+  // AGGIUNGE
   submit(formData:NgForm){
     const newTitle :string =formData.value.title
 
@@ -38,13 +38,28 @@ export class ListComponent{
       complete: false,
       title: newTitle,
     })
-    .subscribe(responce=>{ console.log("aggiunto", responce) })
+    .subscribe(responce=>{ console.log("AGGIUNGE", responce) })
   }
 
   // ELIMINA
   delete(index:number){
     const id =this.todos[index].id
-    this.list.deleteTodo(id!).subscribe(responce =>console.log(responce))
+    this.list.deleteTodo(id!)
+    .subscribe(responce =>console.log("ELIMINA", responce))
+  }
+
+  // PATCH
+  patch(event:Event, todo:List){
+    const {value, id, checked} =(event.target as HTMLInputElement)
+    const newField =id=='complete' ?checked :value
+
+    this.list.patchTodo(todo.id!,{
+      complete: todo.complete,
+      title: todo.title,
+      [id]: newField,
+    }).subscribe(responce =>console.log("PATCH", `[${id}]: ${newField}`))
+    
+    
   }
 
 }
