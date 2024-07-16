@@ -1,9 +1,15 @@
 <article>
     <header>
-        <h1>Lista della spesa</h1>
+        <h1>Lista</h1>
         <form #formdata="ngForm" (ngSubmit)="submit(formdata)">
-            <input type="text" name="title" id="title" required ngModel>
-            <button type="submit" [disabled]="formdata.invalid">Invio</button>
+            <input 
+                type="text" 
+                name="title" 
+                id="title" 
+                placeholder="Inserisci azione"
+                required ngModel
+            >
+            <button type="submit" [disabled]="formdata.invalid">+</button>
         </form>
     </header>
     <div class="line"></div>
@@ -13,7 +19,7 @@
             <tr *ngFor="let todo of todos; let i =index">
                 <td><input (change)="patch($event, todo)" type="checkbox" id="complete" [checked]="todo.complete"></td>
                 <td><input (change)="patch($event, todo)" type="text" id="title" [placeholder]="todo.title"></td>
-                <td><button (click)="delete(i)">❌</button></td>
+                <td><button class="delete" (click)="delete(i)">❌</button></td>
             </tr>
         </tbody>
     </table>
