@@ -45,7 +45,14 @@ nav{
             color: var(--c5);
         }
         .dropdown{
+            width: 100%;
+            left: 0;
             position: absolute; 
-            flex-direction: column;
-            background: var(--c3);
+            background: linear-gradient(3deg, var(--st), var(--c3), var(--c3));
         }
+@media only screen and (min-width: 400px){
+.dropdown{
+    width: min-content;
+    left: auto;
+}
+}

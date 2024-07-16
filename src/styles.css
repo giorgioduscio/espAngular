@@ -23,23 +23,20 @@ header{
     background: var(--c3);
 }
 .line{
-    height: 100px;
+    height: 50px;
     position: relative;
     overflow: hidden;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
     .line::after{
         width: 110%;
         height: 110%;
-        position: absolute; bottom: 50px;
+        position: absolute; 
+        bottom: 50%;
 
         content: '';
-        transform: rotate(358deg);
+        transform: rotate(359deg);
         background: var(--c3);
-        box-shadow: inset 0px 0px 20px 10px #00000080;
+        box-shadow: 0px 0px 20px 5px #00000080;
     }
 
 
