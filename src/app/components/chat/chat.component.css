@@ -8,12 +8,15 @@
     align-items: center;
     gap: 10px;
 
+    cursor: pointer;
     border-bottom: 1px solid var(--c2);
 }
 .chat:last-child{border: 0;}
-
 .chat button{
     padding: 2px;
+}
+a:hover{
+    color: var(--c1);
 }
 
 
@@ -28,4 +31,25 @@
 
     background: var(--c2);
     box-shadow: 0 0 20px black;
+}
+@media only screen and (min-width:1000px){
+.chat{
+    padding: 10px;
+    border: 1px solid var(--c2) !important;
+    border-radius: 10px;
+}
+.flexbox{
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap;
+    gap: 10px;
+}
+.tools{
+    padding: 0 20px;
+    position: relative;
+    justify-content: flex-start;
+
+    box-shadow: none;
+    background: var(--c3);
+}
 }
