@@ -1,0 +1,42 @@
+article>div{
+    margin: 10px auto;
+    width: min(1000px, 90%);
+
+    display: flex;
+    flex-flow: wrap-reverse;
+    justify-content: space-between;
+    overflow: hidden;
+
+    background: var(--c3);
+    box-shadow: 0 0 20px black;
+    border-radius: 10px;
+}
+article>div>*{
+    min-width: 270px;
+    padding: 10px;
+    
+}
+
+    /*TODO LISTA CARRELLO */
+.cartList{
+    width: 66%;
+}
+tr{ 
+    border-bottom: 1px solid var(--c1);   
+}
+
+td{
+    padding: 5px;
+}
+table .title{ text-align: center; }
+table img{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+    /*TODO STRUMENTI */
+aside{
+    width: 33%;
+    background: var(--c2);
+}
