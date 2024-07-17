@@ -7,14 +7,16 @@ import { authGuard } from './auth/auth.guard';
 import { ProductsComponent } from './components/shops/products/products.component';
 import { ListComponent } from './components/list/list.component';
 import { CartComponent } from './components/shops/cart/cart.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 export const routes :Routes |any[] =[
     { show:true, path: 'Home', component: HomeComponent },
     { show:true, path: 'Signal', component: SignalComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent },
     { show:true, path: 'List', component: ListComponent },
+    { show:true, path: 'Chat', component: ChatComponent },
+    
     { show:true, path: 'Cart', component: CartComponent },
-
     { show:true, path: 'Shops', component: ShopsComponent, 
         canActivate:[authGuard], canActivateChild:[authGuard],
     },

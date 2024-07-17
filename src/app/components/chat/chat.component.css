@@ -1,0 +1,31 @@
+.chats{
+    padding: 10px;
+}
+.chat{
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: auto 4fr;
+    align-items: center;
+    gap: 10px;
+
+    border-bottom: 1px solid var(--c2);
+}
+.chat:last-child{border: 0;}
+
+.chat button{
+    padding: 2px;
+}
+
+
+.tools{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 2px 0;
+
+    display: flex;
+    justify-content: center;
+
+    background: var(--c2);
+    box-shadow: 0 0 20px black;
+}

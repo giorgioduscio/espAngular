@@ -1,0 +1,13 @@
+<article>
+    <header class="chats">
+        <h1>funCoolOwn</h1>
+        <div class="chat" *ngFor="let chat of chats; let i=index">
+            <button (click)="deleteGroup(i)">❌</button>
+            <a routerLink="" routerLinkActive="router-link-active" >{{chat.titleChat}}</a>
+        </div>
+    </header>
+
+    <div class="tools">
+        <button (click)="newGroup()">Nuovo gruppo</button>
+    </div>
+</article>
