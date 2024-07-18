@@ -10,7 +10,7 @@ import { CartComponent } from './components/shops/cart/cart.component';
 import { ChatComponent } from './components/chat/chat.component';
 
 export const routes :Routes |any[] =[
-    { show:true, path: 'Home', component: HomeComponent },
+    { show:false, path: 'Home', component: HomeComponent },
     { show:true, path: 'Signal', component: SignalComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent },
     { show:true, path: 'List', component: ListComponent },

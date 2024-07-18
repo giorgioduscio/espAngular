@@ -7,11 +7,11 @@
             <tr *ngFor="let product of cart; let i=index">
                 <td class="title"> 
                     <img src="{{ product.imageUrl }}" alt="">
-                    <h5>{{ product.title }}</h5>
+                    <p>{{ product.title }}</p>
                 </td>
-                <td>
-                    <p>Quantità: {{ product.amount }}</p>
-                    <p>Prezzo: <strong>{{ product.price }}€</strong></p>
+                <td class="content">
+                    <p>Quantità: <strong>{{ product.amount }}</strong></p>
+                    <p>Prezzo: <strong>{{ product.price *product.amount }}€</strong></p>
                     <button (click)="deleteFunction(i)">Rimuovi</button>
                 </td>
             </tr>

@@ -9,7 +9,6 @@ nav{
 
     background:linear-gradient(2deg, var(--c3), var(--c3), var(--c2));
     color: var(--c1);
-    /* box-shadow: 0 0 20px 5px #00000080; */
 }
 
     nav>*{
@@ -44,14 +43,15 @@ nav{
             cursor: pointer;
             color: var(--c5);
         }
-        .dropdown{
+        .dropdown>div{
             width: 100%;
             left: 0;
             position: absolute; 
             background: linear-gradient(3deg, var(--st), var(--c3), var(--c3));
         }
+
 @media only screen and (min-width: 400px){
-.dropdown{
+.dropdown>div{
     width: min-content;
     left: auto;
 }

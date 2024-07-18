@@ -28,11 +28,25 @@ tr{
 td{
     padding: 5px;
 }
-table .title{ text-align: center; }
-table img{
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
+.title{ text-align: center; }
+    .title>img{
+        height: 100px;
+        width: 100px;
+        object-fit: cover;
+    }
+    .title>p{
+        max-width: 100px;
+        overflow: hidden;
+        
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+.content{
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    gap: 10px;
 }
 
     /*TODO STRUMENTI */
