@@ -1,0 +1,25 @@
+<article>
+    <div>
+        <h3>{{chat.titleChat}}</h3>
+
+        <div class="flexbox">
+            <div *ngFor="let message of messages; let i=index">
+                <h6>{{message.username}}</h6>
+                <p>{{message.message}}</p>
+            </div>
+        </div>
+
+        <form #formData="ngForm" (submit)="writeMessage(formData)" class="inputBox">
+            <div>
+                <input 
+                    type="text" 
+                    name="message"
+                    id="message"
+                    placeholder="Messaggio" 
+                    ngModel
+                >
+                <button type="submit">Invio</button>
+            </div>
+        </form>
+    </div>
+</article>

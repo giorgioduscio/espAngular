@@ -52,6 +52,8 @@ h1{
 h2{font-size: 35px;}
 h3{font-size: 30px;}
 h4{font-size: 25px;}
+h5{font-size: 20px;}
+h6{font-size: 15px;}
 
 button, input{
     padding: 10px;
