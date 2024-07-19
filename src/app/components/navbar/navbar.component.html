@@ -1,5 +1,5 @@
 <nav>
-  <a routerLink="/home" id="logo">
+  <a routerLink="/Home" id="logo">
     <img 
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" 
       alt="logo" 
@@ -8,11 +8,11 @@
   </a>
     
   <div>
-    <details class="auto-dropdown">
-      <summary class="auto-dropdown"> Articoli </summary> 
+    <details class="dropdown">
+      <summary class="dropdown"> Articoli </summary> 
 
-      <div class="dropdown">  @for (page of routerClone; track page) {
-        <a [routerLink]="page.path" *ngIf="page.show">{{ page.path }}</a>
+      <div>@for(page of routerClone; track page){
+        <a *ngIf="page.show" [routerLink]="page.path">{{ page.path }}</a>
       }</div>
     </details>
   </div>

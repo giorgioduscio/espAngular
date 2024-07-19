@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BrandsService {
   url ="/src/assets/brands.json"
   constructor(private http: HttpClient) {

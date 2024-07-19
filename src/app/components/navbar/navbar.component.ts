@@ -18,12 +18,13 @@ import { NgFor, NgIf } from '@angular/common';
 export class NavbarComponent {
   routerClone =routes
 
-  // QUANDO SI CLICCA SUI PULSANTI O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
+  // QUANDO SI CLICCA SU ANCHOR, SUMMARY O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
+  // IL DROPDOWN SI CHIUDE DOPO ESSERE STATO APERTO
   constructor(){
     document.addEventListener('click', (e:Event)=>{
-      let result =(e.target as HTMLInputElement).className
-      let dropdown =document.querySelector("details.auto-dropdown")
-      if (result!="auto-dropdown") dropdown?.removeAttribute("open")
+      (e.target as HTMLInputElement).className!=="dropdown"
+        ? document.querySelector("details.dropdown")?.removeAttribute("open")
+        : console.log("classe dropdown");
     })
   }
 }

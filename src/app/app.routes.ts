@@ -11,7 +11,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { MessagesComponent } from './components/chat/messages/messages.component';
 
 export const routes :Routes |any[] =[
-    { show:true, path: 'Home', component: HomeComponent },
+    { show:false, path: 'Home', component: HomeComponent },
     { show:true, path: 'Signal', component: SignalComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent },
     { show:true, path: 'List', component: ListComponent },
