@@ -1,40 +1,45 @@
 .chats{
     padding: 10px;
 }
+
+
 .chat{
-    padding: 10px 0;
-    display: grid;
-    grid-template-columns: auto 4fr;
+    display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 
     cursor: pointer;
-    border-bottom: 1px solid var(--c2);
+    border-bottom: 1px solid var(--c1);
 }
-.chat:last-child{border: 0;}
-.chat button{
-    padding: 2px;
-}
-a:hover{
-    color: var(--c1);
-}
+    .chat:last-child{border: 0;}
+    .chat button{
+        margin-left: 5px;
+        padding: 2px;
+    }
+    a{
+        padding: 10px;
+        color: var(--c5);
+    }
 
 
-.tools{
+.inputBox{
     width: 100%;
+    padding: 5px;
     position: fixed;
     bottom: 0;
-    padding: 2px 0;
-
-    display: flex;
-    justify-content: center;
-
-    background: var(--c2);
-    box-shadow: 0 0 20px black;
+    background: var(--c3);
 }
-@media only screen and (min-width:1000px){
+    .inputBox>div{
+        max-width: 300px;
+        margin: auto;
+
+        display: flex;
+        gap: 5px;
+    }
+
+
+@media only screen and (min-width:500px) {
 .chat{
-    padding: 10px;
     border: 1px solid var(--c2) !important;
     border-radius: 10px;
 }
@@ -44,12 +49,8 @@ a:hover{
     flex-flow: wrap;
     gap: 10px;
 }
-.tools{
-    padding: 0 20px;
-    position: relative;
-    justify-content: flex-start;
-
-    box-shadow: none;
-    background: var(--c3);
+.inputBox{
+    padding: 0 10px;
+    position: static;
 }
 }

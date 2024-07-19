@@ -1,14 +1,23 @@
 <article>
-    <div class="tools">
-        <button (click)="newGroup()">Nuovo gruppo</button>
-    </div>
+    <form #formData="ngForm" (submit)="newGroup(formData)" class="inputBox">
+        <div>
+            <input 
+                type="text" 
+                name="input"
+                id="input"
+                placeholder="Nuovo gruppo" 
+                ngModel
+            >
+            <button type="submit">Crea</button>
+        </div>
+    </form>
 
     <header class="chats">
         <h1>funCoolOwn</h1>
         <div class="flexbox">
             <div class="chat" *ngFor="let chat of chats; let i=index">
                 <button (click)="deleteGroup(i)">❌</button>
-                <a routerLink="" routerLinkActive="router-link-active" >{{chat.titleChat}}</a>
+                <a routerLink="{{chat.idFirebase}}">{{chat.titleChat}}</a>
             </div>
         </div>
     </header>

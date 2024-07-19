@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../interfaces/chat';
 import { NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   imports: [
+    FormsModule,
     NgFor,
+    RouterLink,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
@@ -26,23 +30,18 @@ export class ChatComponent {
   }
 
 
-  newGroup(){
+  newGroup(formData:any){  
     this.chatService.addChat({
-      idChat: Math.random() *10,
-      titleChat: 'C.' +Math.random() *10,
+      idChat: Math.random(),
+      titleChat: formData.value.input,
       content: []
-    }).subscribe(res=>{
-      console.log(res);
-      location.reload()
     })
+    .subscribe(res=>{ console.log(res);location.reload() })
   }
 
   
   deleteGroup(i:number){
     this.chatService.deleteChat(this.chats[i].idFirebase!)
-    .subscribe(res=>{
-      console.log(res);
-      location.reload()
-    })
+    .subscribe(res=>{ console.log(res);location.reload() })
   }
 }
