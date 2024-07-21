@@ -20,13 +20,13 @@ h3{
 
 
 .flexbox{
-    min-width: 300px;
-    max-width: 1000px;
+    width: clamp(300px, auto, 1000px);
     padding: 10px;
     margin: 0 auto;
 
     display: flex;
     flex-flow: column;
+    align-items: flex-start;
     gap: 10px;
 
 }
@@ -35,6 +35,9 @@ h3{
         background: var(--c3);
         border-radius: 10px;
         border-top-left-radius: 0;
+    }
+    .flexbox p{
+        max-width: 200px;
     }
 
 

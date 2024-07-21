@@ -4,11 +4,13 @@ import { ChatService } from '../../../services/chat.service';
 import { Chat, Message } from '../../../interfaces/chat';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
   imports: [
+    MatIconModule,
     FormsModule,
     NgFor,
   ],

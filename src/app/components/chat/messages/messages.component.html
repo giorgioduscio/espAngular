@@ -4,7 +4,7 @@
 
         <div class="flexbox">
             <div *ngFor="let message of messages; let i=index">
-                <h6>{{message.username}}</h6>
+                <!-- <h6>{{message.username}}</h6> -->
                 <p>{{message.message}}</p>
             </div>
         </div>
@@ -14,11 +14,14 @@
                 <input 
                     type="text" 
                     name="message"
-                    id="message"
                     placeholder="Messaggio" 
-                    ngModel
+                    ngModel required
                 >
-                <button type="submit">Invio</button>
+                <button type="submit" [disabled]="formData.invalid">
+                    <mat-icon class="newGroup"
+                        fontIcon="add"
+                    ></mat-icon>
+                </button>
             </div>
         </form>
     </div>

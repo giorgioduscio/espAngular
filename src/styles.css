@@ -65,13 +65,19 @@ button, input{
     border-radius: 5px;
     border: 1px solid var(--st);
 } 
+button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
     button:hover, input:hover{
         background: var(--c2);
     }
     button:disabled{
         background: var(--st);
     }
-    input::placeholder{ color: var(--c3); }
+    input::placeholder{ color: inherit; }
 
 
 a{

@@ -1,23 +1,32 @@
 import { Component } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../interfaces/chat';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   imports: [
     FormsModule,
+    NgIf,
     NgFor,
     RouterLink,
+    MatIconModule,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
 
 export class ChatComponent {
+  username :string ='Ciccio'
+  insertUser(userform:any){
+    this.username =userform.value.username
+    userform.value.username =''
+  }
+
   chats :Chat[] =[]
   constructor(private chatService:ChatService){
     chatService.getChat().subscribe((res:any) =>{
@@ -30,11 +39,12 @@ export class ChatComponent {
   }
 
 
-  newGroup(formData:any){  
+  newGroup(groupForm:any){  
     this.chatService.addChat({
       idChat: Math.random(),
-      titleChat: formData.value.input,
-      content: []
+      titleChat: groupForm.value.input,
+      content: [],
+      imageUrl: 'https://img.freepik.com/vettori-gratuito/cartone-animato-donna-intelligente-con-penna-e-lampadina-bulb_53876-113797.jpg?t=st=1721546528~exp=1721550128~hmac=ba4b4d64d3ef36dc9c767750a444d297f1737c882d6c2ad46811f37db3598646&w=826',
     })
     .subscribe(res=>{ console.log(res);location.reload() })
   }

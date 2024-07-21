@@ -1,23 +1,50 @@
-.chats{
+#userform>div{
     padding: 10px;
+    width: clamp(250px, auto, 300px);
+    margin: 20px auto;
+
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+
+    background: var(--c2);
+    box-shadow: 0 0 20px black;
+    border-radius: 10px;
 }
 
 
+.chats{
+    padding: 10px;
+}
 .chat{
+    padding: 5px;
+    min-width: 150px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5px;
 
     cursor: pointer;
     border-bottom: 1px solid var(--c1);
 }
-    .chat:last-child{border: 0;}
-    .chat button{
-        margin-left: 5px;
-        padding: 2px;
+.chat:last-child{border: 0;}
+    .chat img{
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+    }
+    .deleteGroup::before{
+        width: 40px;
+        height: 40px;
+
+        color: var(--c4);
+        cursor: pointer;
     }
     a{
-        padding: 10px;
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
         color: var(--c5);
     }
 
@@ -27,7 +54,6 @@
     padding: 5px;
     position: fixed;
     bottom: 0;
-    background: var(--c3);
 }
     .inputBox>div{
         max-width: 300px;
@@ -35,6 +61,15 @@
 
         display: flex;
         gap: 5px;
+
+    }
+    .inputBox>div>*{
+        background: var(--c3);
+        color: var(--c1);
+        border: 0;
+    }
+    .inputBox button[type="submit"]{
+        border-radius: 50px;
     }
 
 
@@ -52,5 +87,11 @@
 .inputBox{
     padding: 0 10px;
     position: static;
+    background: var(--c3);
 }
+    .inputBox>div{
+        border: 1px solid var(--c1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
 }
