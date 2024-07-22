@@ -3,6 +3,7 @@ import { filterUser } from '../../pipes/filter-user.pipe';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { NgFor, NgIf } from '@angular/common';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,8 @@ import { NgFor, NgIf } from '@angular/common';
     filterUser,
     FormsModule,
     NgFor, NgIf,
-  ],
+    NavbarComponent,
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

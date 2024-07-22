@@ -7,25 +7,26 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { HomeService } from '../../services/home.service';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    MatFormFieldModule, 
-    MatInputModule, 
-    FormsModule, 
-    MatButtonModule, 
-    MatIconModule, 
-    NgIf, 
-    NgFor, 
-    NgSwitch, 
-    NgSwitchCase, 
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    NgIf,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
     NgSwitchDefault,
     NgStyle,
-    CommonModule
-    
-  ],
+    CommonModule,
+    NavbarComponent
+],
 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

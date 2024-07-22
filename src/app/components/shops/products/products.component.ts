@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../../services/products.service';
 import { NgFor } from '@angular/common';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { NavbarComponent } from "../../navbar/navbar.component";
 
 @Component({
   selector: 'app-products',
@@ -10,7 +11,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
   imports: [
     NgFor,
     ProductCardComponent,
-  ],
+    NavbarComponent
+],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

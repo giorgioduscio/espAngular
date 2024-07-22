@@ -1,52 +1,53 @@
+<app-nav-chat></app-nav-chat>
 <article>
 @if (username==='') {
-    <form #userform="ngForm" (ngSubmit)="insertUser(userform)" id="userform">
-        <div>
-            <p>Al momento non sappiamo chi tu sia. Per avere una maggiore usabilità, inserisci il tuo nome.</p>
-            <input 
-                type="text" 
-                name="username"
-                placeholder="Inserisci il tuo nome" 
-                ngModel
-            >
-            <button type="submit">
-                <mat-icon class="newGroup"
-                    fontIcon="add"
-                ></mat-icon>
-            </button>
-        </div>
-    </form>
+  <form #userform="ngForm" (ngSubmit)="insertUser(userform)" id="userform">
+    <div>
+      <p>Al momento non sappiamo chi tu sia. Per avere una maggiore usabilità, inserisci il tuo nome.</p>
+      <input 
+        type="text" 
+        name="username"
+        placeholder="Inserisci il tuo nome" 
+        ngModel
+      >
+      <button type="submit">
+        <mat-icon class="newGroup"
+          fontIcon="add"
+        ></mat-icon>
+      </button>
+    </div>
+  </form>
 }
 
 @else {
-    <form #groupForm="ngForm" (submit)="newGroup(groupForm)" class="inputBox">
-        <div>
-            <input 
-                type="text" 
-                name="input"
-                placeholder="Nuovo gruppo" 
-                ngModel required
-            >
-            <button type="submit" [disabled]="groupForm.invalid">
-                <mat-icon class="newGroup"
-                    fontIcon="add"
-                ></mat-icon>
-            </button>
-        </div>
-    </form>
+  <form #groupForm="ngForm" (submit)="newGroup(groupForm)" class="inputBox">
+    <div>
+      <input 
+        type="text" 
+        name="input"
+        placeholder="Nuovo gruppo" 
+        ngModel required
+      >
+      <button type="submit" [disabled]="groupForm.invalid">
+        <mat-icon class="newGroup"
+          fontIcon="add"
+        ></mat-icon>
+      </button>
+    </div>
+  </form>
     
-    <header class="chats">
-        <h1>funCoolOwn</h1>
-        <div class="flexbox">
-            <div class="chat" *ngFor="let chat of chats; let i=index">
-                <img src="{{chat.imageUrl}}" alt="">
-                <a routerLink="{{chat.idFirebase}}">{{chat.titleChat}}</a>
-                <mat-icon class="deleteGroup"
-                    fontIcon="delete" 
-                    (click)="deleteGroup(i)"
-                ></mat-icon>
-            </div>
-        </div>
-    </header>
+  <header class="chats">
+
+    <div class="flexbox">
+      <div class="chat" *ngFor="let chat of chats; let i =index">
+        <img src="{{chat.imageUrl}}" alt="">
+        <a routerLink="{{chat.idFirebase}}">{{chat.titleChat}}</a>
+        <mat-icon class="deleteGroup"
+          fontIcon="delete" 
+          (click)="deleteGroup(i)"
+        ></mat-icon>
+      </div>
+    </div>
+  </header>
 }
 </article>

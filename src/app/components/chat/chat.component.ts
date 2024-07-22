@@ -5,11 +5,13 @@ import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { NavChatComponent } from './nav-chat/nav-chat.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   imports: [
+    NavChatComponent,
     FormsModule,
     NgIf,
     NgFor,

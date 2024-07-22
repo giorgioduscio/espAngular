@@ -3,14 +3,18 @@ import { ListService } from '../../services/list.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { List } from '../../interfaces/list';
 import { NgFor } from '@angular/common';
+import { NavChatComponent } from "../chat/nav-chat/nav-chat.component";
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-list',
   standalone: true,
   imports: [
-    FormsModule,  
-    NgFor,  
-  ],
+    FormsModule,
+    NgFor,
+    NavChatComponent,
+    NavbarComponent
+],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })

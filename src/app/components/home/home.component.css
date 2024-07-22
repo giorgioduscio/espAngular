@@ -35,7 +35,7 @@ section{
     section>*{
         width: 300px;
     }
-    article{
+    div.card{
         padding: 10px;
 
         display: flex;

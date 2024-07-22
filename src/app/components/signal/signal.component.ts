@@ -1,5 +1,7 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, computed, effect, OnInit, signal, WritableSignal } from '@angular/core';
+import { NavChatComponent } from "../chat/nav-chat/nav-chat.component";
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-signal',
@@ -7,7 +9,9 @@ import { Component, computed, effect, OnInit, signal, WritableSignal } from '@an
   imports: [
     NgIf,
     NgFor,
-  ],
+    NavChatComponent,
+    NavbarComponent
+],
   templateUrl: './signal.component.html',
   styleUrl: './signal.component.css',
 })

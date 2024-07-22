@@ -1,3 +1,6 @@
+<app-navbar></app-navbar>
+
+<article>
 <header>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" alt="">
     <h1>Angular Materials</h1>
@@ -53,7 +56,7 @@
         </div>
     </div>
     
-    <article *ngFor="
+    <div class="card" *ngFor="
         let card of cards; 
         index as index; count as count; 
         first as first; last as last
@@ -70,7 +73,6 @@
             {{ last? "Ultimo dell'array" :"" }}
             {{ card.description }}
         </p> 
-    </article>
-    
-    
-</section>
+    </div>
+</section>    
+</article>

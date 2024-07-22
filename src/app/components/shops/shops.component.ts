@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import { NavChatComponent } from "../chat/nav-chat/nav-chat.component";
 
 @Component({
   selector: 'app-shops',
@@ -12,7 +13,8 @@ import { ProductsService } from '../../services/products.service';
     NgIf,
     RouterModule,
     FormsModule,
-  ],
+    NavChatComponent
+],
   templateUrl: './shops.component.html',
   styleUrl: './shops.component.css'
 })

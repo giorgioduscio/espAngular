@@ -5,11 +5,13 @@ import { Chat, Message } from '../../../interfaces/chat';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { NavChatComponent } from '../nav-chat/nav-chat.component';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
   imports: [
+    NavChatComponent,
     MatIconModule,
     FormsModule,
     NgFor,

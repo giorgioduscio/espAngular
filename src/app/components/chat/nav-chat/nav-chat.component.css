@@ -1,0 +1,41 @@
+nav{
+    height: 50px;
+    /* width: clamp(250px, auto, 1000px); */
+    width: 100vw;
+    padding: 5px;
+    top: 0;
+
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    gap: 5px;
+
+    background: var(--c3);
+}
+    nav>*{
+        display: flex;
+        gap: 5px;
+        align-content: center;
+    }
+
+    
+a{
+    padding: 5px;
+    color: var(--c5);
+}
+button{
+    width: 40px;
+}
+.dropContent{
+    left: 0;
+    width: 100vw;
+
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(0deg, var(--st), var(--c3));
+}

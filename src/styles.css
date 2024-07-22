@@ -19,9 +19,9 @@ app-root *{
     font-size: 20px;
     box-sizing: border-box;
 }
-header{
-    background: var(--c3);
-}
+article{ padding: 50px 0; }
+header{ background: var(--c3); }
+
 .line{
     height: 50px;
     position: relative;
@@ -68,7 +68,8 @@ button, input{
 button{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-content: center;
     gap: 5px;
 }
     button:hover, input:hover{
