@@ -25,37 +25,3 @@ nav{
             font-size: 30px;
             color: var(--c4);
         }        
-        a, button{
-            padding:10px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-            background: transparent;
-            border: 0;
-            color: var(--c5);
-        }
-        button:hover, a:hover{
-            background: var(--st);
-            background: var(--st);
-        }
-
-        summary{
-            padding: 10px;
-            cursor: pointer;
-            color: var(--c5);
-        }
-        .dropContent{
-            width: 100%;
-            left: 0;
-            position: absolute; 
-            background: linear-gradient(3deg, var(--st), var(--c3), var(--c3));
-        }
-
-@media only screen and (min-width: 400px){
-.dropdown>div{
-    width: min-content;
-    left: auto;
-}
-}

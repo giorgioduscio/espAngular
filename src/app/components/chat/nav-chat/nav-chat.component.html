@@ -4,12 +4,6 @@
   </a>
 
   <div>
-    <details class="dropdown">
-      <summary class="dropdown"> Articoli </summary> 
-
-      <div class="dropContent"> @for(page of routerClone; track page){
-        <a *ngIf="page.show" routerLink="/{{page.path}}">{{ page.path }}</a>
-      }</div>
-    </details>
+    <app-dropdown></app-dropdown>
   </div>
 </nav>
