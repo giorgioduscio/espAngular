@@ -2,9 +2,13 @@
     padding: 10px;
 }
 .container{
+    width: clamp(300px, 100vw, 1000px);
+    margin: auto;
+    padding: 10px;
+
     display: flex;
     flex-flow: wrap;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: flex-start;
     gap: 20px;
 }
@@ -17,11 +21,14 @@
     line-height: 30px;
 }
 .listIndex{
-    width: 20px;
+    width: 40px;
     margin-right: 20px;
 }
 .content{
-    /* display: flex;
-    flex-flow: wrap;
-    gap: 10px; */
+}
+p{
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:initial;
 }
