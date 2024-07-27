@@ -32,6 +32,7 @@ export class SignalComponent{
   }
   // EFFECT
   constructor() {
+    document.title ='Signal'
     effect(() => {
       console.log(`change`, this.signalString());
     });

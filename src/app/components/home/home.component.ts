@@ -51,7 +51,9 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
   oggi= Date.now()
 
   // SERVICE
-  constructor(private homeService: HomeService){}
+  constructor(private homeService: HomeService){
+    document.title ='Home'
+  }
   cards =this.homeService.homeCards
   
   ngOnInit(): void {

@@ -24,7 +24,8 @@ export class ListComponent{
 
   // todo VISUALIZZA
   todos :List[] =[]
-  constructor(private list:ListService){  
+  constructor(private list:ListService){
+    document.title ='List'
     list.getTodo().subscribe((responce:any)=>{
       this.todos =Object.keys(responce) .map(key=>{
         responce[key]["id"] =key

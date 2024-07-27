@@ -25,6 +25,7 @@ export class ShopsComponent {
   shops :any[] =[]
   filter =''
   constructor (private productsService: ProductsService){ 
+    document.title ='Shops'
     productsService.getProducts().subscribe(data =>{ 
       const products :any[] =data.products
       products.map((product, i)=>{ 

@@ -31,6 +31,7 @@ export class ChatComponent {
 
   chats :Chat[] =[]
   constructor(private chatService:ChatService){
+    document.title ="Chat"
     chatService.getChat().subscribe((res:any) =>{
       this.chats =Object.keys(res) .map(key=>{
         res[key]["idFirebase"] =key

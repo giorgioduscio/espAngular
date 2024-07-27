@@ -21,6 +21,7 @@ export class DashboardComponent{
   users :any[] =[]
   userKeys :any[] =[]
   constructor(private usersService: UsersService){
+    document.title ='Dashboard'
     this.usersService.getUsers().subscribe(data=> {
       this.users =data
       // MEMORIZZA SOLO LE CHIAVI CHE NON SONO OGGETTI

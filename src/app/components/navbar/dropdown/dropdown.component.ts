@@ -15,11 +15,13 @@ import { NgFor, NgIf } from '@angular/common';
   styleUrl: './dropdown.component.css'
 })
 export class DropdownComponent {
-  routerClone =routes
+  // COPIA ROUTER
+  routerClone =routes.filter(page =>
+    (page.show) && (page.path !==document.title))
 
-  // QUANDO SI CLICCA SU ANCHOR, SUMMARY O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
-  // IL DROPDOWN SI CHIUDE DOPO ESSERE STATO APERTO
-  constructor(){
+    constructor(){
+      
+    // QUANDO SI CLICCA SU ANCHOR, SUMMARY O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
     document.addEventListener('click', (e:Event)=>{
       (e.target as HTMLInputElement).className!=="dropdown"
         ? document.querySelector("details.dropdown")?.removeAttribute("open")
