@@ -12,8 +12,21 @@ nav{
 
     background: var(--c3);
 }
-    nav>*{
+    nav>div{
         display: flex;
-        gap: 5px;
+        gap: 15px;
         align-content: center;
     }
+    .logo{
+        color: var(--c5);
+        font-weight: bold;
+    }
+
+nav.editMode{
+    background: var(--c1);
+    box-shadow: 0 0 20px black;
+}
+    .logo>span{
+        color: var(--c4);
+    }
+

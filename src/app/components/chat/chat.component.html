@@ -1,26 +1,11 @@
-<app-nav-chat></app-nav-chat>
+<app-nav-chat [active]="active" [idGroups]="idGroups"></app-nav-chat>
 <article>
-@if (username==='') {
-  <form #userform="ngForm" (ngSubmit)="insertUser(userform)" id="userform">
-    <div>
-      <p>Al momento non sappiamo chi tu sia. Per avere una maggiore usabilità, inserisci il tuo nome.</p>
-      <input 
-        type="text" 
-        name="username"
-        placeholder="Inserisci il tuo nome" 
-        ngModel
-      >
-      <button type="submit">
-        <mat-icon class="newGroup"
-          fontIcon="add"
-        ></mat-icon>
-      </button>
-    </div>
-  </form>
-}
-
-@else {
-  <form #groupForm="ngForm" (submit)="newGroup(groupForm)" class="inputBox">
+  <form 
+    #groupForm="ngForm" 
+    (submit)="newGroup(groupForm)" 
+    class="inputBox"
+    *ngIf="!active()"
+  >
     <div>
       <input 
         type="text" 
@@ -37,17 +22,18 @@
   </form>
     
   <header class="chats">
-
     <div class="flexbox">
       <div class="chat" *ngFor="let chat of chats; let i =index">
+      @if(active()){ 
+        <img src="{{chat.imageUrl}}" (click)="editFunction(chat.idFirebase!, $event, i)">
+        <b (click)="editFunction(chat.idFirebase!, $event, i)">{{chat.titleChat}}</b> 
+        
+      } @else{
         <img src="{{chat.imageUrl}}" alt="">
         <a routerLink="{{chat.idFirebase}}">{{chat.titleChat}}</a>
-        <mat-icon class="deleteGroup"
-          fontIcon="delete" 
-          (click)="deleteGroup(i)"
-        ></mat-icon>
+        <mat-icon class="editFunction" (click)="editFunction(chat.idFirebase!, $event, i)">settings</mat-icon>
+      }
       </div>
     </div>
   </header>
-}
 </article>

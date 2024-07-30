@@ -1,9 +1,24 @@
+@if(active()){
+<nav class="editMode">
+  <div>
+    <mat-icon (click)="resetEdit()">arrow_back</mat-icon>
+    <span>{{ idGroups().length }}</span>
+  </div>
+  <div>
+    <mat-icon>edit</mat-icon>
+    <mat-icon class="deleteGroup" (click)="deleteButton()">delete</mat-icon>
+  </div>
+</nav>
+
+}@else {
 <nav>
-  <a [routerLink]="['/Chat']" routerLinkActive="router-link-active" >
-    Fancoolown
+  <a [routerLink]="['/Chat']" class="logo" >
+    Fan<span>cool</span>own
   </a>
 
   <div>
     <app-dropdown></app-dropdown>
   </div>
 </nav>
+}
+

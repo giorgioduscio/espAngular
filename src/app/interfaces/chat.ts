@@ -5,6 +5,10 @@ export interface Chat {
     idFirebase? :string,
     imageUrl :string,
 }
+export interface chatEditMode{
+    active :boolean,
+    idGroups :string[],
+}
 
 export interface Message{
     IDmessage :number,

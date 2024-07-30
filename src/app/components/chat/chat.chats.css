@@ -1,0 +1,49 @@
+.chats{}
+.flexbox{
+    min-height: 100vh;
+}
+.chat{
+    padding: 10px;
+    min-width: 150px;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: stretch;
+    justify-content: space-between;
+
+    cursor: pointer;
+    border-bottom: 1px solid var(--c1);
+}
+.selected{ background: var(--c2); }
+.chat:last-child{border: 0;}
+    .chat img{
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+    }
+    .chat>*:nth-child(2){
+        padding: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--c5);
+    }
+    .editFunction{
+        margin: auto;
+    }
+    
+
+@media only screen and (min-width:500px) {
+.chat{
+    padding: 5px 10px;
+    border: 1px solid var(--c2) !important;
+    border-radius: 10px;
+}
+.flexbox{
+    min-height: auto;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap;
+    gap: 10px;
+}
+}
