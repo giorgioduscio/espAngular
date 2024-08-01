@@ -1,0 +1,64 @@
+    /* TODO NAVBAR */
+nav{
+    position: fixed;
+    top: 0;
+    
+    width: clamp(300px, 100%, 1000px);
+    height: 50px;
+    margin: auto;
+    padding: 0 10px;
+
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 10px;
+    background: var(--c2);
+}
+    .titleChat{
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space:initial;
+        text-align: center;
+    }
+    nav img{
+        object-fit: cover;
+        height: 40px;
+        width: 40px;
+        border-radius: 50px;
+    }
+
+    /* TODO INPUT */
+.inputBox{
+    width: 100%;
+    padding: 5px;
+
+    position: fixed;
+    bottom: 0;
+}
+    .inputBox>div{
+        max-width: 300px;
+        margin: auto;
+
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 5px;
+    }
+    .inputBox>div>*{
+        border-radius: 50px;
+        background: var(--c2);
+        color: var(--c5);
+    }
+    .inputBox input{
+        padding: 10px 20px;
+    }
+    .inputBox button:disabled{
+        background: var(--st);
+    }
+
+@media only screen and (min-width:500px) {
+nav, .inputBox{
+    position: static;
+}
+}

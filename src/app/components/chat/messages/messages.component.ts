@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
 import { Chat, Message } from '../../../interfaces/chat';
 import { NgFor } from '@angular/common';
@@ -15,25 +15,28 @@ import { NavChatComponent } from '../nav-chat/nav-chat.component';
     MatIconModule,
     FormsModule,
     NgFor,
+    RouterModule,
   ],
   templateUrl: './messages.component.html',
-  styleUrl: './messages.component.css'
+  styleUrls: ['./messages.component.css', './fixed.component.css']
 })
 
 export class MessagesComponent {
-  idFirebase! :string
+  idFirebase :string =''
   chat! :Chat
   messages! :Message[]
 
   constructor(private router:ActivatedRoute, private chatService:ChatService){
+    // PRENDE L'ID DALLA NAVBAR
     this.router.params.subscribe(params =>this.idFirebase =params['id'])
 
+    // PRENDE I DATI DAL SERVICE
     this.chatService.getMessages(this.idFirebase).subscribe((res:any)=>{
-      this.chat =res
-      this.messages =Object.keys(this.chat.content) 
-        .map((key:any) =>this.chat.content[key])
+      this.chat ={...res, idFirebase: this.idFirebase}
+      this.messages =Object.keys(this.chat.content) //fix
+        .map((key:string |any) =>this.chat.content[key])
 
-      console.log("messages", this.messages);
+      console.log("messages",this.idFirebase, this.chat, this.messages);
     })
   }
 

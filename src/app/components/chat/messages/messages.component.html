@@ -1,7 +1,13 @@
-<app-nav-chat></app-nav-chat>
+
 <article>
     <div>
-        <h3>{{chat.titleChat}}</h3>
+        <nav>
+            <a [routerLink]="['/Chat']" routerLinkActive="router-link-active" >
+                <mat-icon style="color: var(--c5);">arrow_back</mat-icon>
+            </a>
+            <img src="{{chat.imageUrl}}" alt="{{chat.titleChat}}">
+            <p class="titleChat">{{chat.titleChat}}</p> <!-- fix -->
+        </nav>
 
         <div class="flexbox">
             <div *ngFor="let message of messages; let i=index">
@@ -19,9 +25,7 @@
                     ngModel required
                 >
                 <button type="submit" [disabled]="formData.invalid">
-                    <mat-icon class="newGroup"
-                        fontIcon="add"
-                    ></mat-icon>
+                    <mat-icon class="newGroup">publish</mat-icon>
                 </button>
             </div>
         </form>

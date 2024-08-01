@@ -1,26 +1,10 @@
-article{
-    padding-bottom: 50px;
-}
+article{}
     article>div{
-        max-width: 1000px;
+        width: clamp(300px, 100%, 1000px);
         margin: auto;
-
-        box-shadow: 0 0 20px black;
     }
 
-h3{
-    padding: 10px 20px;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space:initial;
-    text-align: center;
-    background: var(--c2);
-}
-
-
 .flexbox{
-    width: clamp(300px, auto, 1000px);
     padding: 10px;
     margin: 0 auto;
 
@@ -41,30 +25,13 @@ h3{
     }
 
 
-.inputBox{
-    width: 100%;
-    padding: 5px;
-    position: fixed;
-    bottom: 0;
-    background: var(--c2);
-}
-    .inputBox>div{
-        max-width: 300px;
-        margin: auto;
-
-        display: flex;
-        gap: 5px;
-    }
-
-
 @media only screen and (min-width:500px) {
 article>div{
-    margin: 10px auto;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px black;
 }
-.inputBox{
-    padding: 10px;
-    position: static;
-}
+    .flexbox{
+        min-height: 60vh;
+    }
 }
