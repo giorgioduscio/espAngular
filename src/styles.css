@@ -9,17 +9,19 @@ html, body{
     margin: 0;
     min-height: 100vh;
     color: var(--c5);
-    background: var(--c1) !important;
+    background: var(--c1);
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
-app-root *{
-    padding: 0px;
-    margin: 0;
+#app *{
     transition: 0.3s;
     font-size: 20px;
     box-sizing: border-box;
 }
 article{ padding: 50px 0; }
+    article>div{
+        width: min(100%, 1000px);
+        margin: 0 auto;
+    }
 header{ background: var(--c3); }
 
 .line{
@@ -43,7 +45,6 @@ header{ background: var(--c3); }
 
 h1{
     font-size: 40px;
-
     text-align: center;
     background: linear-gradient(30deg, var(--c2), var(--c4));
     background-clip: text;
@@ -54,17 +55,21 @@ h3{font-size: 30px;}
 h4{font-size: 25px;}
 h5{font-size: 20px;}
 h6{font-size: 15px;}
+h1,h2,h3,h4,h5,h6,p{
+    margin: 0;
+}
 
-button, input{
+input, button{
     padding: 10px;
     outline: 0;
-    box-sizing: border-box;
 
     background: var(--c1);
     color: var(--c3);
-    border-radius: 5px;
-    border: 1px solid var(--st);
+    border-radius: 10px;
+    border: 0;
 } 
+    input::placeholder{ color: inherit; }
+
 button{
     display: flex;
     align-items: center;
@@ -78,21 +83,28 @@ button{
     button:disabled{
         background: var(--st);
     }
-    input::placeholder{ color: inherit; }
 
 
 a{
-    color: var(--c4);
+    color: inherit;
     text-decoration: none;
+    font-weight: bold;
 } 
     a:hover{
         color: var(--c3);
     }
 
-input[type="text"]{
+input[type="text"], input[type="number"]{
     width: min(100%, 300px);
 }
 
+.flexbox{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
 .slider{
     min-width: 300px;
     overflow-x: scroll;

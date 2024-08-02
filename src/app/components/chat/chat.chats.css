@@ -14,6 +14,9 @@
     cursor: pointer;
     border-bottom: 1px solid var(--c1);
 }
+.flexbox{
+    display: block;
+}
 .selected{ background: var(--c2); }
 .chat:last-child{border: 0;}
     .chat img{
