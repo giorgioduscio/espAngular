@@ -12,7 +12,7 @@ html, body{
     background: var(--c1);
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
-#app *{
+*{
     transition: 0.3s;
     font-size: 20px;
     box-sizing: border-box;
@@ -45,6 +45,9 @@ header{ background: var(--c3); }
 
 h1{
     font-size: 40px;
+    width: max-content;
+    margin: auto;
+
     text-align: center;
     background: linear-gradient(30deg, var(--c2), var(--c4));
     background-clip: text;
@@ -55,7 +58,7 @@ h3{font-size: 30px;}
 h4{font-size: 25px;}
 h5{font-size: 20px;}
 h6{font-size: 15px;}
-h1,h2,h3,h4,h5,h6,p{
+h2,h3,h4,h5,h6,p{
     margin: 0;
 }
 

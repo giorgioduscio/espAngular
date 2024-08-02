@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './nav-chat/nav-chat.component';
-import { completeId, completeImage } from './autocomp';
+import { randomId, randomImage } from './autocomp';
 
 @Component({
   selector: 'app-chat',
@@ -38,10 +38,10 @@ export class ChatComponent {
   // AGGIUNGE UN ELEMENTO CHAT
   newGroup(groupForm:any){  
     this.chatService.addChat({
-      idChat: completeId(),
+      idChat: randomId(),
       titleChat: groupForm.value.input,
       content: [],
-      imageUrl: completeImage(),
+      imageUrl: randomImage(),
     })
     .subscribe(res=>{ console.log(res);location.reload() })
   }

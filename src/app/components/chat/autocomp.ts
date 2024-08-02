@@ -1,8 +1,8 @@
-export function completeId(){ 
-  return Math.floor(Math.random() *1000) 
+export function randomId(){ 
+  return Math.floor(Math.random() *100000000000) 
 }
 
-export function completeImage(){
+export function randomImage(){
   let random =Math.floor(Math.random() *10) +1 // 1/10
   switch(random){
     case 9: return "https://img.freepik.com/foto-gratuito/balena-fantastica-nel-cielo_23-2151445943.jpg?t=st=1722064295~exp=1722067895~hmac=f5928bc9a0f9e1297129d228c99e921892020de8e6f33b2a38b8c2155234d0cf&w=740"
@@ -18,7 +18,7 @@ export function completeImage(){
   }
 }
 
-export function completeString() :string {
+export function randomString() :string {
   const 
     repeat =Math.floor(Math.random() *(8 -2) +2),
     consonants =['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'],

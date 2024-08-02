@@ -19,13 +19,14 @@ export class DropdownComponent {
   routerClone =routes.filter(page =>
     (page.show) && (page.path !==document.title))
 
-    constructor(){
-      
-    // QUANDO SI CLICCA SU ANCHOR, SUMMARY O NEL DOCUMENTO, IL DROPDOWN SI CHIUDE
+    
+  // QUANDO SI CLICCA SULLA PAGINA, IL DROPDOWN SI CHIUDE, ALTRIMENTI HA UN COMPORTAMENTO NORMALE
+  constructor(){
     document.addEventListener('click', (e:Event)=>{
-      (e.target as HTMLInputElement).className!=="dropdown"
-        ? document.querySelector("details.dropdown")?.removeAttribute("open")
-        : console.log("classe dropdown");
+      const element =(e.target as HTMLInputElement)
+      element.className==="dropdown"
+      ? console.log("classe dropdown", element.parentElement)
+      : document.querySelector("details.dropdown")?.removeAttribute("open")
     })
   }
 }

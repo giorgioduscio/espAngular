@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { filterUser } from '../../pipes/filter-user.pipe';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -10,7 +9,6 @@ import { User } from '../../interfaces/user';
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    filterUser,
     FormsModule,
     NgFor, NgIf,
     NavbarComponent,
@@ -19,7 +17,7 @@ import { User } from '../../interfaces/user';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent{
-  users :User[] |any[] =this.usersService.getUsers__()
+  users :User[] |any[] =this.usersService.getUsers()
   userKeys :string[] =Object.keys(this.users[0])
     .filter(key =>key!=='imageUrl'&&key!=="id")
 
