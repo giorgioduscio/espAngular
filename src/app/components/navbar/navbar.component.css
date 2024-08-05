@@ -24,4 +24,5 @@ nav{
             font-weight: bold;
             font-size: 30px;
             color: var(--c4);
+            cursor: pointer;
         }        

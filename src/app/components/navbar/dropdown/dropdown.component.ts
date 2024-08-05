@@ -25,7 +25,7 @@ export class DropdownComponent {
     document.addEventListener('click', (e:Event)=>{
       const element =(e.target as HTMLInputElement)
       element.className==="dropdown"
-      ? console.log("classe dropdown", element.parentElement)
+      ? ""//console.log("classe dropdown", element.parentElement)
       : document.querySelector("details.dropdown")?.removeAttribute("open")
     })
   }

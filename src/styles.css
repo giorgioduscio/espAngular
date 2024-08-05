@@ -25,6 +25,8 @@ article{ padding: 50px 0; }
 header{ background: var(--c3); }
 
 .line{
+    width: auto;
+    margin: 0;
     height: 50px;
     position: relative;
     overflow: hidden;
@@ -45,7 +47,7 @@ header{ background: var(--c3); }
 
 h1{
     font-size: 40px;
-    width: max-content;
+    width: min-content;
     margin: auto;
 
     text-align: center;
