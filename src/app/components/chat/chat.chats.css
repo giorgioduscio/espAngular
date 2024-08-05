@@ -31,7 +31,7 @@
         text-overflow: ellipsis;
         color: var(--c5);
     }
-    .editFunction{
+    .handleClick{
         margin: auto;
     }
     

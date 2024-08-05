@@ -6,7 +6,7 @@ export interface Chat {
     imageUrl :string,
 }
 export interface chatEditMode{
-    active :boolean,
+    editActivation :boolean,
     idGroups :string[],
 }
 

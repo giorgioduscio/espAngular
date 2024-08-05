@@ -23,12 +23,12 @@ import { ChatService } from '../../../services/chat.service';
 export class NavChatComponent {
   routerClone =routes
 
-  @Input() active!: WritableSignal<boolean>;
+  @Input() editActivation!: WritableSignal<boolean>;
   @Input() idGroups!: WritableSignal<string[]>;
   constructor(private chatService:ChatService){}
 
   resetEdit(){
-    this.active.set(false)
+    this.editActivation.set(false)
     this.idGroups.set([])
     document.querySelectorAll(".selected")
       .forEach(element =>element.classList.remove("selected"))
