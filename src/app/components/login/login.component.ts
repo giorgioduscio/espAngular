@@ -18,17 +18,22 @@ import { randomId } from '../chat/autocomp';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
+
 export class LoginComponent {
   users! :User[] |any
   keys! :string[]
   constructor(private usersServices:UsersService){
     document.title="Login"
-    this.users =usersServices.getUsers()
-    this.keys =Object.keys(this.users[0])
-    console.log('users', this.roles);
+    usersServices.getUsers().subscribe(responce=>{
+      this.users =responce
+      // this.keys =Object.keys(this.users[0])
+      console.log('users', this.users);
+    })
   }
 
   roles :string[] =Object.keys(SelectRole) .filter(key=>key.length>1)
+
+  // AGGIUNGE UN USER
   onSubmit(form:NgForm) {
     const 
       formValue :User =form.value,
@@ -39,8 +44,7 @@ export class LoginComponent {
         role: formValue.role,
         imageUrl: formValue.imageUrl
       }
-    this.usersServices.addUser(newUser)
+    this.usersServices.addUser(newUser).subscribe(responce=>console.log(responce))
     form.reset()
-    console.log(formValue, this.users);
   }
 }

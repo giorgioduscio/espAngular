@@ -16,14 +16,24 @@ import { User } from '../../interfaces/user';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
+
 export class DashboardComponent{
-  users :User[] |any[] =this.usersService.getUsers()
-  userKeys :string[] =Object.keys(this.users[0])
-    .filter(key =>key!=='imageUrl'&&key!=="id")
+  users! :User[] |any[]
+  userKeys! :string[]
 
   constructor(private usersService: UsersService){
     document.title ='Dashboard'
+
+    this.usersService.getUsers().subscribe((responce:any)=>{
+        this.users =Object.keys(responce) .map(key=>{
+          responce[key]["firebaseId"]=key
+          return responce[key]
+        })
+        
+        this.userKeys =Object.keys(this.users[0])
+          .filter(key =>key!=='imageUrl'&&key!=="id")
+        console.log("users", this.users, );
+      })
     
-    console.log("users", this.users, this.userKeys);
   }
 }
