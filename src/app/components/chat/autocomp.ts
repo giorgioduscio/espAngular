@@ -1,10 +1,11 @@
-export function randomId(){ 
-  return Math.floor(Math.random() *100000000000) 
-}
+export function randomId(){ return Math.floor(Math.random() *100000000000) }
 
 export function randomImage(){
-  let random =Math.floor(Math.random() *10) +1 // 1/10
-  switch(random){
+  switch(Math.floor(Math.random() *(13 -0) +0)){ // 0/13
+    case 13: return "https://img.freepik.com/foto-premium/rete-di-ragni-striscianti-design-piatto-illustrazione-arte-kawaii_1297700-313.jpg?w=826" 
+    case 12: return "https://img.freepik.com/foto-gratuito/boatman-punting-la-barca-al-fiume-arashiyama-nella-stagione-autunnale-lungo-il-fiume-a-kyoto-in-giappone_335224-56.jpg?t=st=1722935204~exp=1722938804~hmac=7fa18afcbbb5fdcf1849cb6f7d80156e9050c9eaf6e6c927b4c219cb1c56498c&w=1380" 
+    case 11: return "https://img.freepik.com/vettori-gratuito/sfondo-del-campo-di-fiori-sfumati_52683-121834.jpg?t=st=1722935157~exp=1722938757~hmac=6fc545b543197b8941129623fa1c086526883372ad257e5e098e50a5c41ddd37&w=1380" 
+    case 10: return "https://img.freepik.com/foto-premium/bel-posto-per-sedersi-con-una-bella-vista-sul-tramonto-169_1309778-11892.jpg?w=826" 
     case 9: return "https://img.freepik.com/foto-gratuito/balena-fantastica-nel-cielo_23-2151445943.jpg?t=st=1722064295~exp=1722067895~hmac=f5928bc9a0f9e1297129d228c99e921892020de8e6f33b2a38b8c2155234d0cf&w=740"
     case 8: return "https://img.freepik.com/foto-gratuito/bellissimo-pesce-pagliaccio-sottomarino_23-2150737801.jpg?ga=GA1.1.333837650.1710254848&semt=ais_user"
     case 7: return "https://img.freepik.com/foto-gratuito/rendering-3d-del-coniglietto-di-pasqua-vestito_23-2151258315.jpg?t=st=1722064438~exp=1722068038~hmac=32963cc5ad56e6a6e8fe7ecb28ba1ec8a0c78b4da1f57a158be29b2a1522ca1f&w=1380"
@@ -28,13 +29,11 @@ export function randomString() :string {
 
   for (let index = 0; index < repeat; index++) {
     // array da esaminare
-    const letters =result.length%2==0 ||result.length==5
-      ? consonants :vowels 
+    const letters =(result.length%2==0 ||result.length==5) ?consonants :vowels 
     // indice casuale
     const randomIndex =Math.floor(Math.random() *(letters.length -0) +0)
     // scrivere lettera
     result.push(letters[randomIndex])
   }
-
   return result.join('') 
 }
