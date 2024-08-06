@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { SelectRole, User } from '../../interfaces/user';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { randomId } from '../chat/autocomp';
+import { randomId, randomImage } from '../chat/autocomp';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { randomId } from '../chat/autocomp';
   imports: [
     NavbarComponent,
     NgFor,
+    NgIf,
     ReactiveFormsModule,
     FormsModule,
   ],
@@ -20,31 +22,46 @@ import { randomId } from '../chat/autocomp';
 })
 
 export class LoginComponent {
-  users! :User[] |any
+  users! :User[]
   keys! :string[]
-  constructor(private usersServices:UsersService){
+  roles :string[] =Object.keys(SelectRole) .filter(key=>key.length>1)
+  loginMode =signal(true)
+
+  // todo MOSTRA GLI USERS
+  constructor(private usersServices:UsersService, private authService:AuthService){
     document.title="Login"
-    usersServices.getUsers().subscribe(responce=>{
-      this.users =responce
-      // this.keys =Object.keys(this.users[0])
-      console.log('users', this.users);
+    usersServices.getUsers().subscribe((responce:any)=>{
+      this.users =Object.keys(responce) .map(key=>{
+        return responce[key]
+      })
+      // console.log('users', this.users);
     })
   }
 
-  roles :string[] =Object.keys(SelectRole) .filter(key=>key.length>1)
-
-  // AGGIUNGE UN USER
+  //todo FORM
   onSubmit(form:NgForm) {
     const 
-      formValue :User =form.value,
+      input :User =form.value,
       newUser :User ={
         id: randomId(),
-        username: formValue.username,
-        email: formValue.email,
-        role: formValue.role,
-        imageUrl: formValue.imageUrl
+        username: input.username,
+        email: input.email,
+        role: input.role,
+        imageUrl: randomImage()
       }
-    this.usersServices.addUser(newUser).subscribe(responce=>console.log(responce))
+    // AGGIUNGE UN USER
+    if (this.loginMode()) {
+      this.usersServices.addUser(newUser)
+      .subscribe(responce=> console.log("Iscrizione", responce))
+    } 
+    // CONTROLLO AUTENTICITA
+    else {
+      const result :User =this.users.filter(user =>user.email===newUser.email && user.username===newUser.username)[0]
+      this.authService.verifyLocalUser(result)
+      console.log("Accesso",
+        `autenticato: ${this.authService.isLoggedIn()}, admin: ${this.authService.isAdmin()}`
+      );
+    }
     form.reset()
   }
 }

@@ -2,9 +2,9 @@ details[open]{ background: var(--c2); }
 
 /* DROPDOWN */
 summary{
+    display: flex;
     cursor: pointer;
     color: var(--c5);
-    display: flex;
 }
     summary>*{
         object-fit: cover;
@@ -13,6 +13,7 @@ summary{
         border-radius: 50px;
     }
     summary .mat-icon{ font-size: 40px; }
+
 
 /* CONTENT */
 .dropContent{
@@ -26,14 +27,8 @@ summary{
     background: linear-gradient(3deg, var(--st), var(--c2));
 }
     a, button{
-        padding:10px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
         background: transparent;
-        border: 0;
+        border-radius: 0;
         color: var(--c5);
     }
     button:hover, a:hover{

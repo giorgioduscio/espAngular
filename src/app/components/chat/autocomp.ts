@@ -1,7 +1,9 @@
 export function randomId(){ return Math.floor(Math.random() *100000000000) }
 
 export function randomImage(){
-  switch(Math.floor(Math.random() *(13 -0) +0)){ // 0/13
+  switch(Math.floor(Math.random() *(15 -0) +0)){ // 0/15
+    case 15: return "https://img.freepik.com/vettori-gratuito/silhouette-di-serpente-disegnato-a-mano-con-sfondo-di-fiori_23-2148121387.jpg?t=st=1722935629~exp=1722939229~hmac=8dd09f9e42a856a6ca3db23bb2d4139fa37f551990b315be594062e66ff5c9d9&w=826" 
+    case 14: return "https://img.freepik.com/vettori-gratuito/illustrazione-del-teschio-di-dinosauro-con-bolla-di-testo-tyrannosaur-rex-stampa-t-shirt_1284-38745.jpg?t=st=1722935567~exp=1722939167~hmac=bdda1df1fb5686d4fcf349f62d8c6311460909711114fcac3f2c39527b3ae0d2&w=826" 
     case 13: return "https://img.freepik.com/foto-premium/rete-di-ragni-striscianti-design-piatto-illustrazione-arte-kawaii_1297700-313.jpg?w=826" 
     case 12: return "https://img.freepik.com/foto-gratuito/boatman-punting-la-barca-al-fiume-arashiyama-nella-stagione-autunnale-lungo-il-fiume-a-kyoto-in-giappone_335224-56.jpg?t=st=1722935204~exp=1722938804~hmac=7fa18afcbbb5fdcf1849cb6f7d80156e9050c9eaf6e6c927b4c219cb1c56498c&w=1380" 
     case 11: return "https://img.freepik.com/vettori-gratuito/sfondo-del-campo-di-fiori-sfumati_52683-121834.jpg?t=st=1722935157~exp=1722938757~hmac=6fc545b543197b8941129623fa1c086526883372ad257e5e098e50a5c41ddd37&w=1380" 

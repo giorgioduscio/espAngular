@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { routes } from '../../../app.routes';
 import { RouterLink } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
+import { closeDropdown } from '../closeDropdown';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dropdown',
@@ -10,6 +12,7 @@ import { NgFor, NgIf } from '@angular/common';
     NgFor,
     NgIf,
     RouterLink,
+    MatIcon,
   ],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.css'
@@ -17,16 +20,10 @@ import { NgFor, NgIf } from '@angular/common';
 export class DropdownComponent {
   // COPIA ROUTER
   routerClone =routes.filter(page =>
-    (page.show) && (page.path !==document.title))
-
+    (page.show) && (page.path !==document.title)
+  )
     
-  // QUANDO SI CLICCA SULLA PAGINA, IL DROPDOWN SI CHIUDE, ALTRIMENTI HA UN COMPORTAMENTO NORMALE
   constructor(){
-    document.addEventListener('click', (e:Event)=>{
-      const element =(e.target as HTMLInputElement)
-      element.className==="dropdown"
-      ? ""//console.log("classe dropdown", element.parentElement)
-      : document.querySelector("details.dropdown")?.removeAttribute("open")
-    })
+    closeDropdown("dropdown")
   }
 }

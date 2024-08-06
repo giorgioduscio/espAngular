@@ -1,0 +1,11 @@
+<details class="profileDropdown">
+  <summary class="profileDropdown">
+    @if (localeUser()===undefined){ <mat-icon class="mat-icon">person</mat-icon> }
+    @else{ <img src="{{localeUser()?.imageUrl}}" alt="{{localeUser()?.username}}"> }
+  </summary> 
+
+  <div class="dropContent">
+    @if (localeUser()===undefined){ <button routerLink="/Login">Login</button> }
+    @else{ <button (click)="onClick()">Esci</button> }    
+  </div>
+</details>
