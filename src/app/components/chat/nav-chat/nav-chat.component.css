@@ -23,10 +23,21 @@ nav{
     }
 
 nav.editMode{
-    background: var(--c1);
-    box-shadow: 0 0 20px black;
+    background: var(--c2);
 }
     .logo>span{
         color: var(--c4);
     }
+    .editMode mat-icon:hover{ 
+        cursor: pointer; 
+        background: var(--c3);
+        border-radius: 50px;
+    }
 
+@media only screen and (min-width:500px) {
+nav{
+    width: 100%;
+    position: relative;
+    justify-content: flex-start;
+}
+}

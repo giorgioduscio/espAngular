@@ -1,33 +1,40 @@
-
 <article>
-    <div>
-        <nav>
-            <a [routerLink]="['/Chat']" routerLinkActive="router-link-active" >
-                <mat-icon style="color: var(--c5);">arrow_back</mat-icon>
-            </a>
-            <img src="{{chat.imageUrl}}" alt="{{chat.titleChat}}">
-            <p class="titleChat">{{chat.titleChat}}</p> <!-- fix -->
-        </nav>
+  <div>
+    <nav>
+      <a [routerLink]="['/Chat']" routerLinkActive="router-link-active" >
+        <mat-icon style="color: var(--c5);">arrow_back</mat-icon>
+      </a>
+      <img src="{{chat.imageUrl}}" alt="{{chat.titleChat}}">
+      <p class="titleChat">{{chat.titleChat}}</p> <!-- fix -->
+    </nav>
 
-        <div class="flexbox">
-            <div *ngFor="let message of messages; let i=index">
-                <!-- <h6>{{message.username}}</h6> -->
-                <p>{{message.message}}</p>
-            </div>
-        </div>
+    @if(messagesLength){
+    <div class="flexbox"> 
+      <div *ngFor="let message of messages; let i=index">
+        <!-- <h6>{{message.username}}</h6> -->
+        <p>{{message.message}}</p>
+      </div>
 
-        <form #formData="ngForm" (submit)="writeMessage(formData)" class="inputBox">
-            <div>
-                <input 
-                    type="text" 
-                    name="message"
-                    placeholder="Messaggio" 
-                    ngModel required
-                >
-                <button type="submit" [disabled]="formData.invalid">
-                    <mat-icon class="newGroup">publish</mat-icon>
-                </button>
-            </div>
-        </form>
-    </div>
+    </div>}
+
+    @else{ 
+      <div class="noMessages">
+        <h3>Nessun Messaggio</h3>
+      </div>   
+    }
+
+    <form #formData="ngForm" (submit)="writeMessage(formData)" class="inputBox">
+      <div>
+        <input 
+          type="text" 
+          name="message"
+          placeholder="Messaggio" 
+          ngModel required
+        >
+        <button type="submit" [disabled]="formData.invalid">
+          <mat-icon class="newGroup">publish</mat-icon>
+        </button>
+      </div>
+    </form>
+  </div>
 </article>

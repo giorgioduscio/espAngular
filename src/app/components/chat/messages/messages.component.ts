@@ -25,6 +25,7 @@ export class MessagesComponent {
   idFirebase :string =''
   chat! :Chat
   messages! :Message[]
+  messagesLength! :boolean
 
   constructor(private router:ActivatedRoute, private chatService:ChatService){
     // PRENDE L'ID DALLA NAVBAR
@@ -35,7 +36,7 @@ export class MessagesComponent {
       this.chat ={...res, idFirebase: this.idFirebase}
       this.messages =Object.keys(this.chat.content) //fix
         .map((key:string |any) =>this.chat.content[key])
-
+      this.messagesLength =this.messages.length===0 ?false :true
       console.log("messages",this.idFirebase, this.chat, this.messages);
     })
   }

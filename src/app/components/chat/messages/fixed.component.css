@@ -1,19 +1,19 @@
     /* TODO NAVBAR */
 nav{
-    position: fixed;
-    top: 0;
-    
     width: clamp(300px, 100%, 1000px);
     height: 50px;
     margin: auto;
     padding: 0 10px;
+    top: 0;
 
+    position: fixed;
     display: grid;
     grid-template-columns: auto auto 1fr;
     align-items: center;
     justify-items: start;
     gap: 10px;
-    background: var(--c2);
+
+    background: var(--c3);
 }
     .titleChat{
         max-width: 150px;
@@ -47,7 +47,7 @@ nav{
     }
     .inputBox>div>*{
         border-radius: 50px;
-        background: var(--c2);
+        background: var(--c3);
         color: var(--c5);
     }
     .inputBox input{

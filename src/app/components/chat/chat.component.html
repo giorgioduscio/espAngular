@@ -1,6 +1,6 @@
-<app-nav-chat [editActivation]="editActivation" [idGroups]="idGroups"></app-nav-chat>
 <article>
   <div>
+    <app-nav-chat [editActivation]="editActivation" [idGroups]="idGroups"></app-nav-chat>
     <form 
       #groupForm="ngForm" 
       (submit)="newGroup(groupForm)" 
@@ -22,7 +22,7 @@
       </div>
     </form>
       
-    <header class="chats">
+    <div class="chats">
       <div class="flexbox">
         <div class="chat" *ngFor="let chat of chats; let i =index">
         @if(editActivation()){ 
@@ -36,6 +36,6 @@
         }
         </div>
       </div>
-    </header>
+    </div>
   </div>
 </article>

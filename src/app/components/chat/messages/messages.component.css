@@ -1,8 +1,7 @@
-article{}
-    article>div{
-        width: clamp(300px, 100%, 1000px);
-        margin: auto;
-    }
+article>div{
+    width: clamp(300px, 100%, 1000px);
+    margin: auto;
+}
 
 .flexbox{
     padding: 10px;
@@ -24,6 +23,20 @@ article{}
         max-width: 200px;
     }
 
+.noMessages{
+    padding: 10px;
+
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+    .noMessages>*{
+        padding: 10px;
+        border-radius: 10px;
+        color: var(--c3);
+        border: 1px solid;
+    }
+
 
 @media only screen and (min-width:500px) {
 article>div{
@@ -31,7 +44,7 @@ article>div{
     border-radius: 10px;
     box-shadow: 0 0 20px black;
 }
-    .flexbox{
+    .flexbox, .noMessages{
         min-height: 60vh;
         justify-content: flex-start;
     }
