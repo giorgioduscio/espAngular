@@ -1,0 +1,21 @@
+main{
+    padding: 10px;
+
+    background: var(--st);
+    border: 1px solid;
+    border-radius: 5px;
+}
+.childs{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+input{
+    margin-bottom: 5px;
+    padding: 5px;
+    
+    color: var(--c5);
+    border: 1px solid;
+    background: transparent;
+}
