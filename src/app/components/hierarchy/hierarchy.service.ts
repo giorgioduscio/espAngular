@@ -21,5 +21,7 @@ export class HierarchyService {
       domesticable: false
     },
   ]
+
+  
 }
 export interface Animals{ name:string, height:number, domesticable:boolean }

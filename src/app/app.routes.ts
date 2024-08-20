@@ -13,7 +13,7 @@ import { HierarchyComponent } from './components/hierarchy/hierarchy.component';
 
 export const routes :Routes |any[] =[
     { show:false, path: 'Home', component: HomeComponent },
-    { show:true, path: 'Signal', component: HierarchyComponent },
+    { show:true, path: 'Hierarchy', component: HierarchyComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent },
     { show:true, path: 'List', component: ListComponent },
     { show:true, path: 'Login', component: LoginComponent },
@@ -22,7 +22,7 @@ export const routes :Routes |any[] =[
         { show:false, path: 'Chat/:id', component: MessagesComponent },
     // SHOPS
     { show:true, path: 'Cart', component: CartComponent },
-    { show:true, path: 'Shops', component: ShopsComponent, canActivate:[authGuard], canActivateChild:[authGuard],},
+    { show:true, path: 'Shops', component: ShopsComponent},
         { show:false, path: 'Shops/:id', component: ProductsComponent },
         
     { show:false, path: '', redirectTo: 'Home', pathMatch: 'full' }

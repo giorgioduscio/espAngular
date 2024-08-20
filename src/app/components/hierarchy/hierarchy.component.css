@@ -10,10 +10,14 @@ main{
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
+li>*{
+    display: grid;
+    grid-template-columns: auto auto auto ;
+    gap: 5px;
+}
 
 input{
     margin-bottom: 5px;
-    padding: 5px;
     
     color: var(--c5);
     border: 1px solid;
