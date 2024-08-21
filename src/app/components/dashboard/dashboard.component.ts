@@ -32,7 +32,7 @@ export class DashboardComponent{
         
         this.userKeys =Object.keys(this.users[0])
           .filter(key =>key!=='imageUrl'&&key!=="id")
-        console.log("users", this.users, );
+        // console.log("users", this.users, );
       })
     
   }

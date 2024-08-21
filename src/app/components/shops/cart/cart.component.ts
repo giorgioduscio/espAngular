@@ -20,7 +20,7 @@ export class CartComponent {
   cart :Product[] =[]
   constructor(private cartService:CartService){
     this.cart =cartService.getCart()
-    console.log('cart', this.cart);
+    // console.log('cart', this.cart);
   }
 
   deleteFunction(index:number){

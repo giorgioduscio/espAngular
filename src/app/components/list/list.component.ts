@@ -31,7 +31,7 @@ export class ListComponent{
         responce[key]["id"] =key
         return responce[key]
       }) 
-      console.log("VISUALIZZA", this.todos);
+      // console.log("VISUALIZZA", this.todos);
     })
   }
 
@@ -44,10 +44,9 @@ export class ListComponent{
       title: newTitle,
     })
     .subscribe(responce=>{ 
-      console.log("AGGIUNGE", responce) 
+      // console.log("AGGIUNGE", responce) 
       location.reload()
     })
-    
   }
 
   //FIX ELIMINA
@@ -55,7 +54,7 @@ export class ListComponent{
     const id =this.todos[index].id
     this.list.deleteTodo(id!)
     .subscribe(responce =>{
-      console.log("ELIMINA", responce)
+      // console.log("ELIMINA", responce)
       location.reload()
     })
   }
@@ -70,7 +69,7 @@ export class ListComponent{
       title: todo.title,
       [id]: newField,
     }).subscribe(responce =>{
-      console.log("PUT", `[${id}]: ${newField}`)
+      // console.log("PUT", `[${id}]: ${newField}`)
       location.reload()
     })
   }

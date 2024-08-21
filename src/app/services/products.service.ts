@@ -17,10 +17,7 @@ export class ProductsService {
     })
     // TODO AGIORNAMENTO
     effect(()=>{
-      console.log(
-        "ProductsService", 
-        this.realtimeProducts()
-      )
+      // console.log("ProductsService", this.realtimeProducts())
     })
   }
 

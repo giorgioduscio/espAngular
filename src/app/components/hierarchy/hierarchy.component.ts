@@ -52,7 +52,7 @@ export class HierarchyComponent{
     document.title=`Hierarchy`
     effect(()=>{
       this.mainVar =productsService.realtimeProducts()
-      console.log(document.title, this.mainVar);
+      // console.log(document.title, this.mainVar);
     })
     this.form =new FormGroup({
       title: new FormControl,
@@ -65,6 +65,6 @@ export class HierarchyComponent{
     product.price =form.value.price
     
     this.productsService.realtimeProducts.set(this.mainVar)
-    console.log(this.mainVar);
+    // console.log(this.mainVar);
   }
 }

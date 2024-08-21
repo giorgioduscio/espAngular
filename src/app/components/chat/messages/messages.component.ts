@@ -37,7 +37,7 @@ export class MessagesComponent {
       this.messages =Object.keys(this.chat.content) //fix
         .map((key:string |any) =>this.chat.content[key])
       this.messagesLength =this.messages.length===0 ?false :true
-      console.log("messages",this.idFirebase, this.chat, this.messages);
+      // console.log("messages",this.idFirebase, this.chat, this.messages);
     })
   }
 

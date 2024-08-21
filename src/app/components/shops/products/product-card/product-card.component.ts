@@ -30,6 +30,6 @@ export class ProductCardComponent {
     this.cartService.addElement(newProduct)
 
     this.amount.set(0)
-    console.log(this.cartService.getCart());
+    // console.log(this.cartService.getCart());
   }
 }

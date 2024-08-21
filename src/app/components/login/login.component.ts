@@ -58,9 +58,9 @@ export class LoginComponent {
     else {
       const result :User =this.users.filter(user =>user.email===newUser.email && user.username===newUser.username)[0]
       this.authService.verifyLocalUser(result)
-      console.log("Accesso",
-        `autenticato: ${this.authService.isLoggedIn()}, admin: ${this.authService.isAdmin()}`
-      );
+      // console.log("Accesso",
+      //   `autenticato: ${this.authService.isLoggedIn()}, admin: ${this.authService.isAdmin()}`
+      // );
     }
     form.reset()
   }

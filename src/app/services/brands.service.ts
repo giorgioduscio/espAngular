@@ -10,7 +10,7 @@ export class BrandsService {
   url ="/src/assets/brands.json"
   constructor(private http: HttpClient) {
     this.getJSON().subscribe(data => {
-        console.log(data);
+        // console.log(data);
     });
   }
   public getJSON(): Observable<any> {
