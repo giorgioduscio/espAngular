@@ -6,13 +6,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { HomeService } from '../../services/home.service';
+import { HomeService } from './home.service';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
+    RouterModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
@@ -38,9 +40,9 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
   setIsVisible(){ this.isVisible= !this.isVisible }
 
   // TWO WAY BUINDING
-  text='Invio';
+  text='Clear';
   onClick(){
-    this.text='Click';
+    this.text='Clear';
   }
   @Output() sendData =new EventEmitter<string>()
   handleChange(){
@@ -56,11 +58,11 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
   }
   cards =this.homeService.homeCards
   
+  
+  
   ngOnInit(): void {
-
+    //console.log('ngOninit')
   }
-
-
   ngAfterContentChecked(): void {
     //console.log('ngAfterContentChecked')
   }

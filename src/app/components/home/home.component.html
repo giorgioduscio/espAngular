@@ -1,78 +1,58 @@
 <app-navbar></app-navbar>
-
 <article>
-<header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" alt="">
-    <h1>Angular Materials</h1>
-    <p>Material Design components for Angular</p>
-
-
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" alt="angular logo">
+    <h1>Laboratorio Angular</h1>
+    <p>Benvenuto nel laboratorio del procione! Qui troverai numerose applicazioni in fase di sviluppo create per scopo didattiche</p>
     <a href="https://material.angular.io/components/categories"> 
-        <button>Angular site</button> 
+      <button>Angular site</button> 
     </a>
-</header>
+  </header>
 
-<div class="line"></div>
+  <div class="line"></div>
 
-<section>
-    <div>
-        <h1>{{ "variable" | uppercase }}</h1> 
-        <p>Internationalized and accessible components for everyone. Well tested to ensure performance and reliability.</p> 
-        <p>APIs with consistent cross platform behaviour.</p> 
-    </div>
-
-    <div>
+  <section>
+    <h3>Ecco alcuni esperimenti che potrai trovare...</h3>
+    <main class="box">
+      <div *ngFor="
+          let card of cards; 
+          index as index; count as count; 
+          first as first; last as last
+          even as even; odd as odd
+        ">
+        <img [src]="card.imgUrl" [alt]="card.title">
+        <a routerLink="/{{card.title}}">Visita</a>
         <ng-template *ngIf="isVisible; then show else error"></ng-template>
         <ng-template #show> 
-        <div>
-            <h1>Versatile</h1> 
-            <p>Provide tools that help developers build their own custom components with common interaction patterns</p> 
-            <p>Customizable within the bounds of the Material Design specification</p> 
-        </div>
+          <div class="text">
+            <h2>{{ card.title| uppercase }}</h2> 
+            <p>{{card.description}} </p> 
+            <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
+          </div>
         </ng-template>
         <ng-template #error> 
-        <div>
-            <p>Errore ⚠️</p>
-        </div>
+          <div class="text">
+            <p>Ops! Hai nascosto tutto...</p>
+          </div>
         </ng-template>
-        <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
-    </div>
+      </div>
 
-    <div>
-        <h3>Two way binding</h3>
-        <mat-form-field class="example-form-field">
-            <mat-label>Clearable input</mat-label>
-            <input matInput type="text" [(ngModel)]="text" (change)="handleChange()"/>
-        </mat-form-field>
-        
-        <div>
-            <button (click)="onClick()">{{ text }}</button> 
+      <div>
+        <div class="text">
+          <h2>Scrivi qualcosa</h2>
+          <p>(Two way binding)</p>
+          
+          <input type="text" [(ngModel)]="text" (change)="handleChange()"/>
+          <button (click)="onClick()">{{ text==='' ?'Vuoto' :text }}</button> 
+          <div [ngSwitch]="text">
+            <p *ngSwitchCase="'alpha'">{{text}} è stato previsto</p>
+            <p *ngSwitchCase="'beta'">{{text}} è stato previsto</p>
+            <p *ngSwitchCase="'gamma'">{{text}} è stato previsto</p>
+            <p *ngSwitchDefault>ngSwitch (prova a scrivere: alpha, beta o gamma)</p>
+          </div>
         </div>
-        <div [ngSwitch]="text">
-            <p *ngSwitchCase="'mario'">{{text}} stato previsto</p>
-            <p *ngSwitchCase="'carlo'">{{text}} stato previsto</p>
-            <p *ngSwitchCase="'alfedo'">{{text}} stato previsto</p>
-            <p *ngSwitchDefault>❌</p>
-        </div>
-    </div>
-    
-    <div class="card" *ngFor="
-        let card of cards; 
-        index as index; count as count; 
-        first as first; last as last
-        even as even; odd as odd
-    ">
-        <h3>{{index}}. {{ card.title }}</h3> 
-        <p [ngStyle]="{'color': card.isVisible? 'green' :'red'}">
-            {{ card.isVisible? 'Online ✔️' :'Offline ❌' }}
-        </p>
-        <p>
-            {{ even? "Pari" :"Dispari" }} /
-            {{ odd? "Dispari" :"Pari" }}
-            {{ first? "Primo dell'array" :"" }}
-            {{ last? "Ultimo dell'array" :"" }}
-            {{ card.description }}
-        </p> 
-    </div>
-</section>    
+      </div>
+
+    </main>
+  </section>    
 </article>

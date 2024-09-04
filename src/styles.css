@@ -5,7 +5,6 @@ html, body{
     --c4:#c00;
     --c5:#fff;
     --st:#00000050;
-
     margin: 0;
     min-height: 100vh;
     color: var(--c5);
@@ -13,9 +12,14 @@ html, body{
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 *{
-    transition: 0.3s;
-    font-size: 20px;
     box-sizing: border-box;
+    gap: 5px;
+    margin: 0;
+    font-size: 15px;
+    transition: 0.3s;
+}
+#app *{
+    margin: 0;
 }
 article{ padding: 50px 0; }
     article>div{
@@ -42,14 +46,9 @@ header{ background: var(--c3); }
         background: var(--c3);
         box-shadow: 0px 0px 20px 5px #00000080;
     }
-
-
-
 h1{
+    margin: 0;
     font-size: 40px;
-    width: min-content;
-    margin: auto;
-
     text-align: center;
     background: linear-gradient(30deg, var(--c2), var(--c4));
     background-clip: text;
@@ -58,32 +57,48 @@ h1{
 h2{font-size: 35px;}
 h3{font-size: 30px;}
 h4{font-size: 25px;}
-h5{font-size: 20px;}
+h5{font-size: 20px; margin: 0;}
 h6{font-size: 15px;}
-h2,h3,h4,h5,h6,p{
-    margin: 0;
-}
+i{ font-size: 13px;}
 
-input, button{
-    padding: 10px;
+input[type="text"], 
+input[type="number"], 
+input[type="email"], 
+input[type="password"], 
+textarea, 
+select{
+    width: min(100%, 300px);
+    padding: 5px 10px;
     outline: 0;
 
-    background: var(--c1);
-    color: var(--c3);
-    border-radius: 10px;
-    border: 0;
+    background: var(--c5);
+    color: var(--c1);
+    font-weight: bolder;
+    border-radius: 5px;
+    border: 1px solid;
+    resize: none;
+    font-family: inherit;
 } 
-    input::placeholder{ color: inherit; }
+textarea::placeholder,input::placeholder{ 
+    font-style: italic;
+    color: var(--st); 
+}
+label{ font-style: italic; }
+
 
 button{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     align-content: center;
-    gap: 5px;
+
+    background: var(--c5);
+    border: 0;
+    border-radius: 5px;
 }
-    button:hover, input:hover{
+    button:hover{
         background: var(--c2);
+        color: var(--c5);
     }
     button:disabled{
         background: var(--st);
@@ -99,17 +114,31 @@ a{
         color: var(--c3);
     }
 
-input[type="text"], input[type="number"]{
-    width: min(100%, 300px);
-}
 
 .flexbox{
     display: flex;
     flex-flow: wrap;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 }
+.round{
+    padding: 0 10px 0 0;
+    border-radius: 50px;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+
+    background: var(--c5);
+    color: var(--c1);
+    border-radius: 50px;
+}
+    .round .icon{
+        padding: 3px;
+        display: inline-table;
+        background: var(--st);
+        border-radius: 50px;
+    }
 .slider{
     min-width: 300px;
     overflow-x: scroll;
@@ -117,10 +146,10 @@ input[type="text"], input[type="number"]{
     gap: 10px;
     scroll-snap-type: x mandatory;
 }
-.slider>*{
-    width: 250px;
+    .slider>*{
+        width: 250px;
 
-    flex-shrink: 0;
-    position: relative;
-    scroll-snap-align: center;
-}
+        flex-shrink: 0;
+        position: relative;
+        scroll-snap-align: center;
+    }
