@@ -16,8 +16,6 @@ summary{
 
 /* CONTENT */
 .dropContent{
-    width: 100%;
-    left: 0;
     position: absolute; 
 
     display: flex;
@@ -40,9 +38,9 @@ summary{
         background: var(--st);
     }
 
-@media only screen and (min-width: 400px){
+@media only screen and (max-width: 400px){
 .dropContent{
-    width: min-content;
-    left: auto;
+    width: 100%;
+    left: 0;
 }
 }

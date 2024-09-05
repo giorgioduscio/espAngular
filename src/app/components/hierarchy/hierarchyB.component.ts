@@ -4,51 +4,27 @@ import { HierarchyService } from './hierarchy.service';
 import { List } from '../../interfaces/list';
 import { randomString } from '../chat/autocomp';
 import { NgFor } from '@angular/common';
-import { HierarchyAComponent } from "./hierarchyA.component";
-import { HierarchyBComponent } from "./hierarchyB.component";
-import { MatIcon } from '@angular/material/icon';
+import { HierarchyBBComponent } from "./hierarchyBB.component";
 
 @Component({
-  selector: 'app-hierarchy',
+  selector: 'app-hierarchyB',
   standalone: true,
-  imports: [MatIcon, NgFor, NavbarComponent, HierarchyAComponent, HierarchyBComponent],
+  imports: [NgFor, NavbarComponent, HierarchyBBComponent],
   // FIX HTML
   template: `
-  <app-navbar></app-navbar>
-  <article><div>
-
     <main class="hierarchy">
-      <h2>Main</h2>
-      <button (click)="onAdd()" class="round"><span class="icon">+</span> add</button>
-
-      <div class="box">@for (item of localList; track item; let i=$index){
-        <button (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
-        <input 
-          type="checkbox" 
-          name="complete"
-          [checked]="item.complete" 
-          (change)="onPatch(item,$event)"
-        >
-        <input 
-          type="text" 
-          name="title"
-          [value]="item.title"
-          (change)="onPatch(item,$event)"
-        >
-      }</div>
+      <h2>B</h2>
 
       <div class="childs">
-        <app-hierarchyA></app-hierarchyA>
-        <app-hierarchyB></app-hierarchyB>
+        <app-hierarchyBB></app-hierarchyBB>
+        <main></main>
       </div>
     </main>
-
-  </div></article>
   `,
   styleUrl: './hierarchy.component.css',
 })
 // OPTIMIZE TYPESCRIPT
-export class HierarchyComponent{
+export class HierarchyBComponent{
   localList :List[] =[]
   // TODO GET
   constructor(private hierarchyService:HierarchyService){
@@ -56,7 +32,7 @@ export class HierarchyComponent{
     hierarchyService.getTodo()
     effect(()=>{
       this.localList =hierarchyService.list()
-      // console.log("localList",this.localList) 
+    //   console.log("localList",this.localList) 
     })
   }
   // TODO DELETE

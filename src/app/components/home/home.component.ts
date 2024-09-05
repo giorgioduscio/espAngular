@@ -31,7 +31,7 @@ import { RouterModule } from '@angular/router';
 ],
 
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css','./homeResponsive.component.css'],
 })
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{

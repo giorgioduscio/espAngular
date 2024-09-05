@@ -4,24 +4,19 @@ import { HierarchyService } from './hierarchy.service';
 import { List } from '../../interfaces/list';
 import { randomString } from '../chat/autocomp';
 import { NgFor } from '@angular/common';
-import { HierarchyAComponent } from "./hierarchyA.component";
-import { HierarchyBComponent } from "./hierarchyB.component";
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-hierarchy',
+  selector: 'app-hierarchyA',
   standalone: true,
-  imports: [MatIcon, NgFor, NavbarComponent, HierarchyAComponent, HierarchyBComponent],
+  imports: [ MatIcon, NgFor, NavbarComponent, ],
   // FIX HTML
   template: `
-  <app-navbar></app-navbar>
-  <article><div>
-
     <main class="hierarchy">
-      <h2>Main</h2>
+      <h2>A</h2>
       <button (click)="onAdd()" class="round"><span class="icon">+</span> add</button>
 
-      <div class="box">@for (item of localList; track item; let i=$index){
+      <div class="box">@for (item of localList; track item; let i=$index){ 
         <button (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
         <input 
           type="checkbox" 
@@ -38,17 +33,15 @@ import { MatIcon } from '@angular/material/icon';
       }</div>
 
       <div class="childs">
-        <app-hierarchyA></app-hierarchyA>
-        <app-hierarchyB></app-hierarchyB>
+        <main></main>
+        <main></main>
       </div>
     </main>
-
-  </div></article>
   `,
   styleUrl: './hierarchy.component.css',
 })
 // OPTIMIZE TYPESCRIPT
-export class HierarchyComponent{
+export class HierarchyAComponent{
   localList :List[] =[]
   // TODO GET
   constructor(private hierarchyService:HierarchyService){
@@ -56,7 +49,7 @@ export class HierarchyComponent{
     hierarchyService.getTodo()
     effect(()=>{
       this.localList =hierarchyService.list()
-      // console.log("localList",this.localList) 
+    //   console.log("localList",this.localList) 
     })
   }
   // TODO DELETE

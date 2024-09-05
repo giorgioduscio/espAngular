@@ -1,5 +1,6 @@
 main{
     padding: 10px;
+    min-height: 100px;
 
     background: var(--st);
     border: 1px solid;
@@ -10,10 +11,10 @@ main{
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
-li>*{
+.box{
+    padding: 10px 0;
     display: grid;
-    grid-template-columns: auto auto auto ;
-    gap: 5px;
+    grid-template-columns: auto auto 1fr;
 }
 
 input{

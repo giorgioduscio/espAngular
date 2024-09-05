@@ -58,3 +58,4 @@ section>h3{
     left: 0;
     background: var(--c1);
 }
+footer{ min-height: 50vh; }
