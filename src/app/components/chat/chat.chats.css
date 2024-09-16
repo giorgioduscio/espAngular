@@ -10,7 +10,7 @@
     cursor: pointer;
     border-bottom: 1px solid var(--c1);
 }
-.flexbox{
+.box{
     min-height: 100vh;
     display: block;
 }
@@ -24,6 +24,10 @@
     }
     .chat>*:nth-child(2){
         padding: 10px;
+
+        display: flex;
+        align-items: center;
+
         overflow: hidden;
         text-overflow: ellipsis;
         color: var(--c5);
@@ -32,7 +36,7 @@
         margin: auto;
     }
     
-
+/* computer */
 @media only screen and (min-width:500px) {
 article>div{
     overflow: hidden;
@@ -44,12 +48,13 @@ article>div{
     border: 0;
     border-radius: 10px;
 }
-.flexbox{
+.box{
     min-height: 60vh;
     padding: 10px;
     display: flex;
     flex-flow: wrap;
     align-items: flex-start;
+    align-content: start;
     gap: 10px;
 }
 }

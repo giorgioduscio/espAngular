@@ -1,24 +1,24 @@
 <app-navbar></app-navbar>
 <article class="shops">
-    <header>
-        <div class="filterCard">
-            <p style="padding: 10px; text-align: center;">Filtro</p>
-            <input type="text" [(ngModel)]="filter">
+  <header>
+    <div class="filterCard">
+      <p style="padding: 10px; text-align: center;">Filtro</p>
+      <input type="text" [(ngModel)]="filter">
+    </div>
+  </header>
+    
+  <div class="line"></div>
+   
+  <h1 style="text-align: center;">Negozi</h1>
+  <section class="shopsContainer"> @for (shop of shops; track shop) {
+    <a routerLink="{{shop.id}}">
+      <div class="card" *ngIf="shop.title.toLocaleLowerCase().includes(filter)">
+        <img src="{{ shop.imageUrl }}" alt="">
+        <div class="text">
+          <h5>{{ shop.title }}</h5>
+          <p>{{ shop.description }}</p>
         </div>
-    </header>
-    
-    <div class="line"></div>
-    
-    <h1 style="text-align: center;">Negozi</h1>
-    <section class="shopsContainer"> @for (shop of shops; track shop) {
-        <a routerLink="{{shop.id}}">
-            <div class="card" *ngIf="shop.title.toLocaleLowerCase().includes(filter)">
-                <img src="{{ shop.imageUrl }}" alt="">
-                <div class="text">
-                    <h5>{{ shop.title }}</h5>
-                    <p>{{ shop.description }}</p>
-                </div>
-            </div>
-        </a>
-    }</section>
+      </div>
+    </a>
+  }</section>
 </article>

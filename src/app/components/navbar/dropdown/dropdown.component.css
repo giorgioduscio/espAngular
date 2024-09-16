@@ -1,10 +1,13 @@
-details[open]{ background: var(--c2); }
+details[open]{ 
+    background: var(--c2); 
+    border-radius: 5px;
+}
 
 /* DROPDOWN */
 summary{
     cursor: pointer;
-    color: var(--c5);
     display: flex;
+    color: var(--c5);
 }
     summary>*{
         object-fit: cover;

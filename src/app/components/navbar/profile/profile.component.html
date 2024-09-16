@@ -1,11 +1,18 @@
 <details class="profileDropdown">
   <summary class="profileDropdown">
-    @if (localeUser()===undefined){ <mat-icon class="mat-icon">person</mat-icon> }
-    @else{ <img src="{{localeUser()?.imageUrl}}" alt="{{localeUser()?.username}}"> }
+    <mat-icon *ngIf="localeUser===undefined; else isLogged" >person</mat-icon> 
+    <ng-template #isLogged>
+      <img src="{{localeUser?.imageUrl}}" alt="{{localeUser?.username}}">
+    </ng-template>
   </summary> 
 
   <div class="dropContent">
-    @if (localeUser()===undefined){ <button routerLink="/Login">Login</button> }
-    @else{ <button (click)="onClick()">Esci</button> }    
+    @if (localeUser===undefined){ 
+      <button routerLink="/Login">Login</button> 
+      <button routerLink="/Access">Accedi</button> 
+
+    }@else{ 
+      <button (click)="onResetLocalUser()">Esci</button>
+    }
   </div>
 </details>

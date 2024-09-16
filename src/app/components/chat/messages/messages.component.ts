@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
 import { Chat, Message } from '../../../interfaces/chat';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from '../nav-chat/nav-chat.component';
@@ -10,39 +10,32 @@ import { NavChatComponent } from '../nav-chat/nav-chat.component';
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [
-    NavChatComponent,
-    MatIconModule,
-    FormsModule,
-    NgFor,
-    RouterModule,
-  ],
+  imports: [ NavChatComponent, MatIconModule, FormsModule, NgFor, NgIf, RouterModule, ],
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css', './fixed.component.css']
 })
 
 export class MessagesComponent {
-  idFirebase :string =''
-  chat! :Chat
-  messages! :Message[]
-  messagesLength! :boolean
+  chatKey :string =''
+  chat :Chat ={idChat:0, titleChat:'', content:[], imageUrl:''}
+  messages :Message[] =[]
+  messagesLength :boolean =false
 
+  // TODO MOSTRA MESSAGGI
   constructor(private router:ActivatedRoute, private chatService:ChatService){
-    // PRENDE L'ID DALLA NAVBAR
-    this.router.params.subscribe(params =>this.idFirebase =params['id'])
+    this.router.params.subscribe(params =>this.chatKey =params['chatKey'])
 
-    // PRENDE I DATI DAL SERVICE
-    this.chatService.getMessages(this.idFirebase).subscribe((res:any)=>{
-      this.chat ={...res, idFirebase: this.idFirebase}
-      this.messages =Object.keys(this.chat.content) //fix
+    this.chatService.getMessages(this.chatKey).subscribe((res:any)=>{
+      this.chat ={...res, key: this.chatKey}
+      if(this.chat.content!==undefined){
+        this.messages =Object.keys(this.chat.content) 
         .map((key:string |any) =>this.chat.content[key])
-      this.messagesLength =this.messages.length===0 ?false :true
-      // console.log("messages",this.idFirebase, this.chat, this.messages);
+      }
     })
   }
-
-  writeMessage(formData:any){
-    this.chatService.addMessage(this.idFirebase, {
+  // TODO AGGIUNGI MESSAGGIO
+  onAddMessage(formData:any){
+    this.chatService.addMessage(this.chatKey, {
       IDmessage: Math.random(),
       message: formData.value.message,
       IDuser: 1,

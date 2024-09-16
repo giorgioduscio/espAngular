@@ -3,7 +3,7 @@ article>div{
     margin: auto;
 }
 
-.flexbox{
+.box{
     padding: 10px;
     margin: 0 auto;
 
@@ -13,13 +13,13 @@ article>div{
     gap: 10px;
 
 }
-    .flexbox>*{
+    .box>*{
         padding: 10px;
         background: var(--c3);
         border-radius: 10px;
         border-top-left-radius: 0;
     }
-    .flexbox p{
+    .box p{
         max-width: 200px;
     }
 
@@ -44,7 +44,7 @@ article>div{
     border-radius: 10px;
     box-shadow: 0 0 20px black;
 }
-    .flexbox, .noMessages{
+    .box, .noMessages{
         min-height: 60vh;
         justify-content: flex-start;
     }

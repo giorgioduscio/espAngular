@@ -8,24 +8,22 @@
       <p class="titleChat">{{chat.titleChat}}</p> <!-- fix -->
     </nav>
 
-    @if(messagesLength){
-    <div class="flexbox"> 
+    <main class="box" *ngIf="messages.length>0; else noMessages">
       <div *ngFor="let message of messages; let i=index">
-        <!-- <h6>{{message.username}}</h6> -->
         <p>{{message.message}}</p>
       </div>
+    </main>
 
-    </div>}
-
-    @else{ 
+    <ng-template #noMessages>
       <div class="noMessages">
         <h3>Nessun Messaggio</h3>
       </div>   
-    }
+    </ng-template>
+    
 
-    <form #formData="ngForm" (submit)="writeMessage(formData)" class="inputBox">
+    <form #formData="ngForm" (submit)="onAddMessage(formData)" class="inputBox">
       <div>
-        <input 
+        <input
           type="text" 
           name="message"
           placeholder="Messaggio" 
@@ -36,5 +34,6 @@
         </button>
       </div>
     </form>
+
   </div>
 </article>

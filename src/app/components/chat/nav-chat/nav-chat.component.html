@@ -1,24 +1,23 @@
-@if(editActivation()){
-<nav class="editMode">
+<nav class="editMode navChat" *ngIf="editMode().active; else default">
   <div>
-    <mat-icon (click)="resetEdit()">arrow_back</mat-icon>
-    <span>{{ idGroups().length }}</span>
+    <mat-icon (click)="resetEdit()" class="icon">arrow_back</mat-icon>
+    <span>{{ editMode().idGroups.length }}</span>
   </div>
   <div>
-    <mat-icon>edit</mat-icon>
-    <mat-icon class="deleteGroup" (click)="deleteButton()">delete</mat-icon>
+    <!-- <mat-icon>edit</mat-icon> -->
+    <mat-icon class="icon deleteGroup" (click)="onDeleteGroup()">delete</mat-icon>
   </div>
 </nav>
 
-}@else {
-<nav>
-  <a [routerLink]="['/Chat']" class="logo" >
+<ng-template #default>
+<nav class="navChat">
+  <a routerLink="/Chat" class="logo">
     Fan<span>cool</span>own
   </a>
 
   <div>
     <app-dropdown></app-dropdown>
+    <app-profile></app-profile>
   </div>
 </nav>
-}
-
+</ng-template>

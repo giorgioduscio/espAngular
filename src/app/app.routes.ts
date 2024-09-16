@@ -10,16 +10,19 @@ import { ChatComponent } from './components/chat/chat.component';
 import { MessagesComponent } from './components/chat/messages/messages.component';
 import { LoginComponent } from './components/login/login.component';
 import { HierarchyComponent } from './components/hierarchy/hierarchy.component';
+import { AccessComponent } from './components/login/access/access.component';
 
 export const routes :Routes |any[] =[
     { show:false, path: 'Home', component: HomeComponent },
     { show:true, path: 'Hierarchy', component: HierarchyComponent },
-    { show:true, path: 'Dashboard', component: DashboardComponent },
+    { show:true, path: 'Dashboard', component: DashboardComponent, canActivate:[authGuard] },
     { show:true, path: 'List', component: ListComponent },
-    { show:true, path: 'Login', component: LoginComponent },
+    // LOGIN
+    { show:false, path: 'Login', component: LoginComponent },
+    { show:false, path: 'Access', component: AccessComponent },
     // CHAT
     { show:true, path: 'Chat', component: ChatComponent },
-        { show:false, path: 'Chat/:id', component: MessagesComponent },
+        { show:false, path: 'Chat/:chatKey', component: MessagesComponent },
     // SHOPS
     { show:true, path: 'Cart', component: CartComponent },
     { show:true, path: 'Shops', component: ShopsComponent},

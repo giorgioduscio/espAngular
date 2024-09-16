@@ -1,37 +1,14 @@
-article{
-    height: 100vh;
-    background: url(https://img.freepik.com/foto-gratuito/vista-affascinante-dell-uccello-che-cammina-vicino-all-oceano-calmo-durante-il-tramonto_181624-15874.jpg?t=st=1722590983~exp=1722594583~hmac=e0133e20a6203e429e62a920714c563aeb698d07c0a76734fffdcc6cde11f17c&w=1060);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-}
-
-form{
-    width: min(100%, 800px);
-    margin: 0 auto;
+article>div{
+    width: 300px;
     padding: 10px;
-    backdrop-filter: blur(5px);
-    border-radius: 10px;
-}
-.flexbox{
-    padding: 10px 0;
-    flex-flow: column;
-}
-.flexbox>*{
-    padding: 10px;
-    width: min(100%, 300px);
-    background: var(--c1);
-    color: var(--c3);
-    border-radius: 10px;
-}
-form>p{
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-@media only screen and (min-width: 400px){
-form{
-    margin-top: 20px;
     box-shadow: 0 0 20px black;
 }
+form{
+    display: grid;
+}
+h2{ text-align: center; }
+.error{ color: red; }
+button{
+    padding: 5px 10px;
+    color: var(--c3);
 }

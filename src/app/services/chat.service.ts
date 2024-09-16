@@ -11,10 +11,10 @@ export class ChatService {
 
   getChat(){return this.http.get(this.url+".json")}
   addChat(body:Chat){return this.http.post(this.url+".json", body)}
-  deleteChat(idFirebase:string){return this.http.delete(`${this.url}/${idFirebase}.json`)}
+  deleteChat(key:string){return this.http.delete(`${this.url}/${key}.json`)}
 
-  getMessages(idFirebase:string){
-    return this.http.get(`${this.url}/${idFirebase}.json`)}
-  addMessage(idFirebase:string, body:Message){
-    return this.http.post(`${this.url}/${idFirebase}/content.json`, body)}
+  getMessages(key:string){
+    return this.http.get(`${this.url}/${key}.json`)}
+  addMessage(key:string, body:Message){
+    return this.http.post(`${this.url}/${key}/content.json`, body)}
 }

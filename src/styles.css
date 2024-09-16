@@ -5,6 +5,7 @@ html, body{
     --c4:#c00;
     --c5:#fff;
     --st:#00000050;
+
     margin: 0;
     min-height: 100vh;
     color: var(--c5);
@@ -17,18 +18,16 @@ html, body{
     margin: 0;
     font-size: 15px;
     transition: 0.3s;
-    margin: 0;
+    outline: none;
 }
+
 article{ padding: 50px 0; }
     article>div{
         width: min(100%, 1000px);
         margin: 0 auto;
     }
-header{ background: var(--c3); }
 
 .line{
-    width: auto;
-    margin: 0;
     height: 50px;
     position: relative;
     overflow: hidden;
@@ -44,6 +43,9 @@ header{ background: var(--c3); }
         background: var(--c3);
         box-shadow: 0px 0px 20px 5px #00000080;
     }
+
+
+
 h1{
     margin: 0;
     font-size: 40px;
@@ -76,6 +78,7 @@ select{
     border: 1px solid;
     resize: none;
     font-family: inherit;
+    border: 0;
 } 
 textarea::placeholder,input::placeholder{ 
     font-style: italic;

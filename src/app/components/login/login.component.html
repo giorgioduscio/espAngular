@@ -1,26 +1,13 @@
 <app-navbar></app-navbar>
 <article>
-  <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-    <h1>{{loginMode() ?"Iscriviti" :"Accedi"}}</h1>
-
-    <div class="flexbox">
-      <input type="search" name="username" placeholder="Username" ngModel required>
-      <input type="search" name="email" placeholder="Email" ngModel required email>
-      
-    @if (loginMode()) {
-      <select name="role" ngModel required>
-        <option value="" disabled selected>Ruolo</option>
-        <option *ngFor="let role of roles" [value]="role">{{role}}</option>
-      </select>
-      <input type="file" name="imageUrl" ngModel>
-    }
-    </div>
-
-    <p (click)="loginMode.set(!loginMode())">{{ loginMode() 
-      ? "Hai già un account? Accedi" 
-      : "Non hai ancora un account? Iscriviti"
-    }}</p>
-
-    <button type="submit" [disabled]="form.invalid">Invio</button>
-  </form>
+  <div>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+      <h1>Iscriviti</h1>
+      <input type="text" name="username" placeholder="Username" ngModel required>
+      <input type="email" name="email" placeholder="Email" ngModel required email>
+      <input type="password" name="password" placeholder="Password" ngModel required>    
+      <p>Hai già un profilo? <a routerLink="/Access">Accedi</a></p>
+      <div> <button type="submit" [disabled]="form.invalid">Invio</button> </div>
+    </form>
+  </div>
 </article>

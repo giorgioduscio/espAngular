@@ -1,41 +1,40 @@
 import { WritableSignal } from "@angular/core";
 
 export function editCounter(
-    editActivation :WritableSignal<boolean>, 
-    idGroups :WritableSignal<string[]>,
+    editMode :WritableSignal<{active:boolean,idGroups:string[]}>, 
     newId :string,
     chat :HTMLElement |null
 ) 
 {
   //EDIT E' ATTIVO? 
   //todo SI: CONTROLLA TUTTI GLI ID
-  if(editActivation()){ 
+  if(editMode().active){ 
     let controll ={ isRepeat :false, index :0 }
-    idGroups().map(idToControll=>{
-      //?L'ELEMENTO E' STATO GIA' SELEZIONATO?
+    //?L'ELEMENTO E' STATO GIA' SELEZIONATO?
+    editMode().idGroups.map(idToControll=>{
       if(newId===idToControll) controll.isRepeat =true;
     })
   
     if(controll.isRepeat){ 
       //fix//SI: DESELEZIONA ELEMENTO 
-      idGroups.set(idGroups().filter(stoneId =>stoneId!==newId))
+      editMode().idGroups =(editMode().idGroups.filter(stoneId =>stoneId!==newId))
       chat?.classList.remove("selected")
     }else{ 
       //fix//NO: ATTIVA EDIT E SELEZIONA ELEMENTO 
-      idGroups.update(elements =>[...elements, newId])
+      editMode().idGroups =[...editMode().idGroups, newId]
       chat?.classList.add("selected")
     }
   
   //todo NO: ATTIVA EDIT E SELEZIONA ELEMENTO
   }else{ 
-    editActivation.set(true)
-    idGroups.set([...idGroups(), newId])
+    editMode().active =(true)
+    editMode().idGroups =[...editMode().idGroups, newId]
     chat?.classList.add("selected")
   }
 
   //todo LE SELEZIONI SONO 0? SI: DISATTIVA EDIT
-  if (idGroups().length===0){ 
-    editActivation.set(false)
-    idGroups.set([]) 
+  if (editMode().idGroups.length===0){ 
+    editMode().active =(false)
+    editMode().idGroups =[]
   }  
 }

@@ -1,43 +1,25 @@
-nav{
-    height: 50px;
-    width: 100vw;
-    padding: 5px 10px;
-    top: 0;
-
-    position: fixed;
-    display: flex;
+.navChat{
     justify-content: space-between;
-    align-items: center;
-    gap: 5px;
-
-    background: var(--c3);
 }
-    nav>div{
-        display: flex;
-        gap: 15px;
-        align-content: center;
-    }
-    .logo{
-        color: var(--c5);
-        font-weight: bold;
-    }
+.logo{
+    color: var(--c5);
+    font-weight: bold;
+    gap: 0;
+}
+.logo>span{
+    color: var(--c4);
+}
 
-nav.editMode{
+.editMode{
     background: var(--c2);
+    color: var(--c5);
+    box-shadow: 0 0 20px black;
 }
-    .logo>span{
-        color: var(--c4);
-    }
-    .editMode mat-icon:hover{ 
-        cursor: pointer; 
-        background: var(--c3);
-        border-radius: 50px;
-    }
 
+/* da computer */
 @media only screen and (min-width:500px) {
-nav{
-    width: 100%;
-    position: relative;
-    justify-content: flex-start;
-}
+    .navChat{ 
+        width: 100% ;
+        position: static ;
+    }
 }

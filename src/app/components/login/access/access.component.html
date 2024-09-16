@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+<article>
+  <div>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <h2>{{showcomponent().error ?'Errore' :'Accedi'}}</h2>
+      <p class="error" *ngIf="showcomponent().error">Email o password errate! Controlla e digita meglio le credenziali</p>
+      <input
+        type="email" 
+        name="email" 
+        placeholder="Email" 
+        ngModel required email
+      >
+      <input
+        [type]="'password'" 
+        name="password" 
+        placeholder="Password"
+        ngModel required
+      >
+      <div> <button type="submit" [disabled]="form.invalid">Invio</button> </div>
+    </form>
+  </div>
+</article>

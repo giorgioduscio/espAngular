@@ -1,38 +1,40 @@
 <article>
   <div>
-    <app-nav-chat [editActivation]="editActivation" [idGroups]="idGroups"></app-nav-chat>
-    <form 
+    <app-nav-chat
+      [editMode]="editMode"
+      [resetEdit]="resetEdit"
+      [onDeleteGroup]="onDeleteGroup"
+    ></app-nav-chat>
+    <form
       #groupForm="ngForm" 
       (submit)="newGroup(groupForm)" 
       class="inputBox"
-      *ngIf="!editActivation()"
+      *ngIf="!editMode().active"
     >
       <div>
-        <input 
+        <input
           type="text" 
           name="input"
           placeholder="Nuovo gruppo" 
           ngModel required
         >
         <button type="submit" [disabled]="groupForm.invalid">
-          <mat-icon class="newGroup"
-            fontIcon="add"
-          ></mat-icon>
+          <mat-icon class="newGroup">add</mat-icon>
         </button>
       </div>
     </form>
       
     <div class="chats">
-      <div class="flexbox">
+      <div class="box">
         <div class="chat" *ngFor="let chat of chats; let i =index">
-        @if(editActivation()){ 
-          <img src="{{chat.imageUrl}}" (click)="handleClick(chat.idFirebase!, $event)">
-          <b (click)="handleClick(chat.idFirebase!, $event)">{{chat.titleChat}}</b> 
+        @if(editMode().active){ 
+          <img src="{{chat.imageUrl}}" (click)="handleClick(chat.key!, $event)">
+          <b (click)="handleClick(chat.key!, $event)">{{chat.titleChat}}</b> 
           
         } @else{
           <img src="{{chat.imageUrl}}" alt="">
-          <a routerLink="{{chat.idFirebase}}">{{chat.titleChat}}</a>
-          <mat-icon class="handleClick" (click)="handleClick(chat.idFirebase!, $event)">settings</mat-icon>
+          <a routerLink="{{chat.key}}">{{chat.titleChat}}</a>
+          <mat-icon class="handleClick" (click)="handleClick(chat.key!, $event)">settings</mat-icon>
         }
         </div>
       </div>

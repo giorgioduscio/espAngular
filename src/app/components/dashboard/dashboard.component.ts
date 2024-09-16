@@ -24,16 +24,16 @@ export class DashboardComponent{
   constructor(private usersService: UsersService){
     document.title ='Dashboard'
 
-    this.usersService.getUsers().subscribe((responce:any)=>{
-        this.users =Object.keys(responce) .map(key=>{
-          responce[key]["firebaseId"]=key
-          return responce[key]
-        })
-        
-        this.userKeys =Object.keys(this.users[0])
-          .filter(key =>key!=='imageUrl'&&key!=="id")
-        // console.log("users", this.users, );
-      })
+    // this.usersService.getUsers().subscribe((responce:any)=>{
+    //   this.users =Object.keys(responce) .map(key=>{
+    //     responce[key]["firebaseId"]=key
+    //     return responce[key]
+    //   })
+      
+    //   this.userKeys =Object.keys(this.users[0])
+    //     .filter(key =>key!=='imageUrl'&&key!=="id")
+    //   // console.log("users", this.users, );
+    // })
     
   }
 }

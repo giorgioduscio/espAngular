@@ -2,7 +2,7 @@ export interface Chat {
     idChat :number,
     titleChat :string,
     content :Message[],
-    idFirebase? :string,
+    key? :string,
     imageUrl :string,
 }
 export interface chatEditMode{

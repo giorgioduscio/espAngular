@@ -1,27 +1,27 @@
-import { Component, WritableSignal } from '@angular/core';
+import { Component, effect, signal, WritableSignal } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../interfaces/user';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { closeDropdown } from '../closeDropdown';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    RouterModule,
-    MatIconModule,
-  ],
+  imports: [ NgIf,RouterModule, MatIconModule, ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: '../dropdown/dropdown.component.css'
 })
 export class ProfileComponent {
-  localeUser! :WritableSignal<User |undefined>
-  constructor(private authService:AuthService){
-    this.localeUser =authService.localUser
+  localeUser :User |undefined =undefined
 
+  constructor(private authService:AuthService){
+    effect(()=>{
+      this.localeUser =authService.localUser()
+    })
     closeDropdown("profileDropdown")
   }
   //todo RESET
-  onClick(){ this.authService.resetLocalUser() }
+  onResetLocalUser(){ this.authService.resetLocalUser() }
 }
