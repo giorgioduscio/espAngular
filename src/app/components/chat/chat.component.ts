@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, effect, signal, WritableSignal } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../interfaces/chat';
 import { NgFor, NgIf } from '@angular/common';
@@ -22,12 +22,9 @@ export class ChatComponent {
   chats :Chat[] =[]
   constructor(private chatService:ChatService){
     document.title ="Chat"
-
-    chatService.getChat().subscribe((res:any) =>{
-      this.chats =Object.keys(res) .map(key=>{
-        res[key]["key"] =key
-        return res[key]}
-      )
+    chatService.getChats()
+    effect(()=>{
+      this.chats =chatService.chats()
     })
   }
 
@@ -36,30 +33,29 @@ export class ChatComponent {
     const body ={
       idChat: randomId(),
       titleChat: groupForm.value.input,
-      content: [],
       imageUrl: randomImage(),
+      messages: [{
+        IDmessage: 404,
+        message: '404',
+        IDuser: 404,
+        username: '404',
+        time:'',
+      }], //fix initarray
     }
     this.chatService.addChat(body)
-    .subscribe((res:any)=>{ 
-      console.log( res );
-      this.chats.push( {...body, key: res.name} )
-    })
   }
+
   //TODO ELIMINA CHAT
   onDeleteGroup(){
     if (confirm('Eliminare il gruppo?')) {
       this.editMode().idGroups.map(id =>{
-        this.chatService.deleteChat(id) .subscribe((res:any) =>{ 
-          console.log("cancellato", id, res); 
-          location.reload() 
-        })
+        this.chatService.deleteChat(id) 
       })
       this.resetEdit()
     }
   }
 
   // optimize EDIT
-  
   editMode =signal<{active:boolean,idGroups:string[]}>( {active:false,idGroups:[]} )
   // QUANDO PREMI PULSANTE EDIT, MANDA IL RISPETTIVO ID
   handleClick(newId:string, e:Event){

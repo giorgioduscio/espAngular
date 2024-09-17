@@ -1,7 +1,7 @@
 export interface Chat {
     idChat :number,
     titleChat :string,
-    content :Message[],
+    messages :Message[],
     key? :string,
     imageUrl :string,
 }
@@ -15,4 +15,5 @@ export interface Message{
     message :string,
     IDuser :number,
     username :string,
+    time :string,
 }

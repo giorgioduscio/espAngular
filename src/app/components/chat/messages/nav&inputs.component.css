@@ -30,14 +30,15 @@ nav{
     }
 
     /* TODO INPUT */
-.inputBox{
+form{
     width: 100%;
     padding: 5px;
 
     position: fixed;
     bottom: 0;
+    background: var(--c1);
 }
-    .inputBox>div{
+    form>div{
         max-width: 300px;
         margin: auto;
 
@@ -45,20 +46,17 @@ nav{
         grid-template-columns: 1fr auto;
         gap: 5px;
     }
-    .inputBox>div>*{
+    form>div>*{
         border-radius: 50px;
         background: var(--c3);
         color: var(--c5);
     }
-    .inputBox input{
-        padding: 10px 20px;
-    }
-    .inputBox button:disabled{
-        background: var(--st);
-    }
+    form input{ padding: 10px 20px; }
+    form button:disabled{ background: var(--st); }
 
+/* computer */
 @media only screen and (min-width:500px) {
-nav, .inputBox{
+nav, form{
     position: static;
 }
 }

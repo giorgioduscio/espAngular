@@ -1,43 +1,38 @@
-article>div{
-    width: clamp(300px, 100%, 1000px);
-    margin: auto;
-}
-
 .box{
     padding: 10px;
-    margin: 0 auto;
-
     display: flex;
     flex-flow: column;
-    align-items: flex-start;
-    gap: 10px;
-
 }
-    .box>*{
-        padding: 10px;
-        background: var(--c3);
-        border-radius: 10px;
-        border-top-left-radius: 0;
-    }
-    .box p{
-        max-width: 200px;
-    }
+.box>*{ display: flex; }
+.left{ justify-content: flex-start; }
+.left>div{ border-top-left-radius: 0 !important; }
+.right{ justify-content: flex-end; }
+.right>div{ border-top-right-radius: 0 !important; }
 
+/* MESSAGGIO */
+.message{
+    max-width: 80%;
+    padding: 5px 10px;
+
+    display: grid;
+
+    background: var(--c3);
+    border-radius: 10px;
+}
+header{ 
+    display: flex; 
+    justify-content: space-between;
+}
+/* CHAT SENZA MESSAGGI */
 .noMessages{
     padding: 10px;
+    height: 60vh;
 
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+    display: grid;
+    align-content: center;
 }
-    .noMessages>*{
-        padding: 10px;
-        border-radius: 10px;
-        color: var(--c3);
-        border: 1px solid;
-    }
 
-
+/* computer */
 @media only screen and (min-width:500px) {
 article>div{
     overflow: hidden;
@@ -45,7 +40,6 @@ article>div{
     box-shadow: 0 0 20px black;
 }
     .box, .noMessages{
-        min-height: 60vh;
-        justify-content: flex-start;
+        overflow-y: scroll;
     }
 }

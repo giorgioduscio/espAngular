@@ -37,8 +37,9 @@ export class AccessComponent {
       user.email===form.value.email &&
       user.password===form.value.password
     )[0]
+
     if(user !==undefined){
-      this.authService.verifyLocalUser(user)
+      this.authService.verifyLocalUser(user.id)
       this.router.navigate( ['/Home'], { relativeTo: this.activatedRoute } )
       this.showcomponent().error =false
     }else{

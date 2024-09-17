@@ -18,7 +18,7 @@ export class ProfileComponent {
 
   constructor(private authService:AuthService){
     effect(()=>{
-      this.localeUser =authService.localUser()
+      this.localeUser =authService.accesserUser()
     })
     closeDropdown("profileDropdown")
   }

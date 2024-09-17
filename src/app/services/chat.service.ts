@@ -1,20 +1,40 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Chat, Message } from '../interfaces/chat';
+import { mapper } from '../tools/mapper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   private url ='https://chat-d4bba-default-rtdb.europe-west1.firebasedatabase.app/chat'
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient){ }
+  chats =signal<Chat[]>([])
 
-  getChat(){return this.http.get(this.url+".json")}
-  addChat(body:Chat){return this.http.post(this.url+".json", body)}
-  deleteChat(key:string){return this.http.delete(`${this.url}/${key}.json`)}
+  getChats(){
+    this.http.get(this.url+".json").subscribe((res:any)=>{
+      if(res) this.chats.set(mapper(res))
+      // console.log('getChat',this.chats(), res);
+    })
+  }
+  addChat(body:Chat){
+    this.http.post(this.url+".json", body).subscribe((res:any)=>{
+      this.chats() .push({...body, key:res.name})
+      console.log( 'addChat',this.chats()[ this.chats().length-1 ] );
+    })
+  }
+  deleteChat(key:string){
+    this.http.delete(`${this.url}/${key}.json`).subscribe((res:any)=>{
+      this.chats.set( this.chats().filter(chat=>chat.key!==key) )
+    })
+  }
+  patchChat(key:string, updatedChat:Chat){
+    this.http.patch(`${this.url}/${key}.json`,updatedChat).subscribe((res:any)=>{
+      // this.chats.set( this.chats().filter(chat=>chat.key!==key) )
+      console.log(res);
+      
+    })
+  }
 
-  getMessages(key:string){
-    return this.http.get(`${this.url}/${key}.json`)}
-  addMessage(key:string, body:Message){
-    return this.http.post(`${this.url}/${key}/content.json`, body)}
+
 }

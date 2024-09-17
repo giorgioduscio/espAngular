@@ -1,14 +1,16 @@
 <article>
   <div>
+    <!--TODO navigazione -->
     <app-nav-chat
       [editMode]="editMode"
       [resetEdit]="resetEdit"
       [onDeleteGroup]="onDeleteGroup"
     ></app-nav-chat>
+
+    <!--TODO navigazione -->
     <form
       #groupForm="ngForm" 
       (submit)="newGroup(groupForm)" 
-      class="inputBox"
       *ngIf="!editMode().active"
     >
       <div>
@@ -23,7 +25,8 @@
         </button>
       </div>
     </form>
-      
+
+    <!--TODO navigazione -->
     <div class="chats">
       <div class="box">
         <div class="chat" *ngFor="let chat of chats; let i =index">
@@ -33,11 +36,12 @@
           
         } @else{
           <img src="{{chat.imageUrl}}" alt="">
-          <a routerLink="{{chat.key}}">{{chat.titleChat}}</a>
+          <a routerLink="/Chat/{{chat.key}}">{{chat.titleChat}}</a>
           <mat-icon class="handleClick" (click)="handleClick(chat.key!, $event)">settings</mat-icon>
         }
         </div>
       </div>
     </div>
+
   </div>
 </article>

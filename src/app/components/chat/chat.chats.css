@@ -11,7 +11,6 @@
     border-bottom: 1px solid var(--c1);
 }
 .box{
-    min-height: 100vh;
     display: block;
 }
 .selected{ background: var(--c2); }
@@ -49,12 +48,14 @@ article>div{
     border-radius: 10px;
 }
 .box{
-    min-height: 60vh;
+    height: 60vh;
     padding: 10px;
+
     display: flex;
     flex-flow: wrap;
     align-items: flex-start;
     align-content: start;
-    gap: 10px;
+
+    overflow-y: scroll;
 }
 }

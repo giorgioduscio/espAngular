@@ -1,31 +1,46 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { effect, Injectable, signal, WritableSignal } from '@angular/core';
 import { User } from '../interfaces/user';
+import { UsersService } from '../services/users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  localUser =signal<User |undefined>(undefined)
-  accessContitiones =signal({ isLogged:false, isAdmin:false })
+  users :User[] =[]
+  gettedId =Number(localStorage.getItem('userId'))
 
-  verifyLocalUser(userToVerify:User){
-    //FIX ERRORE
-    if (userToVerify===undefined){
-      return "Password o email errata"
-     
-    //TODO AUTENTICATO
-    }else {
-      this.localUser.set(userToVerify)
+  accesserUser =signal<User |undefined>(undefined)
+  accessContitiones =signal({ isLogged:false, isAdmin:false })
+  constructor(private usersService:UsersService){
+    usersService.getUsers()
+    effect(()=>{ 
+      this.users =usersService.users() 
+      this.gettedId =Number(localStorage.getItem('userId'))
+      // console.log(this.users);
+    })
+    setTimeout(()=>{
+      // console.log('auto access');
+      this.verifyLocalUser( this.gettedId )
+    }, 1000);
+  }
+
+  verifyLocalUser(userId:number){
+    const userToVerify =this.users .filter(user=>user.id===userId)[0]
+    
+    if (userToVerify!==undefined) {
+      this.accesserUser.set(userToVerify)
+      localStorage.setItem('userId',`${userId}`)
       this.accessContitiones().isLogged =true
       // if (userToVerify.role===SelectRole.ADMIN) this.isAdmin.set(true)
-      return this.localUser
-    }
+      return this.accesserUser
+    }else{ return 'Error' }
   }
   resetLocalUser(){
-    this.localUser.set(undefined)
+    this.accesserUser.set(undefined)
+    localStorage.removeItem('userId')
     this.accessContitiones.set({ isLogged:false, isAdmin:false })
-    // console.log(this.localUser(),this.accessContitiones());
+    // console.log(this.accesserUser(),this.accessContitiones());
   }
 
   isAuthenticated(){return this.accessContitiones().isLogged}

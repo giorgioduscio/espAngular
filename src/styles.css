@@ -82,7 +82,8 @@ select{
 } 
 textarea::placeholder,input::placeholder{ 
     font-style: italic;
-    color: var(--st); 
+    font-weight: normal;
+    color: inherit; 
 }
 label{ font-style: italic; }
 
@@ -105,7 +106,7 @@ button{
         background: var(--st);
     }
 
-
+.mat-icon{ display: inline-table; }
 a{
     color: inherit;
     text-decoration: none;

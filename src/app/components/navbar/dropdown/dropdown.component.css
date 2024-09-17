@@ -12,10 +12,13 @@ summary{
     summary>*{
         object-fit: cover;
         height: 40px;
-        width: 40px;
+        width:  40px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 50px;
     }
-    summary .mat-icon{ font-size: 40px; }
 
 /* CONTENT */
 .dropContent{

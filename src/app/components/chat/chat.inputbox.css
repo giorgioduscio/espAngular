@@ -1,11 +1,11 @@
-.inputBox{
+form{
     width: 100%;
     padding: 5px;
     position: fixed;
     bottom: 0;
     background: var(--c1);
 }
-    .inputBox>div{
+    form>div{
         max-width: 300px;
         margin: auto;
 
@@ -13,32 +13,33 @@
         display: flex;
 
         background: var(--c3);
+        
         border-radius: 50px;
     }
-    .inputBox>div:has(input:focus){
-        background: var(--c5);
+    form>div:has(input:focus){
+        background: var(--c2);
     }
-    .inputBox input{
+    form input{
         padding: 10px 20px;
         background: transparent;
-        color: var(--c1);
         border: 0;
-    }
-    .inputBox button[type="submit"]{
-        border-radius: 50px;
-    }
-    .inputBox button[type="submit"]:valid{
-        background: var(--c1);
         color: var(--c5);
+    }
+    form button[type="submit"]{
+        border-radius: 50px;
+        color: var(--c5);
+    }
+    form button[type="submit"]:valid{
+        background: var(--c3);
     }
 
 
 @media only screen and (min-width:500px) {
-.inputBox{
+form{
     padding: 0 10px;
     position: static;
 }
-    .inputBox>div{
+    form>div{
         border: 1px solid var(--c1);
         border-radius: 50px;
         overflow: hidden;
