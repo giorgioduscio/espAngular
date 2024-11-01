@@ -11,12 +11,14 @@ import { MessagesComponent } from './components/chat/messages/messages.component
 import { LoginComponent } from './components/login/login.component';
 import { HierarchyComponent } from './components/hierarchy/hierarchy.component';
 import { AccessComponent } from './components/login/access/access.component';
+import { FoodComponent } from './components/food/food.component';
 
 export const routes :Routes |any[] =[
     { show:false, path: 'Home', component: HomeComponent },
     { show:true, path: 'Hierarchy', component: HierarchyComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent, canActivate:[authGuard] },
     { show:true, path: 'List', component: ListComponent },
+    { show:true, path: 'Food', component: FoodComponent },
     // LOGIN
     { show:false, path: 'Login', component: LoginComponent },
     { show:false, path: 'Access', component: AccessComponent },
