@@ -13,8 +13,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     HomeComponent,
     DashboardComponent,
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: `<router-outlet />`,
 })
 export class AppComponent {
   title ='ggg-ng';

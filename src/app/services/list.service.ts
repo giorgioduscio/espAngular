@@ -1,25 +1,37 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { List } from '../interfaces/list';
+import { mapper } from '../tools/mapper';
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable({  providedIn: 'root'})
 export class ListService {
+
   private url ="https://list-89d05-default-rtdb.europe-west1.firebasedatabase.app/todos"
+  list =signal<List[]>([])
   constructor(private http:HttpClient){}
 
-  addTodo(body: List){
-    return this.http.post( this.url+".json", body ) 
+  get(){
+    this.http.get(this.url +'.json').subscribe(res=>{
+      this.list.set( mapper(res) )
+      // console.log("get", this.list);
+    })
   }
-  getTodo(){
-    return this.http.get(this.url+".json")
+  add(newItem:List){
+    this.http.post( this.url+'.json', newItem ).subscribe(res=>{
+      this.get()
+      console.log("add", res);
+    })
   }
-  deleteTodo(id: string|number){
-    return this.http.delete(`${this.url}/${id}.json`)
+  delete(key: string){
+    this.http.delete(`${this.url}/${key}.json`).subscribe(res=>{
+      this.get()
+      console.log("delete", res);
+    })
   }
-  patchTodo(id: string, body:List){
-    return this.http.put(`${this.url}/${id}.json`, body)
+  patch(key: string, newItem:List){
+    this.http.patch(`${this.url}/${key}.json`, newItem).subscribe(res=>{
+      this.get()
+      console.log("patch", res);
+    })
   }
 }

@@ -1,27 +1,67 @@
 <app-navbar></app-navbar>
-<article>
-    <header>
+
+<article class="text-bg-dark">
+  <main class="container">
+
+    <!-- LOGO -->
+    <div class="container d-flex align-items-center p-2">
+      <span class="badge rounded-pill" id="boostrap">Boostrap</span>
+      <mat-icon>add</mat-icon>
+      <span class="badge rounded-pill text-bg-danger">Angular</span>
+    </div>
+    
+    <!-- INSERIMENTO -->
+    <header class="container">
       <h1>Lista</h1>
-      <form #formdata="ngForm" (ngSubmit)="submit(formdata)">
+      <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)" class="d-flex align-items-center">
         <input 
+          class="form-control form-control-sm "
           type="text" 
           name="title" 
           id="title" 
           placeholder="Inserisci azione"
           required ngModel
         >
-        <button type="submit" [disabled]="formdata.invalid">+</button>
+        <button 
+          class="btn btn-secondary "
+          type="submit" 
+          [disabled]="formdata.invalid"
+        > <mat-icon>add</mat-icon> </button>
       </form>
     </header>
-    <div class="line"></div>
+  
+    <!-- TABELLA -->
+    <div class="container">
+      <table class="table table-responsive-sm align-middle table-dark">
+        <tbody>
+          <tr *ngFor="let item of listService.list(); let i =index">
+            <td>
+              <input 
+                (change)="onPatch($event, i)" 
+                type="checkbox" 
+                id="complete" 
+                [checked]="item.complete" 
+                class="form-check-input"
+              >
+            </td>
+            <td>
+              <input 
+                (change)="onPatch($event, i)" 
+                type="text" 
+                id="title" 
+                [placeholder]="item.title" 
+                class="form-control "
+              >
+            </td>
+            <td>
+              <button (click)="onDelete(i)" class="btn btn-danger">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <table>
-      <tbody>
-        <tr *ngFor="let todo of todos; let i =index">
-          <td><input (change)="patch($event, todo)" type="checkbox" id="complete" [checked]="todo.complete"></td>
-          <td><input (change)="patch($event, todo)" type="text" id="title" [placeholder]="todo.title"></td>
-          <td><button class="delete" (click)="delete(i)">❌</button></td>
-        </tr>
-      </tbody>
-    </table>
+  </main>
 </article>

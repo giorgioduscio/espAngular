@@ -18,7 +18,8 @@ export const routes :Routes |any[] =[
     { show:true, path: 'Hierarchy', component: HierarchyComponent },
     { show:true, path: 'Dashboard', component: DashboardComponent, canActivate:[authGuard] },
     { show:true, path: 'List', component: ListComponent },
-    { show:true, path: 'Logistic', component: LogisticComponent },
+    { show:false, path: 'Logistic', component: LogisticComponent },
+
     // LOGIN
     { show:false, path: 'Login', component: LoginComponent },
     { show:false, path: 'Access', component: AccessComponent },
@@ -30,5 +31,5 @@ export const routes :Routes |any[] =[
     { show:true, path: 'Shops', component: ShopsComponent},
         { show:false, path: 'Shops/:id', component: ProductsComponent },
         
-    { show:false, path: '', redirectTo: 'Home', pathMatch: 'full' }
+    { show:false, path: '', redirectTo: '/Home', pathMatch: 'full' }
 ];
