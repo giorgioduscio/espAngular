@@ -40,7 +40,7 @@ export class AccessComponent {
 
     if(user !==undefined){
       this.authService.verifyLocalUser(user.id)
-      this.router.navigate( ['/Home'], { relativeTo: this.activatedRoute } )
+      this.router.navigate( ['/home'], { relativeTo: this.activatedRoute } )
       this.showcomponent().error =false
     }else{
       this.showcomponent().error =true

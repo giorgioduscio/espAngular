@@ -38,7 +38,7 @@ export class LoginComponent {
       imageUrl: randomImage(),
       password: input.password
     })
-    this.router.navigate( ['/Access'], { relativeTo: this.activatedRoute } )
+    this.router.navigate( ['/access'], { relativeTo: this.activatedRoute } )
   }
 
 

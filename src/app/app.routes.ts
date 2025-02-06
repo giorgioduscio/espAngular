@@ -12,24 +12,25 @@ import { MessagesComponent } from './pages/chat/messages/messages.component';
 import { CartComponent } from './pages/shops/cart/cart.component';
 import { ShopsComponent } from './pages/shops/shops.component';
 import { ProductsComponent } from './pages/shops/products/products.component';
+import { buildSmartRouter } from './tools/buildSmartRouter';
 
-export const routes :Routes |any[] =[
-  { show:false, path: 'Home', component: HomeComponent },
-  { show:true, path: 'Hierarchy', component: HierarchyComponent },
-  { show:true, path: 'Dashboard', component: DashboardComponent, canActivate:[authGuard] },
-  { show:true, path: 'List', component: ListComponent },
-  { show:false, path: 'Logistic', component: LogisticComponent },
+export const { routes, smartRoutes } =buildSmartRouter([
+  { path: 'home', component: HomeComponent },
+  { show:true, path: 'hierarchy', component: HierarchyComponent },
+  { show:true, path: 'dashboard', component: DashboardComponent, canActivate:[authGuard] },
+  { show:true, path: 'list', component: ListComponent },
+  { path: 'logistic', component: LogisticComponent },
 
   // LOGIN
-  { show:false, path: 'Login', component: LoginComponent },
-  { show:false, path: 'Access', component: AccessComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'access', component: AccessComponent },
   // CHAT
-  { show:true, path: 'Chat', component: ChatComponent },
-    { show:false, path: 'Chat/:chatKey', component: MessagesComponent },
+  { show:true, path: 'chat', component: ChatComponent },
+    { path: 'chat/:chatKey', component: MessagesComponent },
   // SHOPS
-  { show:true, path: 'Cart', component: CartComponent },
-  { show:true, path: 'Shops', component: ShopsComponent},
-    { show:false, path: 'Shops/:id', component: ProductsComponent },
+  { show:true, path: 'cart', component: CartComponent },
+  { show:true, path: 'shops', component: ShopsComponent},
+    { path: 'shops/:id', component: ProductsComponent },
     
-  { show:false, path: '', redirectTo: '/Home', pathMatch: 'full' }
-];
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+])

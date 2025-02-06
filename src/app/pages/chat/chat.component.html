@@ -36,7 +36,7 @@
           
         } @else{
           <img src="{{chat.imageUrl}}" alt="">
-          <a routerLink="/Chat/{{chat.key}}">{{chat.titleChat}}</a>
+          <a routerLink="/chat/{{chat.key}}">{{chat.titleChat}}</a>
           <mat-icon class="handleClick" (click)="handleClick(chat.key!, $event)">settings</mat-icon>
         }
         </div>
