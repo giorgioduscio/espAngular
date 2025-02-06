@@ -9,26 +9,15 @@ import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDef
 import { HomeService } from './home.service';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { RouterModule } from '@angular/router';
+import { HomeDirective } from './home.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    NgIf,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
-    NgStyle,
-    CommonModule,
-    NavbarComponent
-],
+  imports: [ RouterModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule,
+    NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgStyle,
+    CommonModule, NavbarComponent, HomeDirective
+  ],
 
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css','./homeResponsive.component.css'],

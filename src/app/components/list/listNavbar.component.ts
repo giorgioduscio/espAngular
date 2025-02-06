@@ -1,10 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
-import { ListService } from '../../services/list.service';
-import { FormsModule, NgForm } from '@angular/forms';
-import { List } from '../../interfaces/list';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { NavChatComponent } from "../chat/nav-chat/nav-chat.component";
-import { NavbarComponent } from "../navbar/navbar.component";
 import { MatIcon } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { routes } from '../../app.routes';
