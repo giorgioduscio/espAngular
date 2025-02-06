@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<article class="text-bg-dark">
+<article>
   <main class="container">
 
     <!-- LOGO -->
@@ -12,7 +12,7 @@
     
     <!-- INSERIMENTO -->
     <header class="container">
-      <h1>Lista</h1>
+      <h1>{{ 'listaDelleCoseDaFare' | paragraph }}</h1>
       <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)" class="d-flex align-items-center">
         <input 
           class="form-control form-control-sm "
@@ -31,8 +31,8 @@
     </header>
   
     <!-- TABELLA -->
-    <div class="container">
-      <table class="table table-responsive-sm align-middle table-dark">
+    <div class="container table-responsive-sm">
+      <table class="table align-middle table-dark">
         <tbody>
           <tr *ngFor="let item of listService.list(); let i =index">
             <td>

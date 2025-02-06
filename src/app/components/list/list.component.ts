@@ -5,11 +5,12 @@ import { NavbarComponent } from "../navbar/navbar.component";
 import { MatIcon } from '@angular/material/icon';
 import { ListService } from '../../services/list.service';
 import { List } from '../../interfaces/list';
+import { ParagraphPipe } from './paragraph.pipe';
 
 @Component({
   selector: 'app-listService',
   standalone: true,
-  imports: [FormsModule, NgFor, MatIcon, NavbarComponent],
+  imports: [FormsModule, NgFor, MatIcon, NavbarComponent, ParagraphPipe],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
