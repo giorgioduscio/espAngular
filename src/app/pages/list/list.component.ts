@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { MatIcon } from '@angular/material/icon';
 import { ListService } from '../../services/list.service';
 import { List } from '../../interfaces/list';

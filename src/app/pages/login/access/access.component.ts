@@ -4,9 +4,9 @@ import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { User } from '../../../interfaces/user';
-import { NavbarComponent } from "../../navbar/navbar.component";
 import { AuthService } from '../../../auth/auth.service';
 import { MatIcon } from '@angular/material/icon';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-access',

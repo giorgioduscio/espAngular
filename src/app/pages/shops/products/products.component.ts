@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../../services/products.service';
 import { NgFor } from '@angular/common';
 import { ProductCardComponent } from './product-card/product-card.component';
-import { NavbarComponent } from "../../navbar/navbar.component";
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [
-    NgFor,
-    ProductCardComponent,
-    NavbarComponent
-],
+  imports: [NgFor, ProductCardComponent, NavbarComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

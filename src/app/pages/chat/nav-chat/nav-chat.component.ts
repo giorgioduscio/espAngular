@@ -1,18 +1,18 @@
-import { Component, Input, signal, WritableSignal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routes } from '../../../app.routes';
 import { NgIf } from '@angular/common';
-import { DropdownComponent } from "../../navbar/dropdown/dropdown.component";
 import { MatIcon } from '@angular/material/icon';
 import { ChatService } from '../../../services/chat.service';
-import { ProfileComponent } from "../../navbar/profile/profile.component";
+import { DropdownComponent } from '../../../components/navbar/dropdown/dropdown.component';
+import { ProfileComponent } from '../../../components/navbar/profile/profile.component';
 
 @Component({
   selector: 'app-nav-chat',
   standalone: true,
   imports: [RouterModule, NgIf, DropdownComponent, MatIcon, ProfileComponent],
   templateUrl: './nav-chat.component.html',
-  styleUrls: ['./nav-chat.component.css','../../navbar/navbar.component.css']
+  styleUrls: ['./nav-chat.component.css','../../../components/navbar/navbar.component.css']
 })
 
 export class NavChatComponent {

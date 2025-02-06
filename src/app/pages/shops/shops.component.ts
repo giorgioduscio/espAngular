@@ -3,20 +3,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
-import { NavChatComponent } from "../chat/nav-chat/nav-chat.component";
-import { NavbarComponent } from "../navbar/navbar.component";
+import { NavChatComponent } from '../../pages/chat/nav-chat/nav-chat.component';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-shops',
   standalone: true,
-  imports: [
-    NgFor,
-    NgIf,
-    RouterModule,
-    FormsModule,
-    NavChatComponent,
-    NavbarComponent
-],
+  imports: [ NgFor, NgIf, RouterModule, FormsModule, NavChatComponent, NavbarComponent],
   templateUrl: './shops.component.html',
   styleUrl: './shops.component.css'
 })

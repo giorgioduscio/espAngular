@@ -7,7 +7,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { HomeService } from './home.service';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
 import { HomeDirective } from './home.directive';
 

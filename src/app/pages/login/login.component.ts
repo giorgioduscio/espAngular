@@ -1,12 +1,11 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { UsersService } from '../../services/users.service';
-import { SelectRole, User } from '../../interfaces/user';
-import { NavbarComponent } from '../navbar/navbar.component';
+import { User } from '../../interfaces/user';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { randomId, randomImage } from '../chat/autocomp';
-import { AuthService } from '../../auth/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-login',

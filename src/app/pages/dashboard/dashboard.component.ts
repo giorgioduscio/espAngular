@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { NgFor, NgIf } from '@angular/common';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { User } from '../../interfaces/user';
 
 @Component({

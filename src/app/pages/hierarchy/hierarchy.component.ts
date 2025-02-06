@@ -1,12 +1,12 @@
 import { Component, effect } from '@angular/core';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { HierarchyService } from './hierarchy.service';
 import { List } from '../../interfaces/list';
-import { randomString } from '../chat/autocomp';
 import { NgFor } from '@angular/common';
 import { HierarchyAComponent } from "./hierarchyA.component";
 import { HierarchyBComponent } from "./hierarchyB.component";
 import { MatIcon } from '@angular/material/icon';
+import { randomString } from '../../tools/randomCompiler';
 
 @Component({
   selector: 'app-hierarchy',
