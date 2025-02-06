@@ -1,26 +1,36 @@
+article>div{
+  max-width: max-content;
+  margin: auto;
+}
+button{
+  padding: 5px;
+  display: grid;
+  align-items: center;
+}
+
+
+header{
+  display: flex;
+}
 main{
-    padding: 10px;
-    min-height: 100px;
+  padding: 10px;
+  min-height: 100px;
 
-    background: var(--st);
-    border: 1px solid;
-    border-radius: 5px;
+  background: var(--st);
+  border: 1px solid;
+  border-radius: 5px;
 }
-.childs{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-.box{
+  .grid{
     padding: 10px 0;
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-}
+    max-width: max-content;
 
-input{
-    margin-bottom: 5px;
-    
-    color: var(--c5);
-    border: 1px solid;
-    background: transparent;
-}
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+  }
+  .childs{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-evenly;
+    gap: 10px;
+  }

@@ -1,62 +1,61 @@
-    /* TODO NAVBAR */
+  /* TODO NAVBAR */
 nav{
-    width: clamp(300px, 100%, 1000px);
-    height: 50px;
-    margin: auto;
-    padding: 0 10px;
-    top: 0;
+  width: clamp(300px, 100%, 1000px);
+  height: 50px;
+  margin: auto;
+  padding: 0 10px;
+  top: 0;
 
-    position: fixed;
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    align-items: center;
-    justify-items: start;
-    gap: 10px;
+  position: fixed;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  justify-items: start;
+  gap: 10px;
 
-    background: var(--c3);
+  background: var(--c3);
 }
-    .titleChat{
-        max-width: 150px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space:initial;
-        text-align: center;
-    }
-    nav img{
-        object-fit: cover;
-        height: 40px;
-        width: 40px;
-        border-radius: 50px;
-    }
+  .titleChat{
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:initial;
+    text-align: center;
+  }
+  nav img{
+    object-fit: cover;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+  }
 
-    /* TODO INPUT */
+  /* TODO INPUT */
 form{
-    width: 100%;
-    padding: 5px;
+  width: 100%;
+  padding: 5px;
 
-    position: fixed;
-    bottom: 0;
-    background: var(--c1);
+  position: fixed;
+  bottom: 0;
+  background: var(--c1);
 }
-    form>div{
-        max-width: 300px;
-        margin: auto;
+  form>div{
+    max-width: 300px;
+    margin: auto;
 
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 5px;
-    }
-    form>div>*{
-        border-radius: 50px;
-        background: var(--c3);
-        color: var(--c5);
-    }
-    form input{ padding: 10px 20px; }
-    form button:disabled{ background: var(--st); }
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px;
+  }
+  form>div>*{
+    border-radius: 50px;
+    background: var(--c3);
+    color: var(--c5);
+  }
+  form button:disabled{ background: var(--st); }
 
 /* computer */
 @media only screen and (min-width:500px) {
 nav, form{
-    position: static;
+  position: static;
 }
 }

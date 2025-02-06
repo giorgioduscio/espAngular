@@ -4,7 +4,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { authGuard } from './auth/auth.guard';
 import { ListComponent } from './pages/list/list.component';
 import { HierarchyComponent } from './pages/hierarchy/hierarchy.component';
-import { LogisticComponent } from './pages/logistic/logistic.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AccessComponent } from './pages/login/access/access.component';
 import { ChatComponent } from './pages/chat/chat.component';
@@ -19,7 +18,6 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { show:true, path: 'hierarchy', component: HierarchyComponent },
   { show:true, path: 'dashboard', component: DashboardComponent, canActivate:[authGuard] },
   { show:true, path: 'list', component: ListComponent },
-  { path: 'logistic', component: LogisticComponent },
 
   // LOGIN
   { path: 'login', component: LoginComponent },

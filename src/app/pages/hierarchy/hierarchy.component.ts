@@ -14,36 +14,40 @@ import { randomString } from '../../tools/randomCompiler';
   imports: [MatIcon, NgFor, NavbarComponent, HierarchyAComponent, HierarchyBComponent],
   // FIX HTML
   template: `
-  <app-navbar></app-navbar>
-  <article><div>
+  <article>
+    <app-navbar></app-navbar>
+    <div>
 
-    <main class="hierarchy">
-      <h2>Main</h2>
-      <button (click)="onAdd()" class="round"><span class="icon">+</span> add</button>
+      <main class="hierarchy">
+        <header>
+          <h2>Main</h2>
+          <button class="btn btn-outline-success" (click)="onAdd()"><mat-icon>add</mat-icon></button>
+        </header>
 
-      <div class="box">@for (item of localList; track item; let i=$index){
-        <button (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
-        <input 
-          type="checkbox" 
-          name="complete"
-          [checked]="item.complete" 
-          (change)="onPatch(item,$event)"
-        >
-        <input 
-          type="text" 
-          name="title"
-          [value]="item.title"
-          (change)="onPatch(item,$event)"
-        >
-      }</div>
+        <div class="grid">@for (item of localList; track item; let i=$index){
+          <button class="btn btn-outline-danger" (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
+          <input class="form-check-input" 
+            type="checkbox" 
+            name="complete"
+            [checked]="item.complete" 
+            (change)="onPatch(item,$event)"
+          >
+          <input class="form-control text-bg-dark" 
+            type="text" 
+            name="title"
+            [value]="item.title"
+            (change)="onPatch(item,$event)"
+          >
+        }</div>
 
-      <div class="childs">
-        <app-hierarchyA></app-hierarchyA>
-        <app-hierarchyB></app-hierarchyB>
-      </div>
-    </main>
+        <div class="childs">
+          <app-hierarchyA></app-hierarchyA>
+          <app-hierarchyB></app-hierarchyB>
+        </div>
+      </main>
 
-  </div></article>
+    </div>
+  </article>
   `,
   styleUrl: './hierarchy.component.css',
 })

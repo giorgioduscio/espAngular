@@ -13,18 +13,20 @@ import { randomString } from '../../tools/randomCompiler';
   // FIX HTML
   template: `
     <main class="hierarchy">
-      <h2>BB</h2>
-      <button (click)="onAdd()" class="round"><span class="icon">+</span> add</button>
+      <header>
+        <h2>BB</h2>
+        <button class="btn btn-outline-success" (click)="onAdd()"><mat-icon>add</mat-icon></button>
+      </header>
 
-      <div class="box">@for (item of localList; track item; let i=$index){ 
-        <button (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
-        <input 
+      <div class="grid">@for (item of localList; track item; let i=$index){ 
+        <button class="btn btn-outline-danger" (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
+        <input class="form-check-input" 
           type="checkbox" 
           name="complete"
           [checked]="item.complete" 
           (change)="onPatch(item,$event)"
         >
-        <input 
+        <input class="form-control text-bg-dark" 
           type="text" 
           name="title"
           [value]="item.title"

@@ -9,10 +9,10 @@
         <p class="description">{{ product.description }}</p>
       </div>
       <div class="amount">
-        <button (click)="increment()" class="operation">+</button>
-        <button class="operation">{{ amount() }}</button>
-        <button (click)="decrement()" class="operation">-</button>
-        <button (click)="addToCart()" class="cart">Cart</button>
+        <button class="btn btn-secondary"  (click)="increment()" class="operation">+</button>
+        <button class="btn btn-secondary"  class="operation">{{ amount() }}</button>
+        <button class="btn btn-secondary"  (click)="decrement()" class="operation">-</button>
+        <button class="btn btn-secondary"  (click)="addToCart()" class="cart">Cart</button>
       </div>
     </section>
 

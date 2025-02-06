@@ -1,55 +1,52 @@
-    /* TODO FILTRO   */
+  /* TODO FILTRO   */
 
 header{
-    padding: 50px;
+  padding: 50px;
 }   
 .filterCard{
-    min-width: 200px;
-    max-width: 300px;
-    padding: 10px;
-    margin: auto;
+  min-width: 200px;
+  max-width: 300px;
+  padding: 10px;
+  margin: auto;
 
-    border-radius: 10px;
-    background: var(--c5);
-    color: var(--c1);
-}
-.filterCard input{
-    width: 100%;
-    color: var(--c5);
+  border-radius: 10px;
+  background: var(--c5);
+  color: var(--c1);
 }
 
-    /* TODO SHOPS */
+
+  /* TODO SHOPS */
 .shopsContainer{
-    padding: 30px 10px;
+  padding: 30px 10px;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
 }
 a:hover{ box-shadow: 0 0 20px var(--c3); }
 
 .card {
-    width: 250px;
-    height: 100%;
+  width: 250px;
+  height: 100%;
 
-    overflow: hidden;
-    border-radius: 10px;
-    background: var(--c2);
-    color: var(--c5);
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--c2);
+  color: var(--c5);
 }
 .card img{
-    height: 150px;
-    width: 100%;
-    object-fit: cover;
-    background: linear-gradient(30deg, var(--c3), var(--c2));
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+  background: linear-gradient(30deg, var(--c3), var(--c2));
 }
 .card .text{
-    margin: 10px;
+  margin: 10px;
 }
 .text>p{
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 

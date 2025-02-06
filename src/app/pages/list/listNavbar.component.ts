@@ -15,7 +15,7 @@ import { routes } from '../../app.routes';
   <nav class="navbar navbar-expand-sm bg-primary sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" routerLink="/">Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="btn btn-secondary"  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 

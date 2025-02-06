@@ -20,7 +20,7 @@ import { HomeDirective } from './home.directive';
   ],
 
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css','./homeResponsive.component.css'],
+  styleUrls: ['./home.component.css'],
 })
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{

@@ -23,13 +23,13 @@
 
     <form #form="ngForm" (submit)="onAddMessage(form)">
       <div>
-        <input
+        <input class="form-control text-bg-dark"
           type="text" 
           name="message"
           placeholder="Messaggio" 
           ngModel required
         >
-        <button type="submit" [disabled]="form.invalid">
+        <button class="btn btn-secondary"  type="submit" [disabled]="form.invalid">
           <mat-icon class="newGroup">publish</mat-icon>
         </button>
       </div>

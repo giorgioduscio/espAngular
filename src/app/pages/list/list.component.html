@@ -14,16 +14,14 @@
     <header class="container">
       <h1>{{ 'listaDelleCoseDaFare' | paragraph }}</h1>
       <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)" class="d-flex align-items-center">
-        <input 
-          class="form-control form-control-sm "
+        <input class="form-control text-bg-dark" 
           type="text" 
           name="title" 
           id="title" 
           placeholder="Inserisci azione"
           required ngModel
         >
-        <button 
-          class="btn btn-secondary "
+        <button class="btn btn-secondary"  
           type="submit" 
           [disabled]="formdata.invalid"
         > <mat-icon>add</mat-icon> </button>
@@ -36,7 +34,7 @@
         <tbody>
           <tr *ngFor="let item of listService.list(); let i =index">
             <td>
-              <input 
+              <input class="form-check-input" 
                 (change)="onPatch($event, i)" 
                 type="checkbox" 
                 id="complete" 
@@ -45,16 +43,15 @@
               >
             </td>
             <td>
-              <input 
+              <input class="form-control text-bg-dark" 
                 (change)="onPatch($event, i)" 
                 type="text" 
                 id="title" 
                 [placeholder]="item.title" 
-                class="form-control "
               >
             </td>
             <td>
-              <button (click)="onDelete(i)" class="btn btn-danger">
+              <button class="btn btn-danger" (click)="onDelete(i)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

@@ -1,53 +1,52 @@
 <app-navbar></app-navbar>
 <article>
   <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" alt="angular logo">
-    <h1 appHome>Laboratorio Angular</h1>
-    <p>Benvenuto nel laboratorio del procione! Qui troverai numerose applicazioni in fase di sviluppo create per scopo didattiche</p>
-    <a href="https://material.angular.io/components/categories"> 
-      <button>Angular site</button> 
-    </a>
+    <div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" alt="angular logo">
+      <h1 appHome>Laboratorio Angular</h1>
+      <p>Benvenuto nel laboratorio del procione! Qui troverai numerose applicazioni in fase di sviluppo create per scopo didattiche</p>
+      <a class="btn btn-secondary" href="https://material.angular.io/components/categories"> Angular site </a>
+    </div>
   </header>
 
-  <section>
+  <section class="container">
     <h3>Ecco alcuni esperimenti che potrai trovare...</h3>
     <main class="box">
-      <div *ngFor="
-          let card of cards; 
-          index as index; count as count; 
-          first as first; last as last
-          even as even; odd as odd
-        ">
-        <img [src]="card.imgUrl" [alt]="card.title">
-        <a routerLink="/{{card.title}}">Visita</a>
+      <div class="card text-bg-dark" *ngFor="
+        let card of cards; 
+        index as index; count as count; 
+        first as first; last as last
+        even as even; odd as odd
+      ">
         <ng-template *ngIf="isVisible; then show else error"></ng-template>
-        <ng-template #show> 
-          <div class="text">
-            <h2>{{ card.title| uppercase }}</h2> 
-            <p>{{card.description}} </p> 
-            <button (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
+        <ng-template #show>
+          <img [src]="card.imgUrl" [alt]="card.title" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{ card.title| uppercase }}</h5>
+            <p class="card-text">{{ card.description }}</p>
+            <button class="btn btn-primary" (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
           </div>
         </ng-template>
-        <ng-template #error> 
-          <div class="text">
-            <p>Ops! Hai nascosto tutto...</p>
+        <ng-template #error>
+          <div class="card-body">
+            <p class="card-text">Ops... hai nascosto tutto</p>
           </div>
         </ng-template>
       </div>
 
-      <div>
-        <div class="text">
-          <h2>Scrivi qualcosa</h2>
-          <p>(Two way binding)</p>
-          
-          <input type="text" [(ngModel)]="text" (change)="handleChange()"/>
-          <button (click)="onClick()">{{ text==='' ?'Vuoto' :text }}</button> 
-          <div [ngSwitch]="text">
-            <p *ngSwitchCase="'alpha'">{{text}} è stato previsto</p>
-            <p *ngSwitchCase="'beta'">{{text}} è stato previsto</p>
-            <p *ngSwitchCase="'gamma'">{{text}} è stato previsto</p>
-            <p *ngSwitchDefault>ngSwitch (prova a scrivere: alpha, beta o gamma)</p>
-          </div>
+      <div class="card text-bg-dark">
+        <div class="card-body">
+          <h5 class="card-title">Scrivi qualcosa</h5>
+          <p class="card-text">(Two way binding)</p>
+          <input class="form-control text-bg-dark" type="text" [(ngModel)]="text" (change)="handleChange()"/>
+
+          <button class="btn btn-secondary"  (click)="onClick()">{{ text==='' ?'Vuoto' :text }}</button> 
+            <div [ngSwitch]="text">
+              <p *ngSwitchCase="'alpha'">{{text}} è stato previsto</p>
+              <p *ngSwitchCase="'beta'">{{text}} è stato previsto</p>
+              <p *ngSwitchCase="'gamma'">{{text}} è stato previsto</p>
+              <p *ngSwitchDefault>ngSwitch (prova a scrivere: alpha, beta o gamma)</p>
+            </div>
         </div>
       </div>
 

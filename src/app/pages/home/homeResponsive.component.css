@@ -1,8 +1,0 @@
-@media only screen and (max-width:600px){
-    .box>*{
-        width: 100%;
-        border-radius: 0;
-        border: 0;
-    }
-
-}  

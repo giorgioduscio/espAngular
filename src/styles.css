@@ -11,113 +11,58 @@ html, body{
   background: var(--c1) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
+article{
+  min-height: 100vh;
+}
 *{
   box-sizing: border-box;
   gap: 5px;
-  margin: 0;
-  font-size: 15px;
   transition: 0.3s;
   outline: none;
   color: var(--c5);
 }
 
-article{ padding: 50px 0; }
-  article>div{
-    width: min(100%, 1000px);
-    margin: 0 auto;
-  }
 
+/* INPUT */
+label{ 
+  font-style: italic; 
+}
+/* 
 input[type="text"], 
 input[type="number"], 
 input[type="email"], 
 input[type="password"], 
+input[type="date"], 
 textarea, 
 select{
   width: min(100%, 300px);
-  padding: 5px 10px;
+  padding: 10px;
   outline: 0;
 
-  background: var(--c5);
-  color: var(--c1);
+  background: transparent;
+  color: var(--c5);
   font-weight: bolder;
   border-radius: 5px;
-  border: 1px solid;
+  border: 1px solid var(--c5) !important;
   resize: none;
   font-family: inherit;
   border: 0;
-} 
-textarea::placeholder,input::placeholder{ 
+}  
+*::placeholder{ 
+  position: absolute;
+  top: 50%;
+  left: 10px;
+
   font-style: italic;
   font-weight: normal;
   color: inherit; 
+  transform: translateY(-50%); 
+  transition: all 0.3s ease; 
+  pointer-events: none; 
 }
-label{ font-style: italic; }
-
-
-button{
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  align-content: center;
-
-  background: var(--c5);
-  border: 0;
-  border-radius: 5px;
+*:hover::placeholder, *:focus::placeholder {
+  right: 10px;
+  left: auto;
+  color: var(--c3);
 }
-  button:hover{
-    background: var(--c2);
-    color: var(--c5);
-  }
-  button:disabled{
-    background: var(--st);
-  }
-
-.mat-icon{ display: inline-table; }
-a{
-  color: inherit;
-  text-decoration: none;
-  font-weight: bold;
-} 
-  a:hover{
-    color: var(--c3);
-  }
-
-
-.flexbox{
-  display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  align-items: center;
-}
-.round{
-  padding: 0 10px 0 0;
-  border-radius: 50px;
-
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-
-  background: var(--c5);
-  color: var(--c1);
-  border-radius: 50px;
-}
-  .round .icon{
-    padding: 3px;
-    display: inline-table;
-    background: var(--st);
-    border-radius: 50px;
-  }
-.slider{
-  min-width: 300px;
-  overflow-x: scroll;
-  display: flex;
-  gap: 10px;
-  scroll-snap-type: x mandatory;
-}
-  .slider>*{
-    width: 250px;
-
-    flex-shrink: 0;
-    position: relative;
-    scroll-snap-align: center;
-  }
+*/

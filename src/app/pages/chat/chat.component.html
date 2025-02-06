@@ -14,13 +14,13 @@
       *ngIf="!editMode().active"
     >
       <div>
-        <input
+        <input class="form-control text-bg-dark"
           type="text" 
           name="input"
           placeholder="Nuovo gruppo" 
           ngModel required
         >
-        <button type="submit" [disabled]="groupForm.invalid">
+        <button class="btn btn-secondary"  type="submit" [disabled]="groupForm.invalid">
           <mat-icon class="newGroup">add</mat-icon>
         </button>
       </div>

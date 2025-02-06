@@ -13,7 +13,7 @@
                 <td class="content">
                     <p>Quantità: <strong>{{ product.amount }}</strong></p>
                     <p>Prezzo: <strong>{{ product.price *product.amount }}€</strong></p>
-                    <button (click)="deleteFunction(i)">Rimuovi</button>
+                    <button class="btn btn-secondary"  (click)="deleteFunction(i)">Rimuovi</button>
                 </td>
             </tr>
         </tbody>
@@ -22,7 +22,7 @@
 
     <aside>
         <h3 style="text-align: center;">Strumenti</h3>
-        <button>Ordina</button>
+        <button class="btn btn-secondary" >Ordina</button>
     </aside>
 </div>
 </article>

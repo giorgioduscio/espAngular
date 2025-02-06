@@ -1,13 +1,13 @@
-<app-navbar></app-navbar>
 <article>
+  <app-navbar></app-navbar>
   <div>
+    <h1 style="text-align: center;">Iscriviti</h1>
     <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-      <h1>Iscriviti</h1>
-      <input type="text" name="username" placeholder="Username" ngModel required>
-      <input type="email" name="email" placeholder="Email" ngModel required email>
-      <input type="password" name="password" placeholder="Password" ngModel required>    
+      <input class="form-control text-bg-dark" type="text" name="username" placeholder="Username" ngModel required>
+      <input class="form-control text-bg-dark" type="email" name="email" placeholder="Email" ngModel required email>
+      <input class="form-control text-bg-dark" type="password" name="password" placeholder="Password" ngModel required>    
       <p>Hai già un profilo? <a routerLink="/access">Accedi</a></p>
-      <div> <button type="submit" [disabled]="form.invalid">Invio</button> </div>
+      <div> <button class="btn btn-secondary" type="submit" [disabled]="form.invalid">Invio</button> </div>
     </form>
   </div>
 </article>

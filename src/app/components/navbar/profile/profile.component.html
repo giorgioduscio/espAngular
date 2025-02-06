@@ -8,11 +8,11 @@
 
   <div class="dropContent">
     @if (localeUser===undefined){ 
-      <button routerLink="/login">Login</button> 
-      <button routerLink="/access">Accedi</button> 
+      <button class="btn btn-secondary"  routerLink="/login">Login</button> 
+      <button class="btn btn-secondary"  routerLink="/access">Accedi</button> 
 
     }@else{ 
-      <button (click)="onResetLocalUser()">Esci</button>
+      <button class="btn btn-secondary"  (click)="onResetLocalUser()">Esci</button>
     }
   </div>
 </details>

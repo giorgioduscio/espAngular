@@ -1,14 +1,14 @@
-article>div{
-    width: 300px;
-    padding: 10px;
-    box-shadow: 0 0 20px black;
+article{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: center;
 }
+  article>div{
+    min-width: 300px;
+    max-width: min-content;
+    margin: auto;
+  }
+  
 form{
-    display: grid;
-}
-h2{ text-align: center; }
-.error{ color: red; }
-button{
-    padding: 5px 10px;
-    color: var(--c3);
+  display: grid;
 }

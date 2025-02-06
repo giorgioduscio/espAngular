@@ -16,7 +16,6 @@ import { HierarchyBBComponent } from "./hierarchyBB.component";
 
       <div class="childs">
         <app-hierarchyBB></app-hierarchyBB>
-        <main></main>
       </div>
     </main>
   `,
