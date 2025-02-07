@@ -5,7 +5,7 @@ import { authGuard } from './auth/auth.guard';
 import { ListComponent } from './pages/list/list.component';
 import { HierarchyComponent } from './pages/hierarchy/hierarchy.component';
 import { LoginComponent } from './pages/login/login.component';
-import { AccessComponent } from './pages/login/access/access.component';
+import { AccessComponent } from './pages/login/access.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { MessagesComponent } from './pages/chat/messages/messages.component';
 import { CartComponent } from './pages/shops/cart/cart.component';
@@ -23,11 +23,11 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'login', component: LoginComponent },
   { path: 'access', component: AccessComponent },
   // CHAT
-  { show:true, path: 'chat', component: ChatComponent },
+  { show:false, path: 'chat', component: ChatComponent },
     { path: 'chat/:chatKey', component: MessagesComponent },
   // SHOPS
-  { show:true, path: 'cart', component: CartComponent },
-  { show:true, path: 'shops', component: ShopsComponent},
+  { show:false, path: 'cart', component: CartComponent },
+  { show:false, path: 'shops', component: ShopsComponent},
     { path: 'shops/:id', component: ProductsComponent },
     
   { path: '', redirectTo: '/home', pathMatch: 'full' },

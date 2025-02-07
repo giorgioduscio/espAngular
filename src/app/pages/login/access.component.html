@@ -1,13 +1,13 @@
 <article>
   <app-navbar></app-navbar>
   <div>
-    <h1 style="text-align: center;">Iscriviti</h1>
+    <h1 style="text-align: center;">Accedi</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
       @for (item of template; track item; let i=$index){
         <div class="form-floating">
           <input 
-            class="form-control text-light bg-transparent" 
+            class="form-control" 
             [type]="item.type" 
             [id]="item.key" 
             [placeholder]="item.title"
@@ -15,7 +15,7 @@
           > <label [for]="item.key">{{ item.title }}</label>
         </div>
       }
-      <p>Hai già un profilo? <a routerLink="/access">Accedi</a></p>
+      <p>Non hai ancora un profilo? <a routerLink="/login">Login</a></p>
       <div> <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Invio</button> </div>
     
     </form>

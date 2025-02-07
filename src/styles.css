@@ -27,42 +27,9 @@ article{
 label{ 
   font-style: italic; 
 }
-/* 
-input[type="text"], 
-input[type="number"], 
-input[type="email"], 
-input[type="password"], 
-input[type="date"], 
-textarea, 
-select{
-  width: min(100%, 300px);
-  padding: 10px;
-  outline: 0;
 
-  background: transparent;
-  color: var(--c5);
-  font-weight: bolder;
-  border-radius: 5px;
-  border: 1px solid var(--c5) !important;
-  resize: none;
-  font-family: inherit;
-  border: 0;
-}  
-*::placeholder{ 
-  position: absolute;
-  top: 50%;
-  left: 10px;
-
-  font-style: italic;
-  font-weight: normal;
-  color: inherit; 
-  transform: translateY(-50%); 
-  transition: all 0.3s ease; 
-  pointer-events: none; 
+/* PULSANTI */
+a{
+  text-underline-offset: 5px;
+  font-style: italic; 
 }
-*:hover::placeholder, *:focus::placeholder {
-  right: 10px;
-  left: auto;
-  color: var(--c3);
-}
-*/

@@ -1,3 +1,5 @@
+@import url(../../../customFloatingLabel.css);
+
 article{
   display: grid;
   grid-template-rows: auto 1fr;
@@ -7,8 +9,12 @@ article{
     min-width: 300px;
     max-width: min-content;
     margin: auto;
+    padding: 10px;
+    border-radius: 10px;
   }
   
 form{
   display: grid;
+  gap: 10px;
 }
+

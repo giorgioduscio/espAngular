@@ -15,8 +15,8 @@ import { randomString } from '../../tools/randomCompiler';
   template: `
     <main class="hierarchy">
       <header>
-        <h2>A</h2>
         <button class="btn btn-outline-success" (click)="onAdd()"><mat-icon>add</mat-icon></button>
+        <h2>A</h2>
       </header>
 
       <div class="grid">@for (item of localList; track item; let i=$index){ 
