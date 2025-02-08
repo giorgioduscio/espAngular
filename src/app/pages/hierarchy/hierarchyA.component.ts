@@ -27,7 +27,7 @@ import { randomString } from '../../tools/randomCompiler';
           [checked]="item.complete" 
           (change)="onPatch(item,$event)"
         >
-        <input class="form-control text-bg-dark" 
+        <input class="form-control" 
           type="text" 
           name="title"
           [value]="item.title"

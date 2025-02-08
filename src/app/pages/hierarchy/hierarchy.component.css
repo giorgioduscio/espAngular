@@ -4,8 +4,7 @@ article>div{
 }
 button{
   padding: 5px;
-  display: grid;
-  align-items: center;
+  display: flex;
 }
 
 
@@ -27,6 +26,7 @@ main{
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
+    gap: 10px;
   }
   .childs{
     display: flex;

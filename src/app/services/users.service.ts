@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { SelectRole, User } from '../interfaces/user';
+import { User } from '../interfaces/user';
 import { mapper } from '../tools/mapper';
 
 @Injectable({
@@ -8,32 +8,37 @@ import { mapper } from '../tools/mapper';
 })
 export class UsersService {
   private url ="https://users-b9804-default-rtdb.europe-west1.firebasedatabase.app/users"
-  constructor(private http: HttpClient) {}
   users =signal<User[]>([])
+  constructor(private http: HttpClient){
+    this.getUsers()
+  }
 
   getUsers(){
     this.http.get(this.url +'.json').subscribe(((res:any)=>{
       this.users.set( mapper(res) )
+      // console.log("get",this.users());
     }))
   }
-  addUser(body:User){
-    this.http.post( this.url+".json", body ).subscribe((res:any)=>{
-      this.users().push( {...body, key: res.name} ) 
-      console.log("addUser",this.users()[ this.users().length-1 ]);
+  addUser(user:User){
+    this.http.post( this.url+".json", user ).subscribe((res:any)=>{
+      this.getUsers()
+
+      setTimeout(()=> console.log("addUser",this.users()[ this.users().length-1 ]), 1000);
     })  
   }
-  deleteUser(key:string){
+  deleteUser(i:number){
+    let key =this.users()[i].key
     this.http.delete(`${this.url}/${key}.json`).subscribe((res:any)=>{
-      this.users.set(this.users() .filter(user=>user.key!=key))
+      this.getUsers()
+      console.log("deleteUser",this.users());
     })
-    console.log("deleteUser",this.users());
   }
-  patchUser(key:string, body:User){
-    delete body.key
-    this.http.put(`${this.url}/${key}.json`, body).subscribe((res:any)=>{
-      let index =this.users() .indexOf(body)
-      this.users()[index]=res
-      console.log("patchUser",this.users()[index]);
+  patchUser(i:number, user:User){
+    let key =this.users()[i].key
+    this.http.put(`${this.url}/${key}.json`, user).subscribe((res:any)=>{
+      this.getUsers()
+
+      setTimeout(()=> console.log("patchUser", this.users()[i]), 1000);
     })
   }
 }

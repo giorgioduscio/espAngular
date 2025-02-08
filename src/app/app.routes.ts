@@ -16,7 +16,7 @@ import { buildSmartRouter } from './tools/buildSmartRouter';
 export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'home', component: HomeComponent },
   { show:true, path: 'hierarchy', component: HierarchyComponent },
-  { show:true, path: 'dashboard', component: DashboardComponent, canActivate:[authGuard] },
+  { show:true, path: 'dashboard', component: DashboardComponent },
   { show:true, path: 'list', component: ListComponent },
 
   // LOGIN

@@ -1,39 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { NgFor, NgIf } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
-import { User } from '../../interfaces/user';
+import { RolesValues, User } from '../../interfaces/user';
+import { ParagraphPipe } from '../list/paragraph.pipe';
+import { MatIcon } from '@angular/material/icon';
+import inputType from '../../tools/inputType';
+import fieldsFilter from '../../tools/fieldsFilter';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    FormsModule,
-    NgFor, NgIf,
-    NavbarComponent,
-],
+  imports: [ FormsModule, NgFor, NgIf, NavbarComponent, ParagraphPipe, MatIcon, RouterModule ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 
 export class DashboardComponent{
-  users! :User[] |any[]
-  userKeys! :string[]
+  userKeys :(keyof User)[] |undefined
+  rolesValues =[...RolesValues]
+  it =inputType
 
-  constructor(private usersService: UsersService){
+  constructor(public usersService: UsersService){
     document.title ='Dashboard'
+    effect(()=>{
+      if(usersService.users().length) this.userKeys =
+        Object.keys(usersService.users()[0])
+        .filter(k=>k!=='key' && k!=='password') 
+        .map(k=>k as keyof User)
+        
+      // console.log(this.userKeys, usersService.users());
+    })
+  }
 
-    // this.usersService.getUsers().subscribe((responce:any)=>{
-    //   this.users =Object.keys(responce) .map(key=>{
-    //     responce[key]["firebaseId"]=key
-    //     return responce[key]
-    //   })
-      
-    //   this.userKeys =Object.keys(this.users[0])
-    //     .filter(key =>key!=='imageUrl'&&key!=="id")
-    //   // console.log("users", this.users, );
-    // })
-    
+  onDelete(i:number){
+    if(confirm('Cancellare utente?')) this.usersService.deleteUser(i)
+  }
+  onChange(i:number, key:keyof User, e:Event){
+    const {value, type, checked} =e.target as HTMLInputElement
+    const newValue =type==='checkbox' ?checked :
+                    !isNaN(Number(value)) ?Number(value) :
+                    value
+    const newUser ={ ...this.usersService.users()[i], [key]:newValue }
+
+    // se modifichi una mail ma senza @, non fa la chiamata
+    if(typeof newValue==='string'){
+      if(type==='email' &&!newValue.includes('@')
+      ) alert("Email non valida. Inserire '@'.")
+      else this.usersService.patchUser(i, newUser)
+    }
+  }
+
+  // VISUALIZZAZIONE FILTRATA
+  filter=''
+  show(i:number){
+    let {id, username, email} =this.usersService.users()[i]
+    return fieldsFilter({ id, username, email }, this.filter)
   }
 }

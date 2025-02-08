@@ -14,7 +14,7 @@
     <header class="container">
       <h1>{{ 'listaDelleCoseDaFare' | paragraph }}</h1>
       <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)" class="d-flex align-items-center">
-        <input class="form-control text-bg-dark" 
+        <input class="form-control" 
           type="text" 
           name="title" 
           id="title" 
@@ -43,7 +43,7 @@
               >
             </td>
             <td>
-              <input class="form-control text-bg-dark" 
+              <input class="form-control" 
                 (change)="onPatch($event, i)" 
                 type="text" 
                 id="title" 

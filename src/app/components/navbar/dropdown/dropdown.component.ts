@@ -10,22 +10,26 @@ import { RouterLink } from '@angular/router';
   
   template:`
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" role="button" 
+      data-bs-toggle="dropdown" aria-expanded="false">
       Pagine
     </a>
+    <ul class="dropdown-menu">
     @for (page of routerClone; track $index){
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" 
-          routerLink="/{{page.path}}"
-          >{{ page.path }}
-        </a></li>
-      </ul>
+      <li><a class="dropdown-item" 
+        routerLink="/{{page.path}}"
+        >{{ page.path }}
+      </a></li>
     }
+    </ul>
   </li>
   `,
 })
 export class DropdownComponent {
   // COPIA ROUTER
   routerClone =smartRoutes.filter(p=>p.show)
-
+  constructor(){
+    // console.log(this.routerClone);
+    
+  }
 }

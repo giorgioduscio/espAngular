@@ -26,6 +26,17 @@ article{
 label{ 
   font-style: italic; 
 }
+input.form-control, select.form-select{
+  background: transparent;
+  color: white;
+}
+input.form-control:focus{
+  background: transparent;
+  color: white;
+}
+*::placeholder{
+  color: inherit !important;
+}
 
 /* PULSANTI */
 a{

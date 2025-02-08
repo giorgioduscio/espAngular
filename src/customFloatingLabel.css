@@ -10,11 +10,13 @@
 }
 .form-floating>label{
   height: min-content;
+  max-width: 90%;
   padding: 0;
   margin: 5px 10px;
   background: var(--c1) !important;
   color: inherit ;
 }
+
 
 /* interazione */
 .form-floating>.form-control:focus{
