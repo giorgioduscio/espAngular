@@ -1,24 +1,31 @@
 import { Component } from '@angular/core';
 import { smartRoutes } from '../../../app.routes';
 import { RouterLink } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
-import { closeDropdown } from '../closeDropdown';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [ NgFor, NgIf, RouterLink, MatIcon, ],
-  templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css'
+  imports: [ RouterLink, ],
+
+  
+  template:`
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Pagine
+    </a>
+    @for (page of routerClone; track $index){
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" 
+          routerLink="/{{page.path}}"
+          >{{ page.path }}
+        </a></li>
+      </ul>
+    }
+  </li>
+  `,
 })
 export class DropdownComponent {
   // COPIA ROUTER
-  routerClone =smartRoutes.filter(page=>
-    (page.show) && (page.path !==document.title.toLowerCase())
-  )
-    
-  constructor(){
-    closeDropdown("dropdown")
-  }
+  routerClone =smartRoutes.filter(p=>p.show)
+
 }

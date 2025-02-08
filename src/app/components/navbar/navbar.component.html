@@ -1,14 +1,24 @@
-<nav>
-  <a routerLink="/home" id="logo">
-    <img 
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" 
-      alt="logo" 
-      height="50px" 
-    />
-  </a>
-    
-  <div>
-    <app-dropdown></app-dropdown>
+<nav class="navbar navbar-expand-sm bg-primary" data-bs-theme="dark">
+  <div class="container">
+
+    <a class="navbar-brand" routerLink="/">
+      <img alt="logo" height="40px" 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <app-profile></app-profile>
+
+    <!-- COLLAPSE -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <app-dropdown></app-dropdown>
+
+      </ul>
+
+    </div>
+
   </div>
 </nav>

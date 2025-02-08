@@ -16,7 +16,6 @@ article{
 }
 *{
   box-sizing: border-box;
-  gap: 5px;
   transition: 0.3s;
   outline: none;
   color: var(--c5);

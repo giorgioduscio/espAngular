@@ -3,15 +3,13 @@ import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../interfaces/user';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { closeDropdown } from '../closeDropdown';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ NgIf,RouterModule, MatIconModule, ],
+  imports: [ RouterModule, MatIconModule, ],
   templateUrl: './profile.component.html',
-  styleUrl: '../dropdown/dropdown.component.css'
+  styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
   localeUser :User |undefined =undefined
@@ -20,7 +18,6 @@ export class ProfileComponent {
     effect(()=>{
       this.localeUser =authService.accesserUser()
     })
-    closeDropdown("profileDropdown")
   }
   //todo RESET
   onResetLocalUser(){ this.authService.resetLocalUser() }

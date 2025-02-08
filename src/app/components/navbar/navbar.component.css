@@ -1,29 +1,7 @@
 nav{
-  height: 50px;
   position: sticky;
   top: 0; 
   z-index: 10;
-  padding: 0px 20px;
-  
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 
   background:linear-gradient(2deg, var(--c3), var(--c3), var(--c2));
-  color: var(--c1);
 }
-
-  nav>*{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  nav>div>*{
-    font-size: 20px;
-  }
-    #logo{
-      padding: 0;
-      font-weight: bold;
-      color: var(--c4);
-      cursor: pointer;
-    }    
