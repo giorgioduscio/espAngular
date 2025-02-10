@@ -1,17 +1,13 @@
 <article>
-  <app-nav-chat
-    [editMode]="editMode"
-    [resetEdit]="resetEdit"
-    [onDeleteGroup]="onDeleteGroup"
-  ></app-nav-chat>
+  <app-nav-chat></app-nav-chat>
 
   
   <!--TODO CHATS -->
   <div class="chats">
     <main>
       <div class="chat" *ngFor="let chat of chats; let i =index" [id]="chat.key">
-        @if(editMode().active){ 
-          <div (click)="handleClick(chat.key!)">
+        @if(ems.editMode().active){ 
+          <div (click)="ems.handleClick(chat.key!)">
             <img src="{{chat.imageUrl}}">
             <b>{{chat.titleChat}}</b> 
           </div>
@@ -20,7 +16,7 @@
           <div>
             <img [src]="chat.imageUrl" [alt]="chat.titleChat">
             <a routerLink="/chat/{{chat.key}}">{{chat.titleChat}}</a>
-            <button (click)="handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
+            <button (click)="ems.handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
           </div>
         }
       </div>
@@ -33,7 +29,7 @@
     <div class="input-group">
       <input type="search" class="form-control" placeholder="Nuovo gruppo" 
         aria-label="Example text with button addon" aria-describedby="button-addon1"
-        [readOnly]="editMode().active"
+        [readOnly]="ems.editMode().active"
         name="input" ngModel required>
       <button class="btn btn-outline-light" type="submit" [disabled]="groupForm.invalid">
         <mat-icon class="newGroup">add</mat-icon>

@@ -1,13 +1,13 @@
-@if (editMode().active){
+@if (ems.editMode().active){
   <nav class="editMode">
     <div>
-      <button class="btn" (click)="resetEdit()">
+      <button class="btn" (click)="ems.resetEdit()">
         <mat-icon class="icon">arrow_back</mat-icon>
       </button>
-      <span>{{ editMode().idGroups.length }}</span>
+      <span>{{ ems.editMode().idGroups.length }}</span>
     </div>
     <div>
-      <button class="btn" (click)="onDeleteGroup()">
+      <button class="btn" (click)="ems.onDeleteGroup()">
         <mat-icon class="icon deleteGroup">delete</mat-icon>
       </button>
     </div>

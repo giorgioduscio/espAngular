@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './nav-chat/nav-chat.component';
 import { randomId, randomImage } from './autocomp';
-import { editCounter } from './editCounter';
+import { EditModeService } from './edit-mode.service';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +20,7 @@ import { editCounter } from './editCounter';
 export class ChatComponent {
   //TODO MOSTRA LE CHAT
   chats :Chat[] =[]
-  constructor(private chatService:ChatService){
+  constructor(public ems:EditModeService, private chatService:ChatService){
     document.title ="Chat"
     chatService.getChats()
     effect(()=>{
@@ -45,27 +45,4 @@ export class ChatComponent {
     this.chatService.addChat(body)
   }
 
-  //TODO ELIMINA CHAT
-  onDeleteGroup(){
-    if (confirm('Eliminare il gruppo?')) {
-      this.editMode().idGroups.map(id =>{
-        this.chatService.deleteChat(id) 
-      })
-      this.resetEdit()
-    }
-  }
-
-  // optimize EDIT
-  editMode =signal<{active:boolean,idGroups:string[]}>( {active:false,idGroups:[]} )
-  // QUANDO PREMI PULSANTE EDIT, MANDA IL RISPETTIVO ID
-  handleClick(newId:string){
-    editCounter(this.editMode, newId)
-    console.log('chat', newId);
-  }
-  // RIPRISTINA L'EDIT
-  resetEdit(){
-    this.editMode.set( {active:false,idGroups:[]} )
-    document.querySelectorAll(".selected")
-      .forEach(element =>element.classList.remove("selected"))
-  }
 }
