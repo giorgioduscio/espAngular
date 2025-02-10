@@ -1,0 +1,32 @@
+@import url(../../../../customFloatingLabel.css);
+
+main{
+  margin-bottom: 80px;
+}
+
+form{
+  padding: 10px;
+
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+
+  background: var(--c3);
+  display: grid;
+  justify-content: center;
+  box-shadow: 0 0 10px black;
+}
+  form .form-floating,
+  form [type="submit"]{
+    height: 40px;
+    background: var(--c3);
+  }
+
+/* 
+form
+  .input-group
+    .form-floating
+      input
+      label
+    submit
+*/

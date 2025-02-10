@@ -1,0 +1,40 @@
+.navChat{
+  position: sticky;
+  top: 0;
+
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  
+  background: var(--c3);
+  color: var(--c5);
+  box-shadow: 0 0 20px black;
+}
+  .navChat>div{
+    display: flex;
+  }
+    .navChat>div>*{
+      padding: 5px;
+      background: transparent;
+      color: white;
+    }
+  .navChat img{
+    object-fit: cover;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+  }
+  .navChat b{
+    max-width: 150px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+/* 
+.navchat
+  div
+    b
+    img
+  div
+    any
+*/

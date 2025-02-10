@@ -17,4 +17,6 @@ form{
   display: grid;
   gap: 10px;
 }
-
+  .form-floating{
+    background: var(--c1);
+  }

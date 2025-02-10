@@ -1,37 +1,47 @@
 <article>
   <!-- NAVIGAZIONE -->
-  <nav>
-    <a routerLink="/chat"> <mat-icon>arrow_back</mat-icon> </a>
-    <img [src]="chat.imageUrl" [alt]="chat.titleChat">
-    <p class="chatTitle">{{ chat.titleChat }}</p> 
+  <nav class="navChat">
+    <div>
+      <a routerLink="/chat"> <mat-icon>arrow_back</mat-icon> </a>
+      <img [src]="chat.imageUrl" [alt]="chat.titleChat">
+      <b class="chatTitle">{{ chat.titleChat }}</b> 
+    </div>
   </nav>
   
   <!-- MESSAGGI -->
-  @if (messages!==undefined){
-    <main class="messages">
-      <div [class]="isMyMessage(i) ?'right' :'left' " 
-        *ngFor="let message of messages; let i=index"> 
-
-        <div class="message">
-          <header>
-            <b>{{message.username}}</b> 
-            <i>{{message.time}}</i>
-          </header>
-          <span>{{message.message}}</span>
+  <main>
+    @if (messages!==undefined){
+      <div class="messages">
+        <div [class]="isMyMessage(i) ?'right' :'left' " 
+          *ngFor="let message of messages; let i=index"> 
+  
+          <div class="message">
+            <header>
+              <b>{{message.username}}</b> 
+              <i>{{message.time}}</i>
+            </header>
+            <span>{{message.message}}</span>
+          </div>
+  
         </div>
-
       </div>
-    </main>
-  }@else{
-    <h3 class="noMessages">Nessun Messaggio</h3>
-  }    
+    }@else{ <h3 class="noMessages">Nessun Messaggio</h3> }    
+  </main>
 
   <!-- SCRIVERE MESSAGGIO -->
   <form #form="ngForm" (submit)="onAddMessage(form)">
     <div class="input-group">
-      <input type="search" class="form-control" placeholder="Messaggio" name="message"
-        aria-label="Example text with button addon" aria-describedby="button-addon1"
-        ngModel required>
+
+      <div class="form-floating">
+        <input 
+          type="search" 
+          class="form-control" 
+          placeholder="" 
+          name="message" id="message" 
+          ngModel required
+        ><label for="input">Messaggio</label>
+      </div>
+
       <button class="btn btn-outline-light" type="submit" [disabled]="form.invalid">
         <mat-icon class="newGroup">publish</mat-icon>
       </button>

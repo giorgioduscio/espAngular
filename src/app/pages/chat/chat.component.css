@@ -1,7 +1,7 @@
+@import url(./styles/input.css);
 /* CHAT */
 .chats{
   padding-top: 1rem;
-  padding-bottom: 60px;
   display: grid;
   justify-content: center;
 }
@@ -21,6 +21,7 @@
     }
     .chat a, .chat b{
       max-width: 200px;
+      padding: 10px 0;
       white-space: nowrap;
       overflow-x: hidden;
       text-overflow: ellipsis;
@@ -34,19 +35,4 @@
     }
   .chat.selected{ 
     background: var(--c3); 
-  }
-
-/* FORM */
-form{
-  position: fixed;
-  width: 100vw;
-  bottom: 0;
-
-  padding: 5px;
-  background: var(--c1);
-  display: grid;
-  justify-content: center;
-}
-  form>div>*{
-    background: var(--c3);
   }

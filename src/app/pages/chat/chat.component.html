@@ -3,8 +3,8 @@
 
   
   <!--TODO CHATS -->
-  <div class="chats">
-    <main>
+  <main class="chats">
+    <div>
       <div class="chat" *ngFor="let chat of chats; let i =index" [id]="chat.key">
         @if(ems.editMode().active){ 
           <div (click)="ems.handleClick(chat.key!)">
@@ -20,17 +20,25 @@
           </div>
         }
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
 
   <!--TODO NUOVO GRUPPO -->
   <form #groupForm="ngForm" (submit)="newGroup(groupForm)">
     <div class="input-group">
-      <input type="search" class="form-control" placeholder="Nuovo gruppo" 
-        aria-label="Example text with button addon" aria-describedby="button-addon1"
-        [readOnly]="ems.editMode().active"
-        name="input" ngModel required>
+
+      <div class="form-floating">
+        <input 
+          type="search" 
+          class="form-control" 
+          placeholder="" 
+          [readOnly]="ems.editMode().active"
+          name="input" id="input" 
+          ngModel required
+        ><label for="input">Nuovo gruppo</label>
+      </div>
+
       <button class="btn btn-outline-light" type="submit" [disabled]="groupForm.invalid">
         <mat-icon class="newGroup">add</mat-icon>
       </button>

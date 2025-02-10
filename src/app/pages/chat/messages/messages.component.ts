@@ -2,19 +2,17 @@ import { Component, effect } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
 import { Chat, Message } from '../../../interfaces/chat';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { NavChatComponent } from '../nav-chat/nav-chat.component';
-import { randomId } from '../autocomp';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [ NavChatComponent, MatIconModule, FormsModule, NgFor, NgIf, RouterModule, ],
+  imports: [MatIconModule, FormsModule, NgFor, RouterModule],
   templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.css', './nav&inputs.component.css']
+  styleUrls: ['./messages.component.css', '../chat.component.css', '../styles/navChat.css']
 })
 
 export class MessagesComponent {
@@ -61,4 +59,8 @@ export class MessagesComponent {
     console.log("updatedChat",this.messages, );
     form.reset()
   }
+}
+
+function randomId(): number {
+  throw new Error('Function not implemented.');
 }

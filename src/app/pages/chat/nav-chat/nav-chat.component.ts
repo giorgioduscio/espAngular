@@ -9,7 +9,7 @@ import { EditModeService } from '../edit-mode.service';
   standalone: true,
   imports: [RouterModule, MatIcon, NavbarComponent],
   templateUrl: './nav-chat.component.html',
-  styleUrls: ['./nav-chat.component.css']
+  styleUrls: ['../styles/navChat.css']
 })
 
 export class NavChatComponent {

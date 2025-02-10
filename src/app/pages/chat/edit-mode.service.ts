@@ -1,10 +1,10 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 
 @Injectable({  providedIn: 'root' })
 export class EditModeService {
   constructor(private chatService:ChatService){}
-  editMode =signal<{active:boolean,idGroups:string[]}>({
+  editMode =signal<{active:boolean, idGroups:string[]}>({
     active:false, idGroups:[]
   })
 

@@ -1,4 +1,4 @@
-import { Component, effect, signal, WritableSignal } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../interfaces/chat';
 import { NgFor, NgIf } from '@angular/common';
@@ -6,8 +6,8 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './nav-chat/nav-chat.component';
-import { randomId, randomImage } from './autocomp';
 import { EditModeService } from './edit-mode.service';
+import { randomId, randomImage } from '../../tools/randomCompiler';
 
 @Component({
   selector: 'app-chat',

@@ -13,7 +13,7 @@
   max-width: 90%;
   padding: 0;
   margin: 5px 10px;
-  background: var(--c1) !important;
+  background: inherit;
   color: inherit ;
 }
 
