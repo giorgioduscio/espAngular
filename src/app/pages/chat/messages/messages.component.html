@@ -1,39 +1,41 @@
 <article>
-  <div>
-    <nav>
-      <a routerLink="/chat">
-        <mat-icon style="color: var(--c5);">arrow_back</mat-icon>
-      </a>
-      <img [src]="chat.imageUrl" [alt]="chat.titleChat">
-      <p class="titleChat">{{chat.titleChat}}</p> 
-    </nav>
+  <!-- NAVIGAZIONE -->
+  <nav>
+    <a routerLink="/chat"> <mat-icon>arrow_back</mat-icon> </a>
+    <img [src]="chat.imageUrl" [alt]="chat.titleChat">
+    <p class="chatTitle">{{ chat.titleChat }}</p> 
+  </nav>
+  
+  <!-- MESSAGGI -->
+  @if (messages!==undefined){
+    <main class="messages">
+      <div [class]="isMyMessage(i) ?'right' :'left' " 
+        *ngFor="let message of messages; let i=index"> 
 
-    <main class="box" *ngIf="messages!==undefined; else noMessages">
-      <div [class]="isMyMessage(i) ?'right' :'left'" *ngFor="let message of messages; let i=index"> 
         <div class="message">
-          <header><i>{{message.username}}</i> <i>{{message.time}}</i></header>
-          <p>{{message.message}}</p>
+          <header>
+            <b>{{message.username}}</b> 
+            <i>{{message.time}}</i>
+          </header>
+          <span>{{message.message}}</span>
         </div>
+
       </div>
     </main>
-    <ng-template #noMessages> <div class="noMessages">
-        <h2 style="text-align: center;"> Nessun Messaggio </h2>
-    </div> </ng-template>
-    
+  }@else{
+    <h3 class="noMessages">Nessun Messaggio</h3>
+  }    
 
-    <form #form="ngForm" (submit)="onAddMessage(form)">
-      <div>
-        <input class="form-control text-bg-dark"
-          type="text" 
-          name="message"
-          placeholder="Messaggio" 
-          ngModel required
-        >
-        <button class="btn btn-secondary"  type="submit" [disabled]="form.invalid">
-          <mat-icon class="newGroup">publish</mat-icon>
-        </button>
-      </div>
-    </form>
-
-  </div>
+  <!-- SCRIVERE MESSAGGIO -->
+  <form #form="ngForm" (submit)="onAddMessage(form)">
+    <div class="input-group">
+      <input type="search" class="form-control" placeholder="Messaggio" name="message"
+        aria-label="Example text with button addon" aria-describedby="button-addon1"
+        ngModel required>
+      <button class="btn btn-outline-light" type="submit" [disabled]="form.invalid">
+        <mat-icon class="newGroup">publish</mat-icon>
+      </button>
+    </div>
+  </form>
+  
 </article>

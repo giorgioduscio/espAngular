@@ -1,12 +1,13 @@
-  /* TODO NAVBAR */
+/* NAVIGAZIONE */
 nav{
-  width: clamp(300px, 100%, 1000px);
   height: 50px;
   margin: auto;
   padding: 0 10px;
+  
+  position: sticky;
   top: 0;
+  z-index: 10;
 
-  position: fixed;
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
@@ -15,12 +16,8 @@ nav{
 
   background: var(--c3);
 }
-  .titleChat{
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space:initial;
-    text-align: center;
+  nav a{
+    color: white;
   }
   nav img{
     object-fit: cover;
@@ -28,34 +25,27 @@ nav{
     width: 40px;
     border-radius: 50px;
   }
+  nav p.chatTitle{
+    margin: 0;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
 
-  /* TODO INPUT */
+
+/* SCRIVETE MESSAGGIO */
 form{
-  width: 100%;
-  padding: 5px;
-
   position: fixed;
+  width: 100vw;
   bottom: 0;
+
+  padding: 5px;
   background: var(--c1);
+  display: grid;
+  justify-content: center;
 }
-  form>div{
-    max-width: 300px;
-    margin: auto;
-
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 5px;
-  }
   form>div>*{
-    border-radius: 50px;
     background: var(--c3);
-    color: var(--c5);
   }
-  form button:disabled{ background: var(--st); }
-
-/* computer */
-@media only screen and (min-width:500px) {
-nav, form{
-  position: static;
-}
-}

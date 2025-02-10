@@ -1,0 +1,52 @@
+/* CHAT */
+.chats{
+  padding-top: 1rem;
+  padding-bottom: 60px;
+  display: grid;
+  justify-content: center;
+}
+  .chat>div{
+    padding: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+  }
+    .chat img{
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid;
+    }
+    .chat a, .chat b{
+      max-width: 200px;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      color: white;
+      text-decoration: none;
+    }
+    .chat button{
+      padding: 5px;
+      display: flex;
+      border: 0;
+    }
+  .chat.selected{ 
+    background: var(--c3); 
+  }
+
+/* FORM */
+form{
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+
+  padding: 5px;
+  background: var(--c1);
+  display: grid;
+  justify-content: center;
+}
+  form>div>*{
+    background: var(--c3);
+  }

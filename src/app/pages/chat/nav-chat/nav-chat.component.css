@@ -1,25 +1,20 @@
-.navChat{
-    justify-content: space-between;
-}
-.logo{
-    color: var(--c5);
-    font-weight: bold;
-    gap: 0;
-}
-.logo>span{
-    color: var(--c4);
-}
-
 .editMode{
-    background: var(--c2);
-    color: var(--c5);
-    box-shadow: 0 0 20px black;
-}
+  position: sticky;
+  top: 0;
 
-/* da computer */
-@media only screen and (min-width:500px) {
-    .navChat{ 
-        width: 100% ;
-        position: static ;
-    }
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  
+  background: var(--c3);
+  color: var(--c5);
+  box-shadow: 0 0 20px black;
 }
+  .editMode>div{
+    display: flex;
+  }
+    .editMode>div>*{
+      padding: 5px;
+      background: transparent;
+      color: white;
+    }

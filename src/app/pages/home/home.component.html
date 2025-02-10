@@ -24,7 +24,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ card.title| uppercase }}</h5>
             <p class="card-text">{{ card.description }}</p>
-            <button class="btn btn-primary" (click)="setIsVisible()">{{ isVisible? "Nascondi": "Mostra" }}</button>
+            <button class="btn btn-primary" [routerLink]="card.path">Visita</button>
           </div>
         </ng-template>
         <ng-template #error>
@@ -41,12 +41,19 @@
           <input class="form-control text-bg-dark" type="text" [(ngModel)]="text" (change)="handleChange()"/>
 
           <button class="btn btn-secondary"  (click)="onClick()">{{ text==='' ?'Vuoto' :text }}</button> 
-            <div [ngSwitch]="text">
-              <p *ngSwitchCase="'alpha'">{{text}} è stato previsto</p>
-              <p *ngSwitchCase="'beta'">{{text}} è stato previsto</p>
-              <p *ngSwitchCase="'gamma'">{{text}} è stato previsto</p>
-              <p *ngSwitchDefault>ngSwitch (prova a scrivere: alpha, beta o gamma)</p>
-            </div>
+          <div [ngSwitch]="text">
+            <p *ngSwitchCase="'alpha'">{{text}} è stato previsto</p>
+            <p *ngSwitchCase="'beta'">{{text}} è stato previsto</p>
+            <p *ngSwitchCase="'gamma'">{{text}} è stato previsto</p>
+            <p *ngSwitchDefault>ngSwitch (prova a scrivere: alpha, beta o gamma)</p>
+          </div>
+
+          @if (isVisible){
+            <button class="btn btn-danger" (click)="setIsVisible()">Nascondi tutte le card</button>
+          }@else{
+            <button class="btn btn-success" (click)="setIsVisible()">Mostra tutte le card</button>
+          }
+            
         </div>
       </div>
 

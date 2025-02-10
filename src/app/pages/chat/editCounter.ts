@@ -3,7 +3,6 @@ import { WritableSignal } from "@angular/core";
 export function editCounter(
     editMode :WritableSignal<{active:boolean,idGroups:string[]}>, 
     newId :string,
-    chat :HTMLElement |null
 ) 
 {
   //EDIT E' ATTIVO? 
@@ -18,18 +17,18 @@ export function editCounter(
     if(controll.isRepeat){ 
       //fix//SI: DESELEZIONA ELEMENTO 
       editMode().idGroups =(editMode().idGroups.filter(stoneId =>stoneId!==newId))
-      chat?.classList.remove("selected")
+      document.getElementById(newId)?.classList.remove("selected")
     }else{ 
       //fix//NO: ATTIVA EDIT E SELEZIONA ELEMENTO 
       editMode().idGroups =[...editMode().idGroups, newId]
-      chat?.classList.add("selected")
+      document.getElementById(newId)?.classList.add("selected")
     }
   
   //todo NO: ATTIVA EDIT E SELEZIONA ELEMENTO
   }else{ 
     editMode().active =(true)
     editMode().idGroups =[...editMode().idGroups, newId]
-    chat?.classList.add("selected")
+    document.getElementById(newId)?.classList.add("selected")
   }
 
   //todo LE SELEZIONI SONO 0? SI: DISATTIVA EDIT

@@ -14,7 +14,7 @@ import { editCounter } from './editCounter';
   standalone: true,
   imports: [ NavChatComponent, FormsModule, NgIf, NgFor, RouterLink, MatIconModule,  ],
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.chats.css', './chat.inputbox.css']
+  styleUrls: ['./chat.component.css']
 })
 
 export class ChatComponent {
@@ -58,10 +58,9 @@ export class ChatComponent {
   // optimize EDIT
   editMode =signal<{active:boolean,idGroups:string[]}>( {active:false,idGroups:[]} )
   // QUANDO PREMI PULSANTE EDIT, MANDA IL RISPETTIVO ID
-  handleClick(newId:string, e:Event){
-    const chat =(e.target as HTMLInputElement).parentElement    
-    editCounter(this.editMode, newId, chat)
-    // console.log('chat', this.editActivation(), this.idGroups());
+  handleClick(newId:string){
+    editCounter(this.editMode, newId)
+    console.log('chat', newId);
   }
   // RIPRISTINA L'EDIT
   resetEdit(){

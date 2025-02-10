@@ -23,7 +23,7 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'login', component: LoginComponent },
   { path: 'access', component: AccessComponent },
   // CHAT
-  { show:false, path: 'chat', component: ChatComponent },
+  { show:true, path: 'chat', component: ChatComponent },
     { path: 'chat/:chatKey', component: MessagesComponent },
   // SHOPS
   { show:false, path: 'cart', component: CartComponent },

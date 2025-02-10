@@ -1,47 +1,43 @@
 <article>
-  <div>
-    <!--TODO navigazione -->
-    <app-nav-chat
-      [editMode]="editMode"
-      [resetEdit]="resetEdit"
-      [onDeleteGroup]="onDeleteGroup"
-    ></app-nav-chat>
+  <app-nav-chat
+    [editMode]="editMode"
+    [resetEdit]="resetEdit"
+    [onDeleteGroup]="onDeleteGroup"
+  ></app-nav-chat>
 
-    <!--TODO navigazione -->
-    <form
-      #groupForm="ngForm" 
-      (submit)="newGroup(groupForm)" 
-      *ngIf="!editMode().active"
-    >
-      <div>
-        <input class="form-control text-bg-dark"
-          type="text" 
-          name="input"
-          placeholder="Nuovo gruppo" 
-          ngModel required
-        >
-        <button class="btn btn-secondary"  type="submit" [disabled]="groupForm.invalid">
-          <mat-icon class="newGroup">add</mat-icon>
-        </button>
-      </div>
-    </form>
-
-    <!--TODO navigazione -->
-    <div class="chats">
-      <div class="box">
-        <div class="chat" *ngFor="let chat of chats; let i =index">
+  
+  <!--TODO CHATS -->
+  <div class="chats">
+    <main>
+      <div class="chat" *ngFor="let chat of chats; let i =index" [id]="chat.key">
         @if(editMode().active){ 
-          <img src="{{chat.imageUrl}}" (click)="handleClick(chat.key!, $event)">
-          <b (click)="handleClick(chat.key!, $event)">{{chat.titleChat}}</b> 
+          <div (click)="handleClick(chat.key!)">
+            <img src="{{chat.imageUrl}}">
+            <b>{{chat.titleChat}}</b> 
+          </div>
           
-        } @else{
-          <img src="{{chat.imageUrl}}" alt="">
-          <a routerLink="/chat/{{chat.key}}">{{chat.titleChat}}</a>
-          <mat-icon class="handleClick" (click)="handleClick(chat.key!, $event)">settings</mat-icon>
+        }@else{
+          <div>
+            <img [src]="chat.imageUrl" [alt]="chat.titleChat">
+            <a routerLink="/chat/{{chat.key}}">{{chat.titleChat}}</a>
+            <button (click)="handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
+          </div>
         }
-        </div>
       </div>
-    </div>
-
+    </main>
   </div>
+
+
+  <!--TODO NUOVO GRUPPO -->
+  <form #groupForm="ngForm" (submit)="newGroup(groupForm)">
+    <div class="input-group">
+      <input type="search" class="form-control" placeholder="Nuovo gruppo" 
+        aria-label="Example text with button addon" aria-describedby="button-addon1"
+        [readOnly]="editMode().active"
+        name="input" ngModel required>
+      <button class="btn btn-outline-light" type="submit" [disabled]="groupForm.invalid">
+        <mat-icon class="newGroup">add</mat-icon>
+      </button>
+    </div>
+  </form>
 </article>

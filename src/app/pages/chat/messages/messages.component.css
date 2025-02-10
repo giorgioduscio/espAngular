@@ -1,9 +1,13 @@
-.box{
-    padding: 10px;
-    display: flex;
-    flex-flow: column;
+.messages{
+  max-width: 500px;
+  margin: auto;
+  padding: 10px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
 }
-.box>*{ display: flex; }
+.messages>*{ display: flex; }
 .left{ justify-content: flex-start; }
 .left>div{ border-top-left-radius: 0 !important; }
 .right{ justify-content: flex-end; }
@@ -11,35 +15,19 @@
 
 /* MESSAGGIO */
 .message{
-    max-width: 80%;
-    padding: 5px 10px;
-
-    display: grid;
-
-    background: var(--c3);
-    border-radius: 10px;
+  max-width: 80%;
+  padding: 5px 10px;
+  display: grid;
+  background: var(--c3);
+  border-radius: 10px;
 }
-header{ 
+  .message header{ 
     display: flex; 
     justify-content: space-between;
-}
+    gap: 10px;
+  }
 /* CHAT SENZA MESSAGGI */
 .noMessages{
-    padding: 10px;
-    height: 60vh;
-
-    display: grid;
-    align-content: center;
-}
-
-/* computer */
-@media only screen and (min-width:500px) {
-article>div{
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 0 20px black;
-}
-    .box, .noMessages{
-        overflow-y: scroll;
-    }
+  max-width: max-content;
+  margin: 50% auto;
 }
