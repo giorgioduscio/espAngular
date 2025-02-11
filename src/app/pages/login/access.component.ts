@@ -6,11 +6,12 @@ import { User } from '../../interfaces/user';
 import { AuthService } from '../../auth/auth.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { controller, templateForm } from './validation';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-access',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, RouterModule, NavbarComponent],
+  imports: [ReactiveFormsModule, FormsModule, RouterModule, NavbarComponent, NgIf],
   templateUrl: './access.component.html',
   styleUrl: './login.component.css'
 })

@@ -6,6 +6,7 @@ import { NgFor } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
+import { randomId } from '../../../tools/randomCompiler';
 
 @Component({
   selector: 'app-messages',
@@ -20,7 +21,7 @@ export class MessagesComponent {
   chat :Chat ={idChat:0, titleChat:'', imageUrl:'', messages:[] }
   messages :Message[] |undefined =[]
   // lo scrittore è lo stesso che ha fatto l'accesso?
-  isMyMessage(i:number){ return this.authService.accesserUser()?.id===this.chat.messages[i].IDuser }
+  isMyMessage=(i:number)=> this.authService.accesserUser()?.id ===this.chat.messages[i].IDuser 
 
   // TODO MOSTRA MESSAGGI
   constructor(
@@ -56,11 +57,8 @@ export class MessagesComponent {
     })
     this.chatService.patchChat(this.chatKey, updatedChat)
     this.messages=this.chat.messages
-    console.log("updatedChat",this.messages, );
+    // console.log("updatedChat",this.messages, );
     form.reset()
   }
 }
 
-function randomId(): number {
-  throw new Error('Function not implemented.');
-}

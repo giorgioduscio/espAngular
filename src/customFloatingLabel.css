@@ -1,34 +1,36 @@
 /* CUSTOM FLOATING LABELS */
-/* stato iniziale */
-.form-floating>.form-control{
-  min-height: 2.5rem;
-  height: 2.5rem;
+/* input */
+.form-floating >.form-control{
+  min-height: 3rem;
+  height: 3rem;
   padding: 10px;
+
   border-width: 2px;
   background: transparent;
   color: inherit;
 }
-.form-floating>label{
+  .form-floating >.form-control:focus{
+    box-shadow: none;
+  }
+
+/* label */
+.form-floating >label{
   height: min-content;
   max-width: 90%;
   padding: 0;
-  margin: 5px 10px;
+  margin-left: 10px;
+  transform: translateY(40%);
+
   background: inherit;
-  color: inherit ;
+  color: inherit;
+  border-radius: 10px;
 }
-
-
-/* interazione */
-.form-floating>.form-control:focus{
-  box-shadow: none;
-}
-
-.form-floating>label::after{
-  background: transparent;
-}
-.form-floating>.form-control:focus~label, 
-.form-floating>.form-control:not(:placeholder-shown)~label{
-  padding: 0 5px;
-  margin: 0 5px;
-  transform: scale(.85) translateY(-35%) translateX(.15rem);
-}
+  .form-floating >label::after{
+    background: transparent;
+  }
+  .form-floating >.form-control:focus ~label, 
+  .form-floating >.form-control:not(:placeholder-shown) ~label{
+    padding: 0 5px;
+    margin: 0 5px;
+    transform: scale(.85) translateY(-35%) translateX(.15rem);
+  }

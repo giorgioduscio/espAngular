@@ -6,11 +6,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { controller, templateForm } from './validation';
 import { randomId, randomImage } from '../../tools/randomCompiler';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ NavbarComponent, ReactiveFormsModule, FormsModule, RouterModule ],
+  imports: [ NavbarComponent, ReactiveFormsModule, FormsModule, RouterModule, NgIf ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

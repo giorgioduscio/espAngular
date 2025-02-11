@@ -3,7 +3,7 @@ import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../interfaces/chat';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Form, FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './nav-chat/nav-chat.component';
 import { EditModeService } from './edit-mode.service';
@@ -29,10 +29,10 @@ export class ChatComponent {
   }
 
   //TODO AGGIUNGE UN ELEMENTO CHAT
-  newGroup(groupForm:any){
+  newGroup(form:NgForm){
     const body ={
       idChat: randomId(),
-      titleChat: groupForm.value.input,
+      titleChat: form.value.input,
       imageUrl: randomImage(),
       messages: [{
         IDmessage: 404,
@@ -43,6 +43,7 @@ export class ChatComponent {
       }], //fix initarray
     }
     this.chatService.addChat(body)
+    form.reset()
   }
 
 }

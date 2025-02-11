@@ -10,6 +10,7 @@ article{
     max-width: min-content;
     margin: auto;
     padding: 10px;
+
     border-radius: 10px;
   }
   
@@ -20,3 +21,16 @@ form{
   .form-floating{
     background: var(--c1);
   }
+
+
+/* VALIDAZIONE */
+input.ng-invalid.ng-touched, 
+select.ng-invalid.ng-touched{
+  border-color: red ;
+  color: red;
+}
+.form-floating ~i,
+input.ng-invalid.ng-touched ~label{
+  color: red;
+  font-style: italic;
+}

@@ -16,9 +16,8 @@ form{
   justify-content: center;
   box-shadow: 0 0 10px black;
 }
-  form .form-floating,
+  form div .form-floating,
   form [type="submit"]{
-    height: 40px;
     background: var(--c3);
   }
 
