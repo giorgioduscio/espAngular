@@ -1,0 +1,24 @@
+header{
+  min-height: calc(100vh - 70px);
+  margin: 0;
+  background: var(--c3);
+}
+  .col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+#text>div{
+  padding: 1rem;
+  width: 300px;
+}
+#image{
+  background: var(--c5);
+}
+  img{
+    object-fit: cover;
+    height: 300px;
+    width: 300px;
+  }

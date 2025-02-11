@@ -14,6 +14,9 @@ header{
   min-width: 250px;
   max-width: max-content;
 }
+.form-floating{
+  background: var(--c1);
+}
 [for="filter"]{
   display: grid;
   grid-template-columns: auto 1fr;
