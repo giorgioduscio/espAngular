@@ -19,11 +19,15 @@ button{
 }
 .defined img{
   height: 40px;
+  width: 40px;
+  object-fit: cover;
+
   position: absolute;
   top: 0; 
   left: 0;
   z-index: 10;
   transform: translate(-60%);
+  
   border: 1px solid red;
   border-radius: 50%;
 }

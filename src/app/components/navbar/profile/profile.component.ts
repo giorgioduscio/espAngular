@@ -16,7 +16,7 @@ export class ProfileComponent {
 
   constructor(private authService:AuthService){
     effect(()=>{
-      this.localeUser =authService.accesserUser()
+      this.localeUser =authService.user()
     })
   }
   //todo RESET

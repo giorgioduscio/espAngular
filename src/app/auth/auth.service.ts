@@ -1,48 +1,50 @@
-import { effect, Injectable, signal, WritableSignal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { User } from '../interfaces/user';
 import { UsersService } from '../services/users.service';
+import { delay, of } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable({  providedIn: 'root' })
 export class AuthService {
-  users :User[] =[]
-  gettedId =Number(localStorage.getItem('userId'))
-
-  accesserUser =signal<User |undefined>(undefined)
-  accessContitiones =signal({ isLogged:false, isAdmin:false })
+  user =signal<User |undefined>(undefined)
   constructor(private usersService:UsersService){
-    usersService.getUsers()
-    effect(()=>{ 
-      this.users =usersService.users() 
-      this.gettedId =Number(localStorage.getItem('userId'))
-      // console.log(this.users);
-    })
-    setTimeout(()=>{
-      // console.log('auto access');
-      this.verifyLocalUser( this.gettedId )
-    }, 1000);
+    effect(()=>{
+      this.setByStorage()
+    }, {allowSignalWrites:true})
   }
 
-  verifyLocalUser(userId:number){
-    const userToVerify =this.users .filter(user=>user.id===userId)[0]
-    
-    if (userToVerify!==undefined) {
-      this.accesserUser.set(userToVerify)
-      localStorage.setItem('userId',`${userId}`)
-      this.accessContitiones().isLogged =true
-      // if (userToVerify.role===SelectRole.ADMIN) this.isAdmin.set(true)
-      return this.accesserUser
-    }else{ return 'Error' }
+  // QUANDO SI CARICA LA PAGINA SE TROVA 
+  setByStorage(){
+    let exist =localStorage.getItem('userId')
+    let userId =exist ?Number(exist) :null
+    // ID TROVATO
+    if(userId){
+      let match =this.usersService.users().find(u=> u.id ===userId)
+      this.user.set(match)
+      return of(JSON.parse(userId.toString())).pipe(delay(0)) 
+    }
+    // ID NON TROVATO
+    return of(undefined);
   }
+
+  // CONTROLLA EMAIL E PASSWORD DI UN USER PASSATO
+  verifyLocalUser(userToVerify:User){
+    // controlla credenziali
+    let match =this.usersService.users().find(u=>
+      u.email ===userToVerify.email &&
+      u.password ===userToVerify.password
+    )
+    // aggiorna l'utente
+    if (match){
+      this.user.set(match)
+      localStorage.setItem('userId', match.id.toString())
+      return true
+
+    }else return false
+  }
+
   resetLocalUser(){
-    this.accesserUser.set(undefined)
+    this.user.set(undefined)
     localStorage.removeItem('userId')
-    this.accessContitiones.set({ isLogged:false, isAdmin:false })
-    // console.log(this.accesserUser(),this.accessContitiones());
+    location.reload()
   }
-
-  isAuthenticated(){return this.accessContitiones().isLogged}
-  isRuoleAdmin(){return this.accessContitiones().isAdmin}
 }

@@ -31,17 +31,15 @@ export class AccessComponent {
 
   // TODO SUBMIT
   onSubmit(){
-    const user =this.users .find(user=>
-      user.email===this.form.value.email &&
-      user.password===this.form.value.password
-    )
-
-    if(user !==undefined){
-      this.authService.verifyLocalUser(user.id)
-      this.router.navigate( ['/home'], { relativeTo: this.activatedRoute } )
-      this.showcomponent().error =false
-    }else{
-      this.showcomponent().error =true
+    let userToVerify :User ={
+      id: 0,
+      email: this.form.value.email,
+      username: '',
+      password: this.form.value.password,
+      imageUrl: '',
+      role: 0
     }
+    if(this.authService.verifyLocalUser(userToVerify)) this.router.navigate(['/home'])
+    else console.log('le credenziali non hanno riscontrato risultati');
   }
 }

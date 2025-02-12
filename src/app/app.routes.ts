@@ -13,14 +13,14 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'home', component: HomeComponent },
   { path: 'error', component: Error404Component },
   { show:true, path: 'hierarchy', component: HierarchyComponent },
-  { show:true, path: 'dashboard', component: DashboardComponent },
+  { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
   { show:true, path: 'list', component: ListComponent },
 
   // LOGIN
   { path: 'login', component: LoginComponent },
   { path: 'access', component: AccessComponent },
   // CHAT
-  { show:true, path: 'chat', component: ChatComponent },
+  { show:true, path: 'chat', component: ChatComponent, auth:[] },
     { path: 'chat/:chatKey', component: MessagesComponent },
     
   { path: '', redirectTo: '/home', pathMatch: 'full' },

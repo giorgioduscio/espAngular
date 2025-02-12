@@ -21,7 +21,7 @@ export class MessagesComponent {
   chat :Chat ={idChat:0, titleChat:'', imageUrl:'', messages:[] }
   messages :Message[] |undefined =[]
   // lo scrittore è lo stesso che ha fatto l'accesso?
-  isMyMessage=(i:number)=> this.authService.accesserUser()?.id ===this.chat.messages[i].IDuser 
+  isMyMessage=(i:number)=> this.authService.user()?.id ===this.chat.messages[i].IDuser 
 
   // TODO MOSTRA MESSAGGI
   constructor(
@@ -43,7 +43,7 @@ export class MessagesComponent {
   onAddMessage(form:NgForm){
     const updatedChat =this.chat
     , input :Message =form.value
-    , user =this.authService.accesserUser()
+    , user =this.authService.user()
     , time =`${new Date().getHours()}:${new Date().getMinutes()}`
 
     if (this.chat.messages[0].IDmessage===404) this.chat.messages.pop() //fix initarray
