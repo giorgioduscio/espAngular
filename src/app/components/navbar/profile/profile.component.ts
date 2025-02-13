@@ -20,5 +20,5 @@ export class ProfileComponent {
     })
   }
   //todo RESET
-  onResetLocalUser(){ this.authService.resetLocalUser() }
+  onResetLocalUser =()=> this.authService.resetLocalUser() 
 }

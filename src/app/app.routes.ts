@@ -8,6 +8,7 @@ import { ChatComponent } from './pages/chat/chat.component';
 import { MessagesComponent } from './pages/chat/messages/messages.component';
 import { buildSmartRouter } from './tools/buildSmartRouter';
 import { Error404Component } from './pages/error404/error404.component';
+import { CalcComponent } from './pages/calc/calc.component';
 
 export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'home', component: HomeComponent },
@@ -15,6 +16,7 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { show:true, path: 'hierarchy', component: HierarchyComponent },
   { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
   { show:true, path: 'list', component: ListComponent },
+  { show:true, path: 'calc', component: CalcComponent },
 
   // LOGIN
   { path: 'login', component: LoginComponent },

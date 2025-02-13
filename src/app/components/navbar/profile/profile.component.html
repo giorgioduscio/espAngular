@@ -2,8 +2,7 @@
 <div class="btn-group {{ localeUser ?'defined' :'undefined' }}" role="group" aria-label="group">
   @if (localeUser){
     <button class="btn btn-danger">
-      <img src="{{localeUser?.imageUrl}}" alt="{{localeUser?.username}}">
-      <!-- {{ localeUser.username }} -->
+      <img [src]="localeUser.imageUrl" [alt]="localeUser.username">
     </button>
     <button class="btn btn-danger" (click)="onResetLocalUser()">
       <mat-icon>logout</mat-icon>

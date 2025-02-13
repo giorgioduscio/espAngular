@@ -1,5 +1,5 @@
-import { effect, inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
 import { AuthService } from './auth.service';
 import { smartRoutes } from '../app.routes';
 import { of, map, take } from 'rxjs';
@@ -10,7 +10,6 @@ import { of, map, take } from 'rxjs';
 */
 export const authGuard: CanActivateFn =(route, state) =>{
   const authService = inject(AuthService);
-  const router = inject(Router);
 
   const thisPage =state.url.substring(1)
   const authSettings =smartRoutes.find(route=>route.path===thisPage)?.auth
@@ -34,7 +33,7 @@ export const authGuard: CanActivateFn =(route, state) =>{
     // GESTIONE DEL REFRESH
     return authService.setByStorage().pipe(
       map(userId =>{
-        console.log('refresh userid', userId);
+        // console.log('refresh userid', userId);
         return userId!==undefined
       })
     )
