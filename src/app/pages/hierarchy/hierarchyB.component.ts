@@ -1,7 +1,7 @@
 import { Component, effect } from '@angular/core';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { HierarchyService } from './hierarchy.service';
-import { List } from '../../interfaces/list';
+import { ListItem } from '../../interfaces/list';
 import { NgFor } from '@angular/common';
 import { HierarchyBBComponent } from "./hierarchyBB.component";
 
@@ -23,7 +23,7 @@ import { HierarchyBBComponent } from "./hierarchyBB.component";
 })
 // OPTIMIZE TYPESCRIPT
 export class HierarchyBComponent{
-  localList :List[] =[]
+  localList :ListItem[] =[]
   // TODO GET
   constructor(private hierarchyService:HierarchyService){
     document.title=`Hierarchy`
@@ -45,7 +45,7 @@ export class HierarchyBComponent{
     })
   }
   // TODO PATCH
-  onPatch(item:List, e:Event){
+  onPatch(item:ListItem, e:Event){
     const {name, value, checked} =e.target as HTMLInputElement
     const newValue =name==='title' ?value :checked
     this.hierarchyService.patchTodo(item.key!, {

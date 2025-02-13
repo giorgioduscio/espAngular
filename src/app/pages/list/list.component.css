@@ -1,8 +1,22 @@
-
-main>*{
+@import url(../../../customFloatingLabel.css);
+article>div{
   max-width: max-content;
 }
-#boostrap{
-  background: #712cf9;  
-  color: white;
+  h3{
+    padding: 30px 0 10px;
+    text-align: center;
+  }
+
+form{
+  padding-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+  .form-floating{
+    background: var(--c1);
+  }
+
+td{
+  background: transparent;
 }

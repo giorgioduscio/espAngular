@@ -4,8 +4,9 @@ import { NgFor } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { MatIcon } from '@angular/material/icon';
 import { ListService } from '../../services/list.service';
-import { List } from '../../interfaces/list';
+import { ListItem } from '../../interfaces/list';
 import { ParagraphPipe } from './paragraph.pipe';
+import { mapper } from '../../tools/mapper';
 
 @Component({
   selector: 'app-listService',
@@ -16,35 +17,44 @@ import { ParagraphPipe } from './paragraph.pipe';
 })
 
 export class ListComponent{
-  @ViewChild('formData') formData! :NgForm
   constructor(public listService:ListService){
-    document.title ='List'
-    listService.get()
-    // effect(()=>{ console.log('list', listService.list()) })
+    document.title ='ListItem'
+    this.onGet()
   }
 
+  list :ListItem[] =[]
+  onGet(){
+    this.listService.get().subscribe(res=>{
+      this.list =mapper(res)
+    })
+  }
+
+  @ViewChild('formData') formData! :NgForm
   onAdd(formData:NgForm){
-    this.listService.add({
+    let newItem ={
       complete: false,
       title: formData.value.title,
+    }
+    this.listService.add(newItem).subscribe(r=>{ 
+      this.onGet()
+      formData.reset()
     })
-    formData.reset()
   }
 
   onDelete(index:number){
-    const key =this.listService.list()[index].key
-    this.listService.delete(key!)
+    const key =this.list[index].key
+    this.listService.delete(key!).subscribe(r=> this.onGet())
   }
-
+  
   onPatch(event:Event, index:number){
     const {value, id, checked} =(event.target as HTMLInputElement)
     const newField =id=='complete' ?checked :value
-    const $id =id as keyof List
+    const $id =id as keyof ListItem
 
-    const key =this.listService.list()[index].key!
-    const updateItem :any =this.listService.list()[index]
+    const key =this.list[index].key!
+    const updateItem :any =this.list[index]
     updateItem[$id]= newField    
 
-    this.listService.patch(key, updateItem)
+    this.listService.patch(key, updateItem).subscribe(r=> this.onGet())
   }
 }

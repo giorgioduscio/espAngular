@@ -1,26 +1,22 @@
-<app-navbar></app-navbar>
 
 <article>
-  <main class="container">
-
-    <!-- LOGO -->
-    <div class="container d-flex align-items-center p-2">
-      <span class="badge rounded-pill" id="boostrap">Boostrap</span>
-      <mat-icon>add</mat-icon>
-      <span class="badge rounded-pill text-bg-danger">Angular</span>
-    </div>
-    
+  <app-navbar></app-navbar>
+  
+  <div class="container">
     <!-- INSERIMENTO -->
     <header class="container">
-      <h1>{{ 'listaDelleCoseDaFare' | paragraph }}</h1>
-      <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)" class="d-flex align-items-center">
-        <input class="form-control" 
-          type="text" 
-          name="title" 
-          id="title" 
-          placeholder="Inserisci azione"
-          required ngModel
-        >
+      <h3>{{ 'listaDelleCoseDaFare' | paragraph }}</h3>
+      <form #formdata="ngForm" (ngSubmit)="onAdd(formdata)">
+        <div class="form-floating">
+          <input class="form-control" 
+            type="text" 
+            name="title" 
+            id="title" 
+            placeholder=""
+            required ngModel
+          >
+          <label for="title">Inserisci azione</label>
+        </div>
         <button class="btn btn-secondary"  
           type="submit" 
           [disabled]="formdata.invalid"
@@ -30,9 +26,9 @@
   
     <!-- TABELLA -->
     <div class="container table-responsive-sm">
-      <table class="table align-middle table-dark">
+      <table class="table align-middle table-dark table-borderless table-hover">
         <tbody>
-          <tr *ngFor="let item of listService.list(); let i =index">
+          <tr *ngFor="let item of list; let i =index">
             <td>
               <input class="form-check-input" 
                 (change)="onPatch($event, i)" 
@@ -60,5 +56,5 @@
       </table>
     </div>
 
-  </main>
+  </div>
 </article>
