@@ -17,28 +17,32 @@ import { randomId } from '../../../tools/randomCompiler';
 })
 
 export class MessagesComponent {
+
+  // TODO MOSTRA MESSAGGI
+  constructor( private router:ActivatedRoute, private chatService:ChatService, private authService:AuthService, ){
+    this.router.params.subscribe(params =>this.chatKey =params['chatKey'])
+    this.syncChat()
+    effect(()=>{
+      let preventUndefined =this.chatService.chats() .filter(chat=>chat.key===this.chatKey)[0]
+      if(preventUndefined){
+        this.chat =preventUndefined
+        this.messages =this.chat.messages[0].IDmessage===404 ?undefined :this.chat.messages
+      }
+    })   
+  }
+
+  // VISUALIZZARE LA CHAT
+  syncChat(){
+    this.chatService.getChats()
+    // console.log('sync');
+  }
   chatKey :string =''
   chat :Chat ={idChat:0, titleChat:'', imageUrl:'', messages:[] }
   messages :Message[] |undefined =[]
-  // lo scrittore è lo stesso che ha fatto l'accesso?
+  // LO SCRITTORE E' LO STESSO CHE HA FATTO L'ACCESSO?
   isMyMessage=(i:number)=> this.authService.user()?.id ===this.chat.messages[i].IDuser 
 
-  // TODO MOSTRA MESSAGGI
-  constructor(
-    private router:ActivatedRoute, 
-    private chatService:ChatService,
-    private authService:AuthService,
-  ){
-    this.router.params.subscribe(params =>this.chatKey =params['chatKey'])
-    chatService.getChats()
-    effect(()=>{
-      let preventUndefined =chatService.chats() .filter(chat=>chat.key===this.chatKey)[0]
-      if(preventUndefined){
-        this.chat =preventUndefined
-        this.messages =this.chat.messages[0].IDmessage===404 ?undefined :this.chat.messages //fix initarray
-      }
-    })
-  }
+
   // TODO AGGIUNGI MESSAGGIO
   onAddMessage(form:NgForm){
     const updatedChat =this.chat

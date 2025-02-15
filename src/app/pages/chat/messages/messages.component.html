@@ -30,21 +30,30 @@
 
   <!-- SCRIVERE MESSAGGIO -->
   <form #form="ngForm" (submit)="onAddMessage(form)">
-    <div class="input-group">
+    <div>
 
-      <div class="form-floating">
-        <input 
-          type="search" 
-          class="form-control" 
-          placeholder="" 
-          name="message" id="message" 
-          ngModel required
-        ><label for="input">Messaggio</label>
+      <div class="input-group">
+        <div class="form-floating">
+          <input  
+            type="search" 
+            class="form-control" 
+            placeholder="" 
+            name="message" id="message" 
+            ngModel required
+          ><label for="input">Messaggio</label>
+        </div>
+  
+        <button class="btn btn-outline-light" type="submit" [disabled]="form.invalid">
+          <mat-icon class="newGroup">publish</mat-icon>
+        </button>
       </div>
 
-      <button class="btn btn-outline-light" type="submit" [disabled]="form.invalid">
-        <mat-icon class="newGroup">publish</mat-icon>
-      </button>
+      <div class="onSync">
+        <button class="btn btn-primary" type="button" (click)="syncChat()">
+          <mat-icon class="newGroup">sync</mat-icon>
+        </button>
+      </div>
+
     </div>
   </form>
   

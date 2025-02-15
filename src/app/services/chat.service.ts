@@ -3,9 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Chat, Message } from '../interfaces/chat';
 import { mapper } from '../tools/mapper';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({  providedIn: 'root' })
 export class ChatService {
   private url ='https://chat-d4bba-default-rtdb.europe-west1.firebasedatabase.app/chat'
   constructor(private http:HttpClient){ }
