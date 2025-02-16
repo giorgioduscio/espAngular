@@ -20,7 +20,7 @@ export class AuthService {
     if(userId){
       let match =this.usersService.users().find(u=> u.id ===userId)
       this.user.set(match)
-      return of(JSON.parse(userId.toString())).pipe(delay(0)) 
+      return of(JSON.parse(userId.toString()))
     }
     // ID NON TROVATO
     return of(undefined);

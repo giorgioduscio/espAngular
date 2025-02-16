@@ -10,27 +10,28 @@ export class ChatService {
   chats =signal<Chat[]>([])
 
   getChats(){
-    this.http.get(this.url+".json").subscribe((res:any)=>{
+    this.http.get<{[k:string]:Chat}>(this.url+".json").subscribe(res=>{
       if(res) this.chats.set(mapper(res))
       // console.log('getChat',this.chats(), res);
     })
   }
-  addChat(body:Chat){
-    this.http.post(this.url+".json", body).subscribe((res:any)=>{
-      this.chats() .push({...body, key:res.name})
-      console.log( 'addChat',this.chats()[ this.chats().length-1 ] );
+  addChat(newChat:Chat){
+    this.http.post(this.url+".json", newChat).subscribe(r=>{
+      this.getChats()
+      setTimeout(()=>console.log('addChat',this.chats()[ this.chats().length-1 ]), 1000);
     })
   }
   deleteChat(key:string){
-    this.http.delete(`${this.url}/${key}.json`).subscribe((res:any)=>{
-      this.chats.set( this.chats().filter(chat=>chat.key!==key) )
+    this.http.delete(`${this.url}/${key}.json`).subscribe(r=>{
+      this.getChats()
+      setTimeout(()=>console.log('deleteChat',this.chats()), 1000);
     })
   }
-  patchChat(key:string, updatedChat:Chat){
-    this.http.patch(`${this.url}/${key}.json`,updatedChat).subscribe((res:any)=>{
-      // this.chats.set( this.chats().filter(chat=>chat.key!==key) )
-      console.log(res);
-      
+  patchChat(chatKey:string, newChat:Chat){
+
+    this.http.patch(`${this.url}/${chatKey}.json`,newChat).subscribe(r=>{
+      this.getChats()
+      setTimeout(()=>console.log('patchChat',this.chats()), 1000);
     })
   }
 

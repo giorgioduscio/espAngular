@@ -33,8 +33,10 @@ export class MessagesComponent {
 
   // VISUALIZZARE LA CHAT
   syncChat(){
-    this.chatService.getChats()
-    // console.log('sync');
+    setInterval(()=>{ 
+      console.log('sync');
+      this.chatService.getChats() 
+    },2000);
   }
   chatKey :string =''
   chat :Chat ={idChat:0, titleChat:'', imageUrl:'', messages:[] }
@@ -46,9 +48,9 @@ export class MessagesComponent {
   // TODO AGGIUNGI MESSAGGIO
   onAddMessage(form:NgForm){
     const updatedChat =this.chat
-    , input :Message =form.value
-    , user =this.authService.user()
-    , time =`${new Date().getHours()}:${new Date().getMinutes()}`
+    const input :Message =form.value
+    const user =this.authService.user()
+    const time =`${new Date().getHours()}:${new Date().getMinutes()}`
 
     if (this.chat.messages[0].IDmessage===404) this.chat.messages.pop() //fix initarray
     
