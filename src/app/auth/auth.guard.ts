@@ -2,45 +2,34 @@ import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { AuthService } from './auth.service';
 import { smartRoutes } from '../app.routes';
-import { of, map, take } from 'rxjs';
 /* 
   PREMESSA: da utilizzare solo nelle pagine che richiedono 
   AUTORIZZAZIONE auth:[0, 2] O AUTENTICAZIONE auth:[]
   non bisogna utilizzarla su tutte le pagine
+  
+  SICUREZZA: se qualcuno scrive 0 nel local storage, ottiene i privilegi da admin
 */
 export const authGuard: CanActivateFn =(route, state) =>{
   const authService = inject(AuthService);
 
-  const thisPage =state.url.substring(1)
-  const authSettings =smartRoutes.find(route=>route.path===thisPage)?.auth
+  // cerca i ruoli richiesti dalla pagina
+  const pageTitle =state.url.substring(1)
+  const requestedRoles =smartRoutes.find(route=>route.path===pageTitle)?.auth
 
+  // prende il ruolo dal local storage
+  const exixt =localStorage.getItem('userRole')
+  const userRole =exixt ?Number(exixt) :null
   
-  // VERIFICA CREDENZIALI
-  function verify() {
+
+  // NON ESISTE ALCUN UTENTE
+  if(userRole===null) return false
+  else{
     // RICHIESTA AUTORIZZAZIONE
-    if(authSettings?.length){
-      let match =authSettings.some(roleId=> roleId===authService.user()?.role)
-      if (match) return of(!!authService.user())
-      else return of(false)
-    }
-    // RICHIESTA SOLO AUTENTICAZIONE
-    return of(!!authService.user())
-  }
-  
-  function checkAuthStatus(){
-    // LOGIN GIA' ESEGUITO
-    if(authService.user()) return verify()
-    // GESTIONE DEL REFRESH
-    return authService.setByStorage().pipe(
-      map(userId =>{
-        // console.log('refresh userid', userId);
-        return userId!==undefined
-      })
-    )
-  }
+    if(requestedRoles?.length){
+      let match =requestedRoles.some(roleId=> roleId===userRole)
+      return match
 
-  return checkAuthStatus().pipe(
-    take(1),
-    map(canActivate=>canActivate)
-  );
+    // RICHIESTA SOLO AUTENTICAZIONE
+    }else return true
+  }
 };

@@ -9,7 +9,7 @@ export class HomeService {
       title:"Chat", 
       isVisible:true, 
       path:'/chat',
-      description:"Simulatore di chat. Può essere utilizzato da qualsiasi dispositivo.Esperimento fallito: non è in tempo reale"
+      description:"Simulatore di chat. Può essere utilizzato da qualsiasi dispositivo."
     },
     // {
     //   imgUrl:"https://img.freepik.com/vettori-gratuito/collezione-di-negozi-e-negozi_53876-28381.jpg?t=st=1725467563~exp=1725471163~hmac=23aae358b68d86d1474165dfa57c087954321e86d4ae662f31f60be2b58a0f06&w=1060",
