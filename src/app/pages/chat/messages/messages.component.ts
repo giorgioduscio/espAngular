@@ -34,7 +34,7 @@ export class MessagesComponent {
   // VISUALIZZARE LA CHAT
   syncChat(){
     setInterval(()=>{ 
-      console.log('sync');
+      // console.log('sync');
       this.chatService.getChats() 
     },2000);
   }
