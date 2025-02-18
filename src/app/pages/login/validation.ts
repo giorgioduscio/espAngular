@@ -5,5 +5,9 @@ export const {templateForm, controller} =BuildNgForm({
   email:    new FormControl(':email', [Validators.required, Validators.email]),
   username: new FormControl('', [Validators.required, ]),
   password: new FormControl(':password', [Validators.required, ]),
-  role:     new FormControl(':select', [Validators.required, ]),
+  role:     new FormControl([
+    {value:0, title:'Admin'},
+    {value:1, title:'Writer'},
+    {value:2, title:'User'},
+  ], [Validators.required, ]),
 })

@@ -7,15 +7,23 @@
 
       @for (item of template; track item; let i=$index){
         <div>
-          <div class="form-floating">
-            <input 
-              class="form-control" 
-              [type]="item.type" 
-              [id]="item.key" 
-              placeholder=""
-              [formControlName]="item.key"
-            > <label [for]="item.key">{{ item.title }}{{ form.get(item.key)?.valid ?'' :' *' }}</label>
-          </div>
+          @if (item.type==='select'){
+            <select [formControlName]="item.key" class="form-select text-bg-dark">
+              <option value="" selected style="display: none;">{{ item.title }}{{ form.get(item.key)?.valid ?'' :' *' }}</option>
+              <option *ngFor="let opt of item.options" [value]="opt.value">{{opt.title}}</option>
+            </select>
+
+          }@else{
+            <div class="form-floating">
+              <input 
+                class="form-control" 
+                [type]="item.type" 
+                [id]="item.key" 
+                placeholder=""
+                [formControlName]="item.key"
+              > <label [for]="item.key">{{ item.title }}{{ form.get(item.key)?.valid ?'' :' *' }}</label>
+            </div>
+          }
           <i *ngIf="!form.get(item.key)?.valid &&form.get(item.key)?.touched">Campo obbligatorio.</i>
         </div>
       }

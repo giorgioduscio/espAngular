@@ -18,7 +18,7 @@ import { NgIf } from '@angular/common';
 export class AccessComponent {
   users :User[] =[]
   showcomponent =signal({error:false, password:false})
-  form =new FormGroup({ password:controller.password, email:controller.email })
+  form =new FormGroup({ password:controller['password'], email:controller['email'] })
   template =templateForm .filter(f=>f.key==='password'||f.key==='email')
 
   constructor(private usersService:UsersService, private activatedRoute: ActivatedRoute, private router: Router, private authService:AuthService, ){

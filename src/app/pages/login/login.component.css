@@ -30,6 +30,8 @@ select.ng-invalid.ng-touched{
   color: red;
 }
 .form-floating ~i,
+select ~i,
+select.ng-invalid.ng-touched,
 input.ng-invalid.ng-touched ~label{
   color: red !important;
   font-style: italic;
