@@ -8,6 +8,9 @@
     </div>
 
     <div>
+      <button class="btn" (click)="ems.onRenameGroup()" *ngIf="ems.editMode().idGroups.length===1">
+        <mat-icon class="icon deleteGroup">edit</mat-icon>
+      </button>
       <button class="btn" (click)="ems.onDeleteGroup()">
         <mat-icon class="icon deleteGroup">delete</mat-icon>
       </button>

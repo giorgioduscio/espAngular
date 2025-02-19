@@ -66,5 +66,18 @@ export class EditModeService {
       this.resetEdit()
     }
   }
+  // RINOMINA LA CHAT SELEZIONATA
+  onRenameGroup(){
+    const chatKey =this.editMode().idGroups[0]
+    const chat =this.chatService.chats().find(chat=> chat.key===chatKey)
+    if(chat){ 
+      const newTitle =prompt('Rinomina gruppo', chat.titleChat)
+      if(newTitle &&newTitle!==chat.titleChat){
+        chat.titleChat =newTitle
+        this.chatService.patchChat(chatKey, chat)
+      }
+    }
+    this.resetEdit()
+  }
 
 }
