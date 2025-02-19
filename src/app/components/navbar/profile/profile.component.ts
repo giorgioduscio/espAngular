@@ -1,4 +1,4 @@
-import { Component, effect, signal, WritableSignal } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../interfaces/user';
 import { MatIconModule } from '@angular/material/icon';

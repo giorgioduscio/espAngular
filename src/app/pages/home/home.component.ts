@@ -6,10 +6,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { HomeService } from './home.service';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
 import { HomeDirective } from './home.directive';
+import { siteActions } from '../personalArea/siteActions';
 
 @Component({
   selector: 'app-home',
@@ -24,8 +24,14 @@ import { HomeDirective } from './home.directive';
 })
 
 export class HomeComponent implements OnInit, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnDestroy{
-  // NASCONDI CARD
-  isVisible=true;
+  constructor(){
+    document.title ='Home'
+  }
+
+  // CARD
+  // nasconde le card che richiedono autorizzazione
+  cards =siteActions.filter(a=> !a.auth?.length)
+  isVisible=true
   setIsVisible(){ this.isVisible= !this.isVisible }
 
   // TWO WAY BUINDING
@@ -37,18 +43,8 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
   handleChange(){
     this.sendData.emit( this.text )
   }
-
-  // FUNZIONI PIPE
-  oggi= Date.now()
-
-  // SERVICE
-  constructor(private homeService: HomeService){
-    document.title ='Home'
-  }
-  cards =this.homeService.homeCards
   
-  
-  
+  // IMPLEMENTAZIONI
   ngOnInit(): void {
     //console.log('ngOninit')
   }

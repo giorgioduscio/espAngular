@@ -1,0 +1,26 @@
+<article>
+  <app-navbar></app-navbar>
+
+  <div class="container">
+    <header>
+      <h1 class="text-center">{{ user?.username }}</h1>
+    </header>
+
+    <main>
+      @for (action of cards; track action; let i=$index){
+        <div class="card" *ngIf="showCard(i)">
+          <img [src]="action.imgUrl" class="card-img" [alt]="action.title">
+          <div class="card-img-overlay">
+            <div>
+              <h5 class="card-title">{{ action.title }}</h5>
+              <button [routerLink]="action.path" class="btn btn-outline-light">Visita</button>
+            </div>
+            <p class="card-text">{{ action.description }}</p>
+          </div>
+        </div>
+      }
+    </main>
+  </div>
+
+  <footer></footer>
+</article>

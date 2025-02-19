@@ -1,7 +1,7 @@
 
 <div class="btn-group {{ localeUser ?'defined' :'undefined' }}" role="group" aria-label="group">
   @if (localeUser){
-    <button class="btn btn-danger">
+    <button class="btn btn-danger" routerLink="/user/{{localeUser.key}}">
       <img [src]="localeUser.imageUrl" [alt]="localeUser.username">
     </button>
     <button class="btn btn-danger" (click)="onResetLocalUser()">

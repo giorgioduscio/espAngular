@@ -17,18 +17,15 @@ import { SmartRoute } from '../../../tools/buildSmartRouter';
     </a>
     <ul class="dropdown-menu">
     @for (page of pages; track $index){
-      <li><a class="dropdown-item" 
-        routerLink="/{{page.path}}"
-        >{{ page.path }}
-      </a></li>
+      <li>
+        <a class="dropdown-item" routerLink="/{{page.path}}">{{ page.path }}</a>
+      </li>
     }
     </ul>
   </li>
   `,
 })
 export class RoutesComponent {
-  // COPIA ROUTER
-  pages :SmartRoute[] =[]
   constructor(public authService:AuthService){
     effect(()=>{
       this.setPages()
@@ -36,6 +33,7 @@ export class RoutesComponent {
   }
 
   // MOSTRA LE ROTTE SOLO SE L'UTENTE VI PUO' ACCEDERE
+  pages :SmartRoute[] =[]
   setPages(){
     let userRole =this.authService.user()?.role
     // SE L'UTENTE NON ESISTE MOSTRA SOLO PAGINE LIBERE
@@ -43,9 +41,12 @@ export class RoutesComponent {
       .filter(page=> page.show &&page.auth===undefined);
     // SE L'UTENTE HA UN RUOLO, MOSTRA LE PAGINE ACCESSIBILI 
     else this.pages =smartRoutes .filter(page=> 
-      (page.show &&page.auth===undefined) ||  // pagine libere
-      page.auth?.length===0 ||                // pagine auth:[]
-      page.auth?.some(role=> role===userRole) // pagine auth[i]==ruolo
+      // pagine libere
+      (page.show &&page.auth===undefined) ||  
+      // pagine auth:[]
+      (page.show &&page.auth?.length===0) ||  
+      // pagine auth[i]==ruolo
+      (page.show &&page.auth?.some(role=> role===userRole)) 
     );
   }
 }
