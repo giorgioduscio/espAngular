@@ -10,15 +10,17 @@ import { buildSmartRouter } from './tools/buildSmartRouter';
 import { Error404Component } from './pages/error404/error404.component';
 import { CalcComponent } from './pages/calc/calc.component';
 import { PersonalAreaComponent } from './pages/personalArea/personalArea.component';
+import { GdrComponent } from './pages/gdr/gdr.component';
 
 export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'home', component: HomeComponent },
   { path: 'error', component: Error404Component },
   { show:true, path: 'hierarchy', component: HierarchyComponent },
-  { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
   { show:true, path: 'list', component: ListComponent },
   { show:true, path: 'calc', component: CalcComponent },
   { path: 'user/:userKey', component: PersonalAreaComponent, auth:[] },
+  { path: 'gdr/:userKey', component: GdrComponent, auth:[] },
+  { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
 
   // LOGIN
   { path: 'login', component: LoginComponent },

@@ -1,0 +1,51 @@
+@import url(./oblioCard.component.css);
+.form-floating{
+  background: var(--c1) !important;
+}
+.row{
+  padding: 0;
+}
+button.btn{
+  padding: 5px;
+  margin-right: 5px;
+  display: inline-flex;
+}
+
+
+
+header{
+  padding: 5px;
+  box-shadow: 0 0 10px black;
+}
+  header>div{
+    max-width: 700px;
+
+    padding: 5px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    border-radius: 5px;
+  }
+    header main{
+      display: flex;
+      overflow-x: scroll;
+      align-items: center;
+      gap: 5px;
+    }
+    header .badge{
+      color: black;
+      border: 0;
+    }
+@media screen and (max-width:570px) {
+  header{
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    background: var(--c1);
+  }
+}
+
+footer{
+  min-height: 100px;
+}

@@ -1,0 +1,63 @@
+@import url(../../../customFloatingLabel.css);
+
+#OblioCardComponent{
+  margin: 10px auto !important;
+  max-width: 700px;
+  display: flex;
+  flex-flow: wrap;
+}
+  #OblioCardComponent>div{
+    min-width: 200px;
+    padding: 5px;
+    display: flex;
+  }
+
+  #head{
+    flex-flow: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+    #head [type="number"]{
+      width: 100px;
+    }
+
+  #left, #right{
+    flex-flow: column;
+  }
+
+/* PUNTEGGI, ABILITA ED EQUIPAGGIAMENTO */
+#punteggi_caratteristica{
+  margin: auto;
+  max-width: 250px;
+
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+}
+#abilita, #equipaggiamento{
+  padding: 10px;
+  padding-top: 20px;
+
+  border: 2px solid;
+  border-radius: 5px;
+}
+  form{
+    margin-bottom: 10px;
+    padding: 5px;
+    background: var(--c2);
+    border-radius: 5px;
+  }
+  #abilita>*, #equipaggiamento>*{
+    display: grid;
+    grid-template-columns: auto 1fr 3fr;
+    gap: 10px;
+  }
+  div>i{
+    margin: 0 10px;
+    padding: 0 10px;
+    transform: translateY(15px);
+    display: inline-block;
+
+    background: var(--c1);
+    border-radius: 5px;
+  }

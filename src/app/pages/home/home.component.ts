@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
 
   // CARD
   // nasconde le card che richiedono autorizzazione
-  cards =siteActions.filter(a=> !a.auth?.length)
+  cards =siteActions('').filter(a=> !a.auth?.length)
   isVisible=true
   setIsVisible(){ this.isVisible= !this.isVisible }
 

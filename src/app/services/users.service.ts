@@ -12,17 +12,11 @@ export class UsersService {
   
   private url ="https://users-b9804-default-rtdb.europe-west1.firebasedatabase.app/users"
   users =signal<User[]>([])
-  getUsers(){
+  private getUsers(){
     this.http.get<{[k:string]:User}>(this.url +'.json').subscribe((res=>{
       this.users.set( mapper(res) )
       // console.log("get",this.users());
     }))
-
-    return this.http.get<{[k:string]:User}>(this.url +'.json').pipe(
-      map(res=>{        
-        return mapper(res)
-      })
-    )
   }
   addUser(user:User){
     this.http.post( this.url+".json", user ).subscribe(res=>{

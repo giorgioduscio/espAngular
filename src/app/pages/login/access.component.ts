@@ -23,7 +23,6 @@ export class AccessComponent {
 
   constructor(private usersService:UsersService, private router: Router, private authService:AuthService, ){
     document.title ='Access'
-    this.usersService.getUsers()
     effect(()=>{
       this.users =this.usersService.users()
     })

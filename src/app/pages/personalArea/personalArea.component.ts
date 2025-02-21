@@ -3,7 +3,7 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../interfaces/user';
 import { siteActions } from './siteActions';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -14,16 +14,19 @@ import { NgIf } from '@angular/common';
   styleUrl: './personalArea.component.css'
 })
 export class PersonalAreaComponent {
-  constructor(public authService:AuthService){
+  constructor(public authService:AuthService, private ar:ActivatedRoute){
     effect(()=>{
       this.user =authService.user()
+      this.ar.params.subscribe(p=> this.userKey =p['userKey'])
+      this.cards =siteActions(this.userKey)
     })
   }
 
   user :User | undefined
+  userKey :string =''
   
   // AZIONI DEL SITO
-  cards =siteActions
+  cards =siteActions(this.userKey)
   showCard(i:number){
     const requestedRoles =this.cards[i].auth    
     // se non sono richiesti ruoli o solo autenticazione
