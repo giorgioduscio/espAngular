@@ -1,74 +1,91 @@
-import { effect, Injectable } from '@angular/core';
-import { OblioCard } from '../../interfaces/oblioCard';
-import { OblioService } from '../../services/oblio.service';
+import { effect, Injectable, signal } from '@angular/core';
+import { OblioCard } from '../../../interfaces/oblioCard';
+import { OblioService } from '../../../services/oblio.service';
 import initOblioCharacter from './initOblioCharacter';
-import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
+/*
+  ngform
+  andare nella parte alta della pagina
+  piccolo badge in alto con un riassunto delle stat
+*/
 @Injectable({ providedIn: 'root' })
-export class MainGdrService {
-  constructor(private oblioService:OblioService){
+export class AssistantGdrService {
+  constructor(private oblioService:OblioService, private router:Router){
     effect(()=>{
-      this.cards =oblioService.cards() .filter(c=> c.userKey===this.keys.userKey)
-      this.byLocalStorage()
-      setTimeout(()=> this.pillsColor(), 500);
+      window.scrollTo(0, 0);
+      this.cards =oblioService.cards() .filter(c=> c.userKey===this.keys().userKey)     
+      this.setMainCard()
+      setTimeout(()=> this.pillsColor(), 500)      
     })
   }
 
   // VISUALIZZAZIONE 
   cards: OblioCard[] =[]
-  keys ={userKey:''}
+  keys =signal({userKey:'', charKey:''})
   mainCard :OblioCard |undefined
-  setMainCard(newCard:OblioCard){
-    localStorage.setItem('cardKey', newCard.key!)
-    this.byLocalStorage()
-  }
-  // prende la chiave della card dal localStorage
-  byLocalStorage(){
-    let cardKey =localStorage.getItem('cardKey')
-    let match =this.cards.find(c=> c.key===cardKey)
+  setMainCard(){ 
+    // prende la chiave della card dalla route
+    let match =this.cards.find(c=> c.key===this.keys().charKey)
     // se trova la chiave e un match, inizializza
-    if(cardKey &&match) this.mainCard =match
+    if(match){ 
+      this.mainCard =match
+      document.title ='Scheda di ' +this.mainCard.head.nome
+
     // cerca un valore di default
-    else{
+    }else{
       // se hai altri personaggi, visualizza il primo
-      if(this.cards[0]) this.setMainCard(this.cards[0])
+      if(this.cards[0]){ 
+        this.mainCard =(this.cards[0])
+        this.router.navigate([`/gdr/${this.keys().userKey}/${this.cards[0].key}`])
+        
       // altrimenti mostra una pagina vuota
-      else this.mainCard =undefined
+      } else this.mainCard =undefined
     }
     this.pillsColor()
   }
   // gestire il colore delle pills
   pillsColor(){
     let selectedPill =document.querySelector('.rounded-pill.text-bg-success')
-    if(selectedPill) selectedPill.classList.remove('text-bg-success')
-    let newSelectedPill =document.querySelector('.rounded-pill#'+this.mainCard?.key)
-    if(newSelectedPill) newSelectedPill.classList.add('text-bg-success')
+      if(selectedPill) selectedPill.classList.remove('text-bg-success')
+    let newSelectedPill =document.querySelector('.rounded-pill#'+this.keys().charKey)
+      if(newSelectedPill) newSelectedPill.classList.add('text-bg-success')
   }
 
 
   // AGGIUNGERE SCHEDE
   onAddCharacter(){
-    const newCard =initOblioCharacter(this.keys.userKey)
+    const newCard =initOblioCharacter(this.keys().userKey)
     this.oblioService.addCard(newCard)
+    
+    setTimeout(()=>{
+      this.router.navigate([`/gdr/${this.keys().userKey}/${this.cards[ this.cards.length -1 ].key}`])
+    }, 500);
   }
   // ELIMINARE SCHEDE
   onDelete(){
     if(confirm('Eliminare personaggio?')){
       this.oblioService.deleteCard(this.mainCard?.key!)
-      localStorage.removeItem('cardKey')      
+      
+      setTimeout(()=>{        
+        if(this.cards.length) this.router.navigate([`/gdr/${this.keys().userKey}/${this.cards[0].key}`])
+        else this.router.navigate([`/gdr/${this.keys().userKey}/null`])
+      }, 500);
     }
   }
   // MODIFICARE SCHEDE
   onUpdate(e:Event, sectionKey:string, fieldKey="", i=-1){
-    const {value, type, id} =e.target as HTMLInputElement
+    const {value, type, name} =e.target as HTMLInputElement
     const newValue = type==='number' ?Number(value) :value
     let newCard :OblioCard =this.mainCard!
     // @ts-ignore EQUIPAG. E ABILITA'
-    if(i!==-1 &&fieldKey) newCard[sectionKey][fieldKey][i][id] =newValue
+    if(i!==-1 &&fieldKey) newCard[sectionKey][fieldKey][i][name] =newValue
     // @ts-ignore PUNTEGGI CARATTERISTICA
-    else if(fieldKey) newCard[sectionKey][fieldKey][id] =newValue
+    else if(fieldKey) newCard[sectionKey][fieldKey][name] =Number(newValue)
     // @ts-ignore CAMPI NORMALI
-    else newCard[sectionKey][id] =newValue
+    else newCard[sectionKey][name] =newValue
+    
+    // console.log(newCard.head);
     this.oblioService.patchCard(newCard.key!, newCard)
   }
   deleteListElement(sectionKey:string, i:number){

@@ -17,8 +17,6 @@ import { randomId } from '../../../tools/randomCompiler';
 })
 
 export class MessagesComponent {
-
-  // TODO MOSTRA MESSAGGI
   constructor( private router:ActivatedRoute, private chatService:ChatService, private authService:AuthService, ){
     this.router.params.subscribe(params =>this.chatKey =params['chatKey'])
     this.syncChat()
@@ -28,8 +26,9 @@ export class MessagesComponent {
         this.chat =preventUndefined
         this.messages =this.chat.messages[0].IDmessage===404 ?undefined :this.chat.messages
       }
-    })   
+    })
   }
+
 
   // VISUALIZZARE LA CHAT
   syncChat(){

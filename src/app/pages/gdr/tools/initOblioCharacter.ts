@@ -1,5 +1,5 @@
-import { OblioCard } from "../../interfaces/oblioCard";
-import { randomId, randomString } from "../../tools/randomCompiler";
+import { OblioCard } from "../../../interfaces/oblioCard";
+import { randomId, randomString } from "../../../tools/randomCompiler";
 
 export default function initOblioCharacter(userKey:string):OblioCard {
   return {
@@ -16,12 +16,12 @@ export default function initOblioCharacter(userKey:string):OblioCard {
 
     left: {
       punteggi_caratteristica: {
-        costituzione: "d4",
-        destrezza: "d4",
-        forza: "d6",
-        carisma: "d6",
-        intelligenza: "d8",
-        saggezza: "d8"
+        costituzione: 4,
+        destrezza: 4,
+        forza: 6,
+        carisma: 6,
+        intelligenza: 8,
+        saggezza: 8,
       },
       abilita: [
         {

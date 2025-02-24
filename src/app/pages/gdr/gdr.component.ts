@@ -1,15 +1,16 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { MatIcon } from "@angular/material/icon";
 import { NgFor, NgIf } from "@angular/common";
-import { MainGdrService } from "./main-gdr.service";
+import { AssistantGdrService } from "./tools/assistant-gdr.service";
 import { OblioCardComponent } from "./oblioCard.component";
+import { InfoModalComponent } from "./oblioModal.component copy";
 
 @Component({
   selector: 'app-gdr',
   standalone: true,
-  imports: [NavbarComponent, MatIcon, NgFor, NgIf, OblioCardComponent],
+  imports: [NavbarComponent, MatIcon, NgFor, NgIf, OblioCardComponent, RouterModule, InfoModalComponent],
   styleUrl: './gdr.component.css',
   template:`
 
@@ -18,35 +19,47 @@ import { OblioCardComponent } from "./oblioCard.component";
 
   <header> <div class="container">
     <aside>
-      <button class="btn btn-outline-success" (click)="main.onAddCharacter()">
+      <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal" type="button" aria-labelledby="modal">
+        <mat-icon>info</mat-icon>
+      </button>
+      <button class="btn btn-success" (click)="assist.onAddCharacter()">
         <mat-icon>add</mat-icon>
       </button>
-      <button class="btn btn-outline-danger" *ngIf="main.mainCard" (click)="main.onDelete()">
+      <button class="btn btn-danger" *ngIf="assist.mainCard" (click)="assist.onDelete()">
         <mat-icon>delete</mat-icon>
       </button>
     </aside>
 
-    <main>
-      @if (main.cards.length){
-        <button *ngFor="let card of main.cards; let i=index"
-          (click)="main.setMainCard(card)"
-          class="badge rounded-pill"
-          [id]="card.key"
-          >{{ card.head.nome }}</button>
-
-      }@else {
-        <span class="badge rounded-pill text-bg-danger">Non hai personaggi</span>
-      }
+    <main *ngIf="assist.cards.length">
+      <button *ngFor="let card of assist.cards; let i=index"
+        routerLink="/gdr/{{assist.keys().userKey}}/{{card.key}}"
+        (click)="assist.setMainCard()"
+        class="badge rounded-pill"
+        [id]="card.key"
+      >{{ card.head.nome }}</button>
     </main>
-  </div></header>
+  </div></header>                             
 
-  <app-oblioCard></app-oblioCard>
+  <!-- STATISTICHE DELLE CARD -->
+  @if(assist.cards.length){ <app-oblioCard></app-oblioCard> }
+  @else {
+    <div noCards>
+      <h3>Non hai ancora personaggi!! :-(</h3>
+      <p>Premi il pulsante <i>*verde*</i> in basso per crearne uno</p>
+    </div>
+  }
+  <!-- MODALE PER LA CREAZIONE DEL PERSONAGGIO -->
+  <app-oblioModal></app-oblioModal>
   <footer></footer>
 </article>  `
 })
 export class GdrComponent {
-  constructor(public main:MainGdrService, private ar:ActivatedRoute){
-    // @ts-ignore
-    this.ar.params.subscribe(p=> this.main.keys =p)
+  constructor(public assist:AssistantGdrService, private ar:ActivatedRoute){
+    this.ar.params.subscribe(p=>{ 
+      // @ts-ignore
+      this.assist.keys.set(p)
+      window.scrollTo(0, 0) 
+    })
   }
+
 }

@@ -27,6 +27,5 @@ main{
     }
 
 footer{
-  min-height: 300px;
-  background: black;
+  min-height: 100px;
 }

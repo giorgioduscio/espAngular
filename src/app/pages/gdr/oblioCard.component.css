@@ -1,13 +1,16 @@
 @import url(../../../customFloatingLabel.css);
+@import url(./styles/punteggiCaratteristica.css);
+@import url(./styles/abilita.css);
 
 #OblioCardComponent{
   margin: 10px auto !important;
   max-width: 700px;
   display: flex;
   flex-flow: wrap;
+  justify-content: space-evenly;
 }
   #OblioCardComponent>div{
-    min-width: 200px;
+    min-width: 250px;
     padding: 5px;
     display: flex;
   }
@@ -17,47 +20,58 @@
     justify-content: center;
     gap: 10px;
   }
-    #head [type="number"]{
-      width: 100px;
+    #head>div{
+      display: flex;
+      flex-flow: wrap;
+      justify-content: center;
+      gap: 10px;
     }
-
+      #head .input-group{
+        max-width: 300px;
+      }
+        #maxHp>i{
+          position: absolute;
+          top: 30%;
+          right: 10px;
+          color: lightgray;
+          pointer-events: none;
+        }
   #left, #right{
+    max-width: 300px;
     flex-flow: column;
   }
 
-/* PUNTEGGI, ABILITA ED EQUIPAGGIAMENTO */
-#punteggi_caratteristica{
-  margin: auto;
-  max-width: 250px;
+/* ABILITA ED EQUIPAGGIAMENTO */
+.innerBorder{
+  padding: 5px;
+  margin-top: 20px;
 
   display: grid;
-  grid-template-columns: auto auto auto;
   gap: 10px;
-}
-#abilita, #equipaggiamento{
-  padding: 10px;
-  padding-top: 20px;
 
   border: 2px solid;
   border-radius: 5px;
 }
-  form{
-    margin-bottom: 10px;
-    padding: 5px;
-    background: var(--c2);
-    border-radius: 5px;
-  }
-  #abilita>*, #equipaggiamento>*{
+  .innerBorder>*{
     display: grid;
     grid-template-columns: auto 1fr 3fr;
-    gap: 10px;
+    align-items: center;
+    gap: 5px;
   }
-  div>i{
-    margin: 0 10px;
-    padding: 0 10px;
-    transform: translateY(15px);
-    display: inline-block;
 
-    background: var(--c1);
-    border-radius: 5px;
+  .innerBorder>header{
+    width: min-content;
+    margin-bottom: -30px;
+    transform: translateY(-25px);
   }
+    .innerBorder>header>button{
+      color: white;
+      display: flex;
+      gap: 10px;
+      background: var(--c1);
+    }
+  .innerBorder>main{
+    padding-top: 10px;
+    border-top: 1px solid;
+  }
+

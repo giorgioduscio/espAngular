@@ -22,7 +22,7 @@ export const siteActions =(userKey:string)=>[
   {
     imgUrl:"https://img.freepik.com/foto-gratuito/natura-morta-di-oggetti-con-scheda-gioco-di-ruolo_23-2149352294.jpg?t=st=1725443696~exp=1725447296~hmac=501b528fe1dbc9f2b7b68660d90a99008cc52a0953e8a6d986caa668b5bd27ff&w=1380",
     title:"Gdr", 
-    path:'/gdr/'+userKey,
+    path: userKey ?`/gdr/${userKey}/null` :'/access',
     description:"Schede digitali per giorchi di ruolo da tavolo. Ideale per chi non ha voglia di studiare i manuali."
   },
 ]

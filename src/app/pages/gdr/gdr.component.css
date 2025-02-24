@@ -13,11 +13,11 @@ button.btn{
 
 
 
-header{
+article>header{
   padding: 5px;
   box-shadow: 0 0 10px black;
 }
-  header>div{
+  article>header>div{
     max-width: 700px;
 
     padding: 5px;
@@ -26,26 +26,50 @@ header{
 
     border-radius: 5px;
   }
-    header main{
+    /* pulsante per le info */
+    [data-bs-target="#infoModal"]{
+      position: fixed;
+      top: 80px;
+      right: 0;
+      z-index: 3;
+    }
+    /* pills */
+    article>header main{
       display: flex;
       overflow-x: scroll;
       align-items: center;
       gap: 5px;
     }
-    header .badge{
+    article>header .badge{
       color: black;
       border: 0;
+      max-width: 80px;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
 @media screen and (max-width:570px) {
-  header{
+  article>header{
     width: 100vw;
     position: fixed;
     bottom: 0;
     z-index: 10;
-    background: var(--c1);
+    background: linear-gradient(-3deg, var(--c3), var(--c2));
   }
 }
-
+/* in caso l'utente non avesse schede */
+[noCards]{
+  min-height: 80vh;
+  max-width: 200px;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;  
+  text-align: center;
+}
+  [noCards] i{
+    color: #00c900;
+  }
 footer{
   min-height: 100px;
 }

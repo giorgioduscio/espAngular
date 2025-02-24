@@ -13,12 +13,12 @@ export interface OblioCard{
 
   left:{
     punteggi_caratteristica:{
-      costituzione:string
-      destrezza:string
-      forza:string
-      carisma:string
-      intelligenza:string
-      saggezza:string
+      costituzione:4 |6 |8 |10 |12
+      destrezza:4 |6 |8 |10 |12
+      forza:4 |6 |8 |10 |12
+      carisma:4 |6 |8 |10 |12
+      intelligenza:4 |6 |8 |10 |12
+      saggezza:4 |6 |8 |10 |12
     }
     abilita:{ 
       bonus:number, 

@@ -1,78 +1,130 @@
 <main id="OblioCardComponent" class="container row">
-  @if(main.mainCard){
-    <div *ngFor="let section of templateCard(main.mainCard); let a=index" 
-      [id]="section.title" 
-      [class]="section.title!='head' ?'col col-md-6' :'' ">
+  @if(assist.mainCard){
+    <div *ngFor="let section of templateCard(assist.mainCard); let a=index" 
+      [id]="section.title" [class]="section.title!='head' ?'col col-md-6' :'' ">
 
-      <div *ngFor="let field of section.value; let b=index">
-        @switch (field.title){
-          @default {
+      @if (section.title==="head"){
+        <div>
+          <!-- NOME E ISPIRAZIONE -->
+          <div class="input-group">
+            <div class="form-floating">
+              <input type="search" class="form-control" id="nome" name="nome" placeholder="" 
+              (change)="assist.onUpdate($event, section.title)"
+              [value]="assist.mainCard.head.nome">
+              <label for="nome">Nome</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" class="form-control" id="ispirazione" name="ispirazione" placeholder="" 
+              (change)="assist.onUpdate($event, section.title)"
+              [value]="assist.mainCard.head.ispirazione">
+              <label for="Ispirazione">Ispirazione</label>
+            </div>
+          </div>
+          <!-- VITA, MONETE E PROTEZIONE -->
+          <div class="input-group">
+            <div class="form-floating" id="maxHp">
+              <input type="number" class="form-control" id="punti_vita" name="punti_vita" placeholder=""
+              (change)="assist.onUpdate($event, section.title)"
+              [value]="assist.mainCard.head.punti_vita">
+              <label for="punti_vita">Vita attuale</label>
+              <i>su {{ maxHp() }}</i>
+            </div>
+            <div class="form-floating">
+              <input type="number" class="form-control" id="monete" name="monete" placeholder=""
+              (change)="assist.onUpdate($event, section.title)"
+              [value]="assist.mainCard.head.monete">
+              <label for="monete">Monete</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" class="form-control" id="protezione" name="protezione" placeholder=""
+              (change)="assist.onUpdate($event, section.title)"
+              [value]="assist.mainCard.head.protezione">
+              <label for="protezione">Protezione</label>
+            </div>
+          </div>
+        </div>
+
+      }@else {
+        <div *ngFor="let field of section.value; let b=index">
+          @if (field.title ==='abilita'){
+            <div class="innerBorder" id="abilita">
+              <header>
+                <button class="btn" (click)="dropdowns.abilita=!dropdowns.abilita">
+                  <i>Abilità</i>
+                  <mat-icon>{{dropdowns.abilita ?'visibility' :'visibility_off'}}</mat-icon>
+                </button>
+              </header>
+              <form (submit)="assist.addListElement(section.title, $event)">
+                <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
+                <input id="bonus" type="number" class="form-control" value="" placeholder="Bonus">
+                <input id="description" type="text" class="form-control" value="" placeholder="Descrizione" required>
+              </form>
+              <main *ngIf="dropdowns.abilita">
+                @for (item of assist.mainCard.left.abilita; track item; let i=$index){
+                  <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
+                  <label for="bonusInput_{{i}}" class="bonusInput">+
+                    <input class="form-control" name="bonus" id="bonusInput_{{i}}"
+                      type="number" min="1" max="6"
+                      (change)="assist.onUpdate($event, section.title, field.title, i)"
+                      [value]="item.bonus"
+                    >
+                  </label>
+                  <input class="form-control" type="text" [value]="item.description" name="description"
+                    (change)="assist.onUpdate($event, section.title, field.title, i)"
+                  >
+                }
+              </main>
+            </div>
+          }@else if (field.title ==='punteggi_caratteristica'){
+            <main id="punteggi_caratteristica">
+              <div *ngFor="let item of caratteristiche" class="punteggio_caratteristica">
+                <label [for]="item">{{item}}</label>
+                <select class="form-select" [name]="item" [id]="item"
+                  [value]="assist.mainCard.left.punteggi_caratteristica[item]"
+                  (change)="assist.onUpdate($event, section.title, field.title)"
+                >
+                  <option selected [value]="assist.mainCard.left.punteggi_caratteristica[item]" style="display: none;">D{{assist.mainCard.left.punteggi_caratteristica[item]}}</option>
+                  <option *ngFor="let option of abilita" [value]="option" class="text-bg-dark">D{{option}}</option>
+                </select>
+              </div>
+            </main>
+          }@else if (field.title ==='equipaggiamento'){
+            <div class="innerBorder" id="equipaggiamento"> 
+              <header>
+                <button class="btn" (click)="dropdowns.equipaggiamento=!dropdowns.equipaggiamento">
+                  <i>Equipaggiamento</i>
+                  <mat-icon>{{dropdowns.equipaggiamento ?'visibility' :'visibility_off'}}</mat-icon>
+                </button>
+              </header>
+              
+              <form (submit)="assist.addListElement(section.title, $event)">
+                <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
+                <input id="quantita" type="number" class="form-control" value="" placeholder="Quantità">
+                <input id="titolo" type="text" class="form-control" value="" placeholder="Titolo" required>
+              </form>
+  
+              <main *ngIf="dropdowns.equipaggiamento">
+                @for (item of assist.mainCard.right.equipaggiamento; track item; let i=$index){
+                  <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
+                  <input class="form-control" type="number" [value]="item.quantita" name="quantita"
+                    (change)="assist.onUpdate($event, section.title, field.title, i)">
+                  <input class="form-control" type="text" [value]="item.titolo" name="titolo"
+                    (change)="assist.onUpdate($event, section.title, field.title, i)">
+                }
+              </main>
+            </div>
+          }@else { <!-- campo normale -->
             <div class="form-floating">
               <input class="form-control" 
                 [type]="it(field.value, field.title)" 
                 [value]="field.value" 
                 [id]="field.title"
-                (change)="main.onUpdate($event, section.title)"
+                (change)="assist.onUpdate($event, section.title)"
               > <label [for]="field.title">{{field.title}}</label>
             </div>
           }
-          @case ('abilita'){
-            <i>Abilità</i>
-            <div id="abilita"> 
-              <form (submit)="main.addListElement(section.title, $event)">
-                <button class="btn btn-outline-success" type="submit"><mat-icon>add</mat-icon></button>
-                <input id="bonus" id="bonus" type="number" class="form-control" value="" placeholder="Bonus">
-                <input id="description" id="description" type="text" class="form-control" value="" placeholder="Descrizione" required>
-              </form>
-
-              <main>
-                @for (item of main.mainCard.left.abilita; track item; let i=$index){
-                  <button class="btn btn-outline-danger" (click)="main.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
-                  <input class="form-control" type="number" [value]="item.bonus" id="bonus"
-                    (change)="main.onUpdate($event, section.title, field.title, i)"
-                  >
-                  <input class="form-control" type="text" [value]="item.description" id="description"
-                    (change)="main.onUpdate($event, section.title, field.title, i)"
-                  >
-                }
-              </main>
-            </div>
-          }
-          @case ('punteggi_caratteristica'){
-            <main id="punteggi_caratteristica">
-              <div *ngFor="let item of caratteristiche" class="form-floating">
-                <input class="form-control" 
-                  type="text" [id]="item"
-                  [value]="main.mainCard.left.punteggi_caratteristica[item]" 
-                  (change)="main.onUpdate($event, section.title, field.title)"
-                > <label [for]="item">{{item}}</label>
-              </div>
-            </main>
-          }
-          @case ('equipaggiamento'){
-            <i>Equipaggiamento</i>
-            <div id="equipaggiamento"> 
-              <form (submit)="main.addListElement(section.title, $event)">
-                <button class="btn btn-outline-success" type="submit"><mat-icon>add</mat-icon></button>
-                <input id="quantita" type="number" class="form-control" value="" placeholder="Quantità">
-                <input id="titolo" type="text" class="form-control" value="" placeholder="Titolo" required>
-              </form>
-
-              <main>
-                @for (item of main.mainCard.right.equipaggiamento; track item; let i=$index){
-                  <button class="btn btn-outline-danger" (click)="main.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
-                  <input class="form-control" type="number" [value]="item.quantita" id="quantita"
-                    (change)="main.onUpdate($event, section.title, field.title, i)"
-                  >
-                  <input class="form-control" type="text" [value]="item.titolo" id="titolo"
-                    (change)="main.onUpdate($event, section.title, field.title, i)"
-                  >
-                }
-              </main>
-            </div>
-          }
-        }
-      </div>
+        </div>
+      }
     </div>
   }
 </main>

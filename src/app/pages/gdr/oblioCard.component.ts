@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { MatIcon } from "@angular/material/icon";
-import { NgFor } from "@angular/common";
-import { MainGdrService } from "./main-gdr.service";
+import { NgFor, NgIf } from "@angular/common";
+import { AssistantGdrService } from "./tools/assistant-gdr.service";
 import { OblioCard } from "../../interfaces/oblioCard";
 import inputType from "../../tools/inputType";
 import { FormsModule } from "@angular/forms";
@@ -9,12 +9,12 @@ import { FormsModule } from "@angular/forms";
 @Component({
   selector: 'app-oblioCard',
   standalone: true,
-  imports: [MatIcon, NgFor, FormsModule, ],
+  imports: [MatIcon, NgFor, NgIf, FormsModule, ],
   styleUrl: './gdr.component.css',
   templateUrl:'./oblioCard.component.html'
 })
 export class OblioCardComponent {
-  constructor(public main:MainGdrService){}
+  constructor(public assist:AssistantGdrService){}
 
   it =inputType
   caratteristiche :(keyof OblioCard['left']['punteggi_caratteristica'])[] 
@@ -40,5 +40,17 @@ export class OblioCardComponent {
       return {title, value:isObj ?this.toArray(value) :value}
     })
   }
+  // DROPDOWN DI EQUIPAGGIAMENTO E BONUS
+  dropdowns ={abilita:true, equipaggiamento:true}
 
+  // VALORI DELLE SINGOLE ABILITA'
+  abilita=[4, 6, 8, 10, 12]
+
+  // VITA MASSIMA da 16 a 40
+  maxHp(){
+    let cos =this.assist.mainCard?.left.punteggi_caratteristica.costituzione
+    if(!cos) return 404
+    return 2 +cos +(cos*2) 
+  }
+  
 }

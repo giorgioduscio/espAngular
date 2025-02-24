@@ -19,7 +19,7 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { show:true, path: 'list', component: ListComponent },
   { show:true, path: 'calc', component: CalcComponent },
   { path: 'user/:userKey', component: PersonalAreaComponent, auth:[] },
-  { path: 'gdr/:userKey', component: GdrComponent, auth:[] },
+  { path: 'gdr/:userKey/:charKey', component: GdrComponent, auth:[] },
   { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
 
   // LOGIN
