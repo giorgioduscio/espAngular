@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   ngform
   andare nella parte alta della pagina
   piccolo badge in alto con un riassunto delle stat
+  dinamicizza i btn groups
 */
 @Injectable({ providedIn: 'root' })
 export class AssistantGdrService {

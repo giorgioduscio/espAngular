@@ -5,7 +5,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { controller, templateForm } from './validation';
-import { randomId, randomImage } from '../../tools/randomCompiler';
+import { randomNumber, randomImage } from '../../tools/randomCompiler';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
@@ -41,7 +41,7 @@ export class LoginComponent {
       role: 0
     }
     this.usersService.addUser({
-      id: randomId(),
+      id: randomNumber(999999999),
       username: input.username,
       email: input.email,
       imageUrl: randomImage(),

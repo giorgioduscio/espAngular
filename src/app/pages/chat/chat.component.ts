@@ -7,7 +7,7 @@ import { Form, FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './nav-chat/nav-chat.component';
 import { EditModeService } from './edit-mode.service';
-import { randomId, randomImage } from '../../tools/randomCompiler';
+import { randomImage, randomNumber } from '../../tools/randomCompiler';
 
 @Component({
   selector: 'app-chat',
@@ -31,7 +31,7 @@ export class ChatComponent {
   //TODO AGGIUNGE UN ELEMENTO CHAT
   newGroup(form:NgForm){
     const body ={
-      idChat: randomId(),
+      idChat: randomNumber(999999999),
       titleChat: form.value.input,
       imageUrl: randomImage(),
       messages: [{

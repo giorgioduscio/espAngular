@@ -1,4 +1,6 @@
-export function randomId():number{ return Math.floor(Math.random() *100000000000) }
+export function randomNumber(max:number):number {
+  return Math.floor(Math.random() * (max + 1));
+}
 
 export function randomImage():string{
   switch(Math.floor(Math.random() *(15 -0) +0)){ // 0/15
@@ -38,4 +40,14 @@ export function randomString() :string {
     result.push(letters[randomIndex])
   }
   return result.join('') 
+}
+
+export function randomColor() :string {
+  const letters =['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+  let result ='#'
+  for (let index = 0; index < 6; index++) {
+    let i =randomNumber(letters.length-1)    
+    result +=letters[i]
+  }
+  return result
 }

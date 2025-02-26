@@ -6,7 +6,7 @@ import { NgFor } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
-import { randomId } from '../../../tools/randomCompiler';
+import { randomNumber } from '../../../tools/randomCompiler';
 
 @Component({
   selector: 'app-messages',
@@ -54,7 +54,7 @@ export class MessagesComponent {
     if (this.chat.messages[0].IDmessage===404) this.chat.messages.pop() //fix initarray
     
     updatedChat.messages.push({
-      IDmessage: randomId(),
+      IDmessage: randomNumber(999999999),
       message: input.message,
       IDuser: user ?user.id :404,
       username: user ?user.username :'Sconosciuto',
