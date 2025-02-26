@@ -47,34 +47,39 @@
       }@else {
         <div *ngFor="let field of section.value; let b=index">
           @if (field.title ==='abilita'){
-            <div class="innerBorder" id="abilita">
-              <header>
+            <fieldset id="abilita">
+              <legend>
                 <button class="btn" (click)="dropdowns.abilita=!dropdowns.abilita">
                   <i>Abilità</i>
                   <mat-icon>{{dropdowns.abilita ?'visibility' :'visibility_off'}}</mat-icon>
                 </button>
-              </header>
+              </legend>
+
               <form (submit)="assist.addListElement(section.title, $event)">
                 <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
-                <input id="bonus" type="number" class="form-control" value="" placeholder="Bonus">
+                <div class="bonusInput">
+                  <input id="bonus" type="number" class="form-control" value="" placeholder="Bonus">
+                </div>
                 <input id="description" type="text" class="form-control" value="" placeholder="Descrizione" required>
               </form>
+
               <main *ngIf="dropdowns.abilita">
                 @for (item of assist.mainCard.left.abilita; track item; let i=$index){
-                  <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
-                  <label for="bonusInput_{{i}}" class="bonusInput">+
-                    <input class="form-control" name="bonus" id="bonusInput_{{i}}"
-                      type="number" min="1" max="6"
-                      (change)="assist.onUpdate($event, section.title, field.title, i)"
-                      [value]="item.bonus"
-                    >
-                  </label>
-                  <input class="form-control" type="text" [value]="item.description" name="description"
+                  <div>
+                    <div class="bonusInput">
+                      <input class="form-control" name="bonus" id="bonusInput_{{i}}"
+                        type="number" min="1" max="6"
+                        (change)="assist.onUpdate($event, section.title, field.title, i)"
+                        [value]="item.bonus">
+                    </div>
+                    <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
+                  </div>
+                  <textarea class="form-control" name="description"
                     (change)="assist.onUpdate($event, section.title, field.title, i)"
-                  >
+                    >{{item.description}}</textarea>
                 }
               </main>
-            </div>
+            </fieldset>
           }@else if (field.title ==='punteggi_caratteristica'){
             <main id="punteggi_caratteristica">
               <div *ngFor="let item of caratteristiche" class="punteggio_caratteristica">
@@ -89,13 +94,13 @@
               </div>
             </main>
           }@else if (field.title ==='equipaggiamento'){
-            <div class="innerBorder" id="equipaggiamento"> 
-              <header>
+            <fieldset id="equipaggiamento"> 
+              <legend>
                 <button class="btn" (click)="dropdowns.equipaggiamento=!dropdowns.equipaggiamento">
                   <i>Equipaggiamento</i>
                   <mat-icon>{{dropdowns.equipaggiamento ?'visibility' :'visibility_off'}}</mat-icon>
                 </button>
-              </header>
+              </legend>
               
               <form (submit)="assist.addListElement(section.title, $event)">
                 <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
@@ -108,11 +113,12 @@
                   <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
                   <input class="form-control" type="number" [value]="item.quantita" name="quantita"
                     (change)="assist.onUpdate($event, section.title, field.title, i)">
-                  <input class="form-control" type="text" [value]="item.titolo" name="titolo"
-                    (change)="assist.onUpdate($event, section.title, field.title, i)">
+                  <input type="text" class="form-control" name="titolo" [value]="item.titolo"
+                    (change)="assist.onUpdate($event, section.title, field.title, i)"
+                  >
                 }
               </main>
-            </div>
+            </fieldset>
           }@else { <!-- campo normale -->
             <div class="form-floating">
               <input class="form-control" 

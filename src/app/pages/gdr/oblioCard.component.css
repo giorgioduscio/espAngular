@@ -1,6 +1,7 @@
 @import url(../../../customFloatingLabel.css);
 @import url(./styles/punteggiCaratteristica.css);
 @import url(./styles/abilita.css);
+@import url(./styles/equipaggiamento.css);
 
 #OblioCardComponent{
   margin: 10px auto !important;
@@ -52,26 +53,21 @@
   border: 2px solid;
   border-radius: 5px;
 }
-  .innerBorder>*{
-    display: grid;
-    grid-template-columns: auto 1fr 3fr;
-    align-items: center;
-    gap: 5px;
+fieldset{
+  padding: 5px;
+  margin-top: 10px;
+  border: revert;
+  border-radius: 5px;
+}
+  legend{
+    float: none;
+    width: auto;
+    margin: 0;
   }
-
-  .innerBorder>header{
-    width: min-content;
-    margin-bottom: -30px;
-    transform: translateY(-25px);
-  }
-    .innerBorder>header>button{
+    legend>button{
       color: white;
       display: flex;
       gap: 10px;
-      background: var(--c1);
     }
-  .innerBorder>main{
-    padding-top: 10px;
-    border-top: 1px solid;
-  }
+
 

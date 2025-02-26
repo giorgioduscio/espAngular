@@ -1,14 +1,43 @@
 /* input numerici delle abilità devono avere '+' */
-.bonusInput{
-  padding: 5px;
-  padding-left: 10px;
+#abilita>form{
+  margin-bottom: 10px;
   display: flex;
-  align-items: center;
-  border: 1px solid;
-  border-radius: 5px;
+  gap: 5px;
 }
+#abilita>main{
+  display: grid;
+  grid-template-columns: 60px auto;
+  align-items: stretch;
+  gap: 5px;
+
+  padding-top: 10px;
+  border-top: 1px solid;
+}
+  #abilita>main>div{
+    width: max-content;
+    display: grid;
+    justify-items: start;
+    justify-content: center;
+    gap: 5px;
+  }
+  #abilita>main textarea{
+    font-size: small;
+    font-weight: bold;
+  }
+
+
+/* BONUS +2 */
+.bonusInput{
+  position: relative;
+}
+  .bonusInput::before{
+    content: '+';
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    pointer-events: none;
+  }
   .bonusInput>input{
-    padding: 0;
-    border: 0;
-    box-shadow: none;
+    width: 60px !important;
+    padding-left: 20px;
   }

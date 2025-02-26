@@ -48,9 +48,9 @@ export class InfoModalComponent {
         {
           title:`Esempi`,
           content:[
-            {title:`Scudo piccolo o arma da parata: +2 (ma solo contro armi da mischia);` },
-            {title:`Scudo a rondella o Pelta: +2 (scudo classico);`},
-            {title:`Scudo a torre o Scutum: +3;` },
+            {title:`Scudo piccolo o arma da parata`, description:`+2 (ma solo contro armi da mischia)` },
+            {title:`Scudo a rondella o Pelta (scudo classico)`, description:`+2`},
+            {title:`Scudo a torre o Scutum`, description:`+3` },
           ] 
         }
       ]
