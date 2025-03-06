@@ -40,3 +40,16 @@
   .chat.selected{ 
     background: var(--c3); 
   }
+
+#addChat{
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+}
+  #addChat>div{
+    padding: 0 1rem 1rem;
+    max-width: 300px;
+    margin: auto;
+    display: flex;
+    justify-content: flex-end;
+  }

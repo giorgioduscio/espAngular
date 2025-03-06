@@ -16,31 +16,29 @@ form{
   justify-content: center;
   box-shadow: 0 0 10px black;
 }
-  form>div{
-    display: flex;
-  }
-    .input-group .form-floating,
-    .input-group [type="submit"]{
-      background: var(--c3);
-    }
-    
-    .onSync{
-      position: relative;
-    }
-      .onSync [type="button"]{
-        padding: 5px;
-        position: absolute;
-        right: 0;
-        top: -60px;
-        display: flex;
 
-        background: var(--c3);
-        border-radius: 50px !important;  
-        border: 1px solid;
-      }
+  .input-group .form-floating,
+  .input-group [type="submit"]{
+    background: var(--c3);
+  }
+  
+  .onSync{
+    position: relative;
+  }
+    .onSync [type="button"]{
+      padding: 5px;
+      position: absolute;
+      right: 0;
+      top: -60px;
+      display: flex;
+
+      background: var(--c3);
+      border-radius: 50px !important;  
+      border: 1px solid;
+    }
 
 /* 
-form
+form, #addChat
   div
     .input-group
       .form-floating

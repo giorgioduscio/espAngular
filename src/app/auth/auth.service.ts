@@ -1,8 +1,6 @@
 import { effect, Injectable, signal } from '@angular/core';
 import { User } from '../interfaces/user';
 import { UsersService } from '../services/users.service';
-import { delay, of } from 'rxjs';
-import { smartRoutes } from '../app.routes';
 
 @Injectable({  providedIn: 'root' })
 export class AuthService {
@@ -15,8 +13,8 @@ export class AuthService {
   // QUANDO SI CARICA LA PAGINA, CERCA L'ID NEL LOCAL STORAGE 
   user =signal<User |undefined>(undefined)
   setByStorage(){
-    let exist =localStorage.getItem('userId')
-    let userId =exist ?Number(exist) :null
+    let exist =localStorage.getItem('user')
+    let userId =exist ?Number(exist.split('/')[0]) :null
 
     // ID TROVATO
     if(userId){
@@ -35,8 +33,7 @@ export class AuthService {
     // aggiorna l'utente
     if (match){
       this.user.set(match)
-      localStorage.setItem('userId', match.id.toString())
-      localStorage.setItem('userRole', match.role.toString())
+      localStorage.setItem('user', `${match.id}/${match.role}`)
       return true
 
     }else return false
@@ -45,8 +42,7 @@ export class AuthService {
   // RIMUOVE TUTTO RIGUARDO L'UTENTE PRECEDENTE
   resetLocalUser(){
     this.user.set(undefined)
-    localStorage.removeItem('userId')
-    localStorage.removeItem('userRole')
+    localStorage.removeItem('user')
     location.reload()
   }  
 

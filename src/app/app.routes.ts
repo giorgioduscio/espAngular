@@ -27,7 +27,7 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'access', component: AccessComponent },
   // CHAT
   { show:true, path: 'chat', component: ChatComponent, auth:[] },
-    { path: 'chat/:chatKey', component: MessagesComponent },
+    { path: 'chat/:chatKey', component: MessagesComponent, auth:[] },
     
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/error', pathMatch: 'full' },

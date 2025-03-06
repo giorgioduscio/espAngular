@@ -1,0 +1,40 @@
+<app-modal modalId="chatModal">
+  <main>
+    <h3>Crea nuovo gruppo</h3>
+
+    <div class="form-floating">
+      <input name="titleChat" id="titleChat"
+        class="form-control" 
+        type="search" placeholder="" required
+        [(ngModel)]="form.titleChat"
+      ><label for="titleChat">Nome del gruppo</label>
+    </div>
+
+    <div class="form-floating">
+      <input name="email" id="email"
+        class="form-control" 
+        type="email" placeholder=""
+        (keyup.enter)="addUser($event)"
+      ><label for="email">{{errorMessagge ?errorMessagge :'Email partecipante'}}</label>
+    </div>
+
+    <div id="addedUsers" *ngIf="addedUsers.length">
+      <h6>Utenti invitati</h6>
+      <div class="btn-group" role="group" aria-label="Basic example"
+        *ngFor="let user of addedUsers; let i=index"
+      > <button type="button" class="btn btn-danger" (click)="deleteUser(i)"><mat-icon>delete</mat-icon></button>
+        <button class="btn btn-outline-light">{{ user }}</button>
+      </div>      
+    </div>
+    
+    <div class="input-group">
+      <button class="btn btn-secondary" type="button" data-bs-dismiss="modal"
+        (click)="initForm()"
+      >Annulla</button>
+      <button (click)="onSubmit()" class="btn btn-success"
+        [disabled]="isDisabled()"
+        type="button" data-bs-dismiss="modal"
+      >{{chat ?'Aggiorna' :'Aggiungi'}}</button>
+    </div>
+  </main>
+</app-modal> 

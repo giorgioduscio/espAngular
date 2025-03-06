@@ -17,8 +17,8 @@ export const authGuard: CanActivateFn =(route, state) =>{
   const requestedRoles =smartRoutes.find(route=>route.path===pageTitle)?.auth
 
   // prende il ruolo dal local storage
-  const exixt =localStorage.getItem('userRole')
-  const userRole =exixt ?Number(exixt) :null
+  const exixt =localStorage.getItem('user')
+  const userRole =exixt ?Number(exixt.split('/')[1]) :null
   
 
   // NON ESISTE ALCUN UTENTE

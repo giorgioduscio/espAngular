@@ -1,52 +1,48 @@
+<modal-chatModals></modal-chatModals>
 <article>
   <app-nav-chat></app-nav-chat>
-
   
   <!--TODO CHATS -->
-  <main class="chats">
-    <div>
-      <div class="chat" *ngFor="let chat of chats; let i =index" [id]="chat.key">
-        <abbr [title]="chat.titleChat">
-          
-          @if(ems.editMode().active){ 
-            <div (click)="ems.handleClick(chat.key!)">
-              <img src="{{chat.imageUrl}}">
-              <b>{{chat.titleChat}}</b> 
-            </div>
+  <main class="chats"> 
+    @if(chats.length){
+      <div>
+        <div class="chat" *ngFor="let chat of chats; let i =index" [id]="chat.key">
+          <abbr [title]="chat.titleChat">
             
-          }@else{
-            <div>
-              <img [src]="chat.imageUrl" [alt]="chat.titleChat">
-              <a routerLink="/chat/{{chat.key}}">
-                {{ chat.titleChat }}
-              </a>
-              <button (click)="ems.handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
-            </div>
-          }
-        </abbr>
+            @if(ems.editMode().active){ 
+              <div (click)="ems.handleClick(chat.key!)">
+                <img src="{{chat.imageUrl}}">
+                <b>{{chat.titleChat}}</b> 
+              </div>
+              
+            }@else{
+              <div>
+                <img [src]="chat.imageUrl" [alt]="chat.titleChat">
+                <a routerLink="/chat/{{chat.key}}">
+                  {{ chat.titleChat }}
+                </a>
+                <button (click)="ems.handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
+              </div>
+            }
+          </abbr>
+        </div>
       </div>
-    </div>
+
+    }@else {
+      <div>
+        <h3>Nessuna chat!!</h3>
+        <p>Crea una nuova chat.</p>
+      </div>
+    }
   </main>
 
-
   <!--TODO NUOVO GRUPPO -->
-  <form #groupForm="ngForm" (submit)="newGroup(groupForm)">
-    <div class="input-group">
-
-      <div class="form-floating">
-        <input 
-          type="search" 
-          class="form-control" 
-          placeholder="" 
-          [readOnly]="ems.editMode().active"
-          name="input" id="input" 
-          ngModel required
-        ><label for="input">Nuovo gruppo</label>
-      </div>
-
-      <button class="btn btn-outline-light" type="submit" [disabled]="groupForm.invalid">
-        <mat-icon class="newGroup">add</mat-icon>
-      </button>
+  <div id="addChat">
+    <div>
+      <button class="btn btn-outline-success"
+        type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
+      > <mat-icon>add</mat-icon> </button>
     </div>
-  </form>
+  </div>
 </article>
+

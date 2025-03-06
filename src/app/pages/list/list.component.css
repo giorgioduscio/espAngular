@@ -17,6 +17,10 @@ form{
     background: var(--c1);
   }
 
+
 td{
   background: transparent;
+}
+button.btn{
+  padding: 5px;
 }
