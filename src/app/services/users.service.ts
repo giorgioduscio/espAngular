@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { User } from '../interfaces/user';
 import { mapper } from '../tools/mapper';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -12,9 +12,12 @@ export class UsersService {
   
   private url ="https://users-b9804-default-rtdb.europe-west1.firebasedatabase.app/users"
   users =signal<User[]>([])
+  $users =new BehaviorSubject<User[]>([])
   private getUsers(){
     this.http.get<{[k:string]:User}>(this.url +'.json').subscribe((res=>{
-      this.users.set( mapper(res) )
+      const mappedUsers =mapper(res)
+      this.users.set(mappedUsers)
+      this.$users.next(mappedUsers)
       // console.log("get",this.users());
     }))
   }

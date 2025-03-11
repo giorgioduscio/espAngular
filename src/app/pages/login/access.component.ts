@@ -1,12 +1,11 @@
-import { Component, effect, signal } from '@angular/core';
-import { UsersService } from '../../services/users.service';
+import { Component, signal } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../auth/auth.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { controller, templateForm } from './validation';
 import { NgIf } from '@angular/common';
+import validation from './validation';
 
 @Component({
   selector: 'app-access',
@@ -16,31 +15,36 @@ import { NgIf } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class AccessComponent {
-  users :User[] =[]
-  showcomponent =signal({error:false, password:false})
-  form =new FormGroup({ password:controller['password'], email:controller['email'] })
-  template =templateForm .filter(f=>f.key==='password'||f.key==='email')
-
-  constructor(private usersService:UsersService, private router: Router, private authService:AuthService, ){
+  constructor(private router: Router, private authService:AuthService, ){
     document.title ='Access'
-    effect(()=>{
-      this.users =this.usersService.users()
-    })
+    this.voidForm()
+  }
+
+  showcomponent =signal({error:false, password:false})
+  form! :FormGroup<any>
+  template :any[] =[]
+  voidForm(){
+    const {templateForm, controller} =validation()
+    const newController ={ password:controller['password'], email:controller['email'] }    
+    this.form =new FormGroup(newController)
+    this.template =templateForm.filter(f=>f.key==='password'||f.key==='email')
   }
 
   // TODO SUBMIT
   onSubmit(){
-    let userToVerify :User ={
+    const userToVerify :User ={
       id: 0,
       email: this.form.value.email,
       username: '',
       password: this.form.value.password,
       imageUrl: '',
-      role: 0
+      role: 0,
     }
+    // SE VI E' UN RISCONTRO DELL'UTENTE
     if(this.authService.verifyLocalUser(userToVerify)){ 
       let userKey =this.authService.user()?.key
       this.router.navigate(['/user/'+userKey])
-    }else console.log('le credenziali non hanno riscontrato risultati');
+      this.voidForm()
+    }else console.log('le credenziali non hanno riscontrato risultati')
   }
 }

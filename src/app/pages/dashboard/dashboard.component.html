@@ -25,12 +25,12 @@
 
         <thead>
           <tr> 
-            <th><button class="btn btn-success" routerLink="/login"><mat-icon>add</mat-icon></button></th>
+            <th><button class="btn btn-success" routerLink="/login"><mat-icon>person_add</mat-icon></button></th>
             <th *ngFor="let key of userKeys">{{ key | paragraph }}</th>
           </tr>
         </thead>
 
-        <tbody> @for(user of usersService.users(); track user; let i=$index){
+        <tbody> @for(user of users; track user; let i=$index){
           <tr *ngIf="show(i)">
             <td>
               <button class="btn btn-danger" (click)="onDelete(i)">

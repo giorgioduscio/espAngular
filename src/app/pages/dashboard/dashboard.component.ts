@@ -19,22 +19,23 @@ import { RouterModule } from '@angular/router';
 })
 
 export class DashboardComponent{
-  userKeys :(keyof User)[] |undefined
-  rolesValues =[...RolesValues]
-  it =inputType
-
   constructor(public usersService: UsersService){
     document.title ='Dashboard'
-    effect(()=>{
-      if(usersService.users().length) this.userKeys =
-        Object.keys(usersService.users()[0])
+    usersService.$users.subscribe((res)=>{
+      if(res.length){ 
+        this.users =res
+        this.userKeys =Object.keys(res[0])
         .filter(k=>k!=='key' && k!=='password') 
         .map(k=>k as keyof User)
-        
-      // console.log(this.userKeys, usersService.users());
+      }  
+      // console.log(this.userKeys, this.users);
     })
   }
 
+  users :User[] =[]
+  userKeys :(keyof User)[] |undefined
+  rolesValues =[...RolesValues]
+  it =inputType
   onDelete(i:number){
     if(confirm('Cancellare utente?')) this.usersService.deleteUser(i)
   }
@@ -43,7 +44,7 @@ export class DashboardComponent{
     const newValue =type==='checkbox' ?checked :
                     !isNaN(Number(value)) ?Number(value) :
                     value
-    const newUser ={ ...this.usersService.users()[i], [key]:newValue }
+    const newUser ={ ...this.users[i], [key]:newValue }   
 
     // se modifichi una mail ma senza @, non fa la chiamata
     if(typeof newValue==='string'){
@@ -56,7 +57,7 @@ export class DashboardComponent{
   // VISUALIZZAZIONE FILTRATA
   filter=''
   show(i:number){
-    let {id, username, email} =this.usersService.users()[i]
+    let {id, username, email} =this.users[i]
     return fieldsFilter({ id, username, email }, this.filter)
   }
 }

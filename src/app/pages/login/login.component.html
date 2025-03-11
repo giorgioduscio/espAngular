@@ -24,7 +24,7 @@
               > <label [for]="item.key">{{ item.title }}{{ form.get(item.key)?.valid ?'' :' *' }}</label>
             </div>
           }
-          <i *ngIf="!form.get(item.key)?.valid &&form.get(item.key)?.touched">Campo obbligatorio.</i>
+          <i *ngIf="!form.get(item.key)?.valid &&form.get(item.key)?.touched">Campo non valido.</i>
         </div>
       }
       <p>Hai già un profilo? <a routerLink="/access">Accedi</a></p>

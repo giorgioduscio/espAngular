@@ -4,7 +4,7 @@ import { User } from '../../interfaces/user';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { controller, templateForm } from './validation';
+import validation from './validation';
 import { randomNumber, randomImage } from '../../tools/randomCompiler';
 import { NgFor, NgIf } from '@angular/common';
 
@@ -17,28 +17,32 @@ import { NgFor, NgIf } from '@angular/common';
 })
 
 export class LoginComponent {
-  users :User[] =[]
-  keys :string[] =[]
-  form =new FormGroup({...controller})
-  template =[...templateForm]
-  
-
-  // todo MOSTRA GLI USERS
   constructor( private usersService :UsersService, private router :Router){
     document.title="Login"
-    // console.log(this.form, this.template)
+    this.voidForm()
+  }
+
+  // todo MOSTRA GLI USERS
+  users :User[] =[]
+  keys :string[] =[]
+  form! :FormGroup<any>
+  template :any[] =[]
+  voidForm(){
+    const {templateForm, controller} =validation()
+    this.form =new FormGroup(controller)
+    this.template =templateForm
   }
 
   //TODO AGGIUNGE UN USER
   onSubmit() {
     const input :User ={
-      ...this.form.value,
       id: 0,
       email: '',
       username: '',
       password: '',
       imageUrl: '',
-      role: 0
+      role: 0,
+      ...this.form.value,
     }
     this.usersService.addUser({
       id: randomNumber(999999999),
@@ -48,7 +52,7 @@ export class LoginComponent {
       password: input.password,
       role: Number(input.role),
     })
-    this.form.reset()
+    this.voidForm()    
     this.router.navigate(['/access'])
   }
 
