@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
-import { MatIcon } from '@angular/material/icon';
 import { ListService } from '../../services/list.service';
 import { ListItem } from '../../interfaces/list';
 import { ParagraphPipe } from './paragraph.pipe';
@@ -11,7 +10,7 @@ import { mapper } from '../../tools/mapper';
 @Component({
   selector: 'app-listService',
   standalone: true,
-  imports: [FormsModule, NgFor, MatIcon, NavbarComponent, ParagraphPipe],
+  imports: [FormsModule, NgFor, NavbarComponent, ParagraphPipe],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })

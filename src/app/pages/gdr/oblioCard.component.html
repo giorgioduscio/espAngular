@@ -51,12 +51,12 @@
               <legend>
                 <button class="btn" (click)="dropdowns.abilita=!dropdowns.abilita">
                   <i>Abilità</i>
-                  <mat-icon>{{dropdowns.abilita ?'visibility' :'visibility_off'}}</mat-icon>
+                  <i class="bi {{dropdowns.abilita ?'bi-eye-fill' :'bi-eye-slash'}}"></i>
                 </button>
               </legend>
 
               <form (submit)="assist.addListElement(section.title, $event)">
-                <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
+                <button class="btn btn-outline-success bi bi-arrow-90deg-down" type="submit"></button>
                 <div class="bonusInput">
                   <input id="bonus" type="number" class="form-control" value="" placeholder="Bonus">
                 </div>
@@ -72,7 +72,7 @@
                         (change)="assist.onUpdate($event, section.title, field.title, i)"
                         [value]="item.bonus">
                     </div>
-                    <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
+                    <button class="btn btn-outline-danger bi bi-trash3-fill" (click)="assist.deleteListElement(section.title, i)"></button>
                   </div>
                   <textarea class="form-control" name="description"
                     (change)="assist.onUpdate($event, section.title, field.title, i)"
@@ -98,19 +98,19 @@
               <legend>
                 <button class="btn" (click)="dropdowns.equipaggiamento=!dropdowns.equipaggiamento">
                   <i>Equipaggiamento</i>
-                  <mat-icon>{{dropdowns.equipaggiamento ?'visibility' :'visibility_off'}}</mat-icon>
+                  <i class="bi {{dropdowns.equipaggiamento ?'bi-eye-fill' :'bi-eye-slash'}}"></i>
                 </button>
               </legend>
               
               <form (submit)="assist.addListElement(section.title, $event)">
-                <button class="btn btn-outline-success" type="submit"><mat-icon>arrow_downward</mat-icon></button>
+                <button class="btn btn-outline-success bi bi-arrow-90deg-down" type="submit"></button>
                 <input id="quantita" type="number" class="form-control" value="" placeholder="Quantità">
                 <input id="titolo" type="text" class="form-control" value="" placeholder="Titolo" required>
               </form>
   
               <main *ngIf="dropdowns.equipaggiamento">
                 @for (item of assist.mainCard.right.equipaggiamento; track item; let i=$index){
-                  <button class="btn btn-outline-danger" (click)="assist.deleteListElement(section.title, i)"><mat-icon>delete</mat-icon></button>
+                  <button class="btn btn-outline-danger bi bi-trash3-fill" (click)="assist.deleteListElement(section.title, i)"></button>
                   <input class="form-control" type="number" [value]="item.quantita" name="quantita"
                     (change)="assist.onUpdate($event, section.title, field.title, i)">
                   <input type="text" class="form-control" name="titolo" [value]="item.titolo"

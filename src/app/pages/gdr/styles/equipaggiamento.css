@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: auto 60px auto;
   gap: 5px;
-  align-items: start;
+  align-items: center;
 }
 #equipaggiamento>form{
   margin-bottom: 10px;

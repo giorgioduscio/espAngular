@@ -1,13 +1,12 @@
 import { Component, effect } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../interfaces/user';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ RouterModule, MatIconModule, ],
+  imports: [ RouterModule, ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

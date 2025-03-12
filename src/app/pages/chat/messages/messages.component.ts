@@ -1,10 +1,9 @@
-import { Component, effect } from '@angular/core';
+import { Component, effect, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
 import { Chat, Message } from '../../../interfaces/chat';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
 import { randomNumber } from '../../../tools/randomCompiler';
 import { ChatModalsComponent } from "../chatModals/chatModals.component";
@@ -12,7 +11,7 @@ import { ChatModalsComponent } from "../chatModals/chatModals.component";
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [MatIconModule, FormsModule, NgFor, NgIf, RouterModule, ChatModalsComponent],
+  imports: [ FormsModule, NgFor, NgIf, RouterModule, ChatModalsComponent],
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css', '../chat.component.css', '../styles/navChat.css']
 })
@@ -20,9 +19,9 @@ import { ChatModalsComponent } from "../chatModals/chatModals.component";
 export class MessagesComponent {
   constructor( private router:ActivatedRoute, private chatService:ChatService, private authService:AuthService, ){
     this.router.params.subscribe(params =>this.chatKey =params['chatKey'])
-    // se si aggiorna la chat, aggiorna i messaggi
+    // aggiornamento messaggi
     this.syncChat
-    window.addEventListener('popstate',this.ci)
+    window.addEventListener('popstate', this.ci)
     effect(()=>{      
       let findChat =this.chatService.chats() .find(chat=> chat.key===this.chatKey)
       if(findChat){ 
@@ -30,19 +29,30 @@ export class MessagesComponent {
         this.chat =findChat
         this.messages =JSON.parse(JSON.stringify( findChat.messages ))
       }
+      this.scrollToElement()
     })
   }
 
   chatKey :string =''
   chat! :Chat 
+
+  // MESSAGGI REALTIME get ogni 2 secondi
   messages :Message[] =[]
   syncChat =setInterval(()=>{
     this.chatService.getChats()   
   },2000);
   ci =()=>clearInterval(this.syncChat) 
   // LO SCRITTORE E' LO STESSO CHE HA FATTO L'ACCESSO?
-  isMyMessage =(i:number)=> this.authService.user()?.id ===this.messages[i].IDuser 
+  isMyMessage =(i:number)=> this.authService.user()?.id ===this.messages[i].IDuser ?'right' :'left' 
 
+  // SCROLL forza lo scrollo della pagina fino al suo punto più basso
+  @ViewChild('bottomElement') bottomElement!: ElementRef;
+  scrollToElement() {
+    setTimeout(() => {
+      console.log('scrool', this.bottomElement);
+      if(this.bottomElement) this.bottomElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }, 200);
+  }  
 
   // TODO AGGIUNGI MESSAGGIO
   onAddMessage(form:NgForm){

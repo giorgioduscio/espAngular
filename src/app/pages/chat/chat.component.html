@@ -21,7 +21,7 @@
                 <a routerLink="/chat/{{chat.key}}">
                   {{ chat.titleChat }}
                 </a>
-                <button (click)="ems.handleClick(chat.key!)" class="btn btn-outline-light"> <mat-icon>settings</mat-icon> </button>
+                <button (click)="ems.handleClick(chat.key!)" class="btn btn-outline-light"> <i class="bi bi-gear-fill"></i> </button>
               </div>
             }
           </abbr>
@@ -39,9 +39,9 @@
   <!--TODO NUOVO GRUPPO -->
   <div id="addChat">
     <div>
-      <button class="btn btn-outline-success"
+      <button class="btn btn-success bi bi-plus-lg"
         type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
-      > <mat-icon>add</mat-icon> </button>
+      ></button>
     </div>
   </div>
 </article>

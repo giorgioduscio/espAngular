@@ -2,17 +2,17 @@
   <nav class="navChat">
     <div>
       <button class="btn" (click)="ems.resetEdit()">
-        <mat-icon class="icon">arrow_back</mat-icon>
+        <i class="icon" class="bi bi-arrow-left"></i>
       </button>
       <b>{{ ems.editMode().idGroups.length }}</b>
     </div>
 
     <div>
       <button class="btn" (click)="ems.onRenameGroup()" *ngIf="ems.editMode().idGroups.length===1">
-        <mat-icon class="icon deleteGroup">edit</mat-icon>
+        <i class="icon deleteGroup" class="bi bi-pencil-square"></i>
       </button>
       <button class="btn" (click)="ems.onDeleteGroup()">
-        <mat-icon class="icon deleteGroup">delete</mat-icon>
+        <i class="icon deleteGroup" class="bi bi-trash3-fill"></i>
       </button>
     </div>
   </nav>

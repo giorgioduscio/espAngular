@@ -22,7 +22,7 @@
       <h6>Utenti invitati</h6>
       <div class="btn-group" role="group" aria-label="Basic example"
         *ngFor="let user of addedUsers; let i=index"
-      > <button type="button" class="btn btn-danger" (click)="deleteUser(i)"><mat-icon>delete</mat-icon></button>
+      > <button type="button" class="btn btn-danger" (click)="deleteUser(i)"><i class="bi bi-trash3-fill"></i></button>
         <button class="btn btn-outline-light">{{ user }}</button>
       </div>      
     </div>

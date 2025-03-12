@@ -1,7 +1,7 @@
-/* input numerici delle abilità devono avere '+' */
 #abilita>form{
   margin-bottom: 10px;
   display: flex;
+  align-items: center;
   gap: 5px;
 }
 #abilita>main{

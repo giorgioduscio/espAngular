@@ -5,7 +5,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RolesValues, User } from '../../interfaces/user';
 import { ParagraphPipe } from '../list/paragraph.pipe';
-import { MatIcon } from '@angular/material/icon';
 import inputType from '../../tools/inputType';
 import fieldsFilter from '../../tools/fieldsFilter';
 import { RouterModule } from '@angular/router';
@@ -13,7 +12,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ FormsModule, NgFor, NgIf, NavbarComponent, ParagraphPipe, MatIcon, RouterModule ],
+  imports: [ FormsModule, NgFor, NgIf, NavbarComponent, ParagraphPipe, RouterModule ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

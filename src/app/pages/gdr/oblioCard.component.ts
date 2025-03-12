@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { MatIcon } from "@angular/material/icon";
 import { NgFor, NgIf } from "@angular/common";
 import { AssistantGdrService } from "./tools/assistant-gdr.service";
 import { OblioCard } from "../../interfaces/oblioCard";
@@ -9,7 +8,7 @@ import { FormsModule } from "@angular/forms";
 @Component({
   selector: 'app-oblioCard',
   standalone: true,
-  imports: [MatIcon, NgFor, NgIf, FormsModule, ],
+  imports: [NgFor, NgIf, FormsModule, ],
   styleUrl: './gdr.component.css',
   templateUrl:'./oblioCard.component.html'
 })

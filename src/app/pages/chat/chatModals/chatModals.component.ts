@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { ModalComponent } from "../../../components/modal/modal.component";
 import { Chat } from '../../../interfaces/chat';
 import { UsersService } from '../../../services/users.service';
@@ -11,7 +10,7 @@ import { ChatService } from '../../../services/chat.service';
 @Component({
   selector: 'modal-chatModals',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf, MatIconModule, ModalComponent],
+  imports: [FormsModule, NgFor, NgIf, ModalComponent],
   styleUrl:'./chatModals.component.css',
   templateUrl:`./chatModals.component.html`,
 })

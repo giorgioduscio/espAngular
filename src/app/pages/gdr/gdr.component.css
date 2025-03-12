@@ -37,6 +37,7 @@ article>header{
       top: 80px;
       right: 0;
       z-index: 3;
+      border-radius: 50px;
     }
     /* pills */
     article>header main{

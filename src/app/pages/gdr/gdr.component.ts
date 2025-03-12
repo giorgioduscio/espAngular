@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { NavbarComponent } from "../../components/navbar/navbar.component";
-import { MatIcon } from "@angular/material/icon";
 import { NgFor, NgIf } from "@angular/common";
 import { AssistantGdrService } from "./tools/assistant-gdr.service";
 import { OblioCardComponent } from "./oblioCard.component";
@@ -10,7 +9,7 @@ import { InfoModalComponent } from "./oblioModal.component copy";
 @Component({
   selector: 'app-gdr',
   standalone: true,
-  imports: [NavbarComponent, MatIcon, NgFor, NgIf, OblioCardComponent, RouterModule, InfoModalComponent],
+  imports: [NavbarComponent, NgFor, NgIf, OblioCardComponent, RouterModule, InfoModalComponent],
   styleUrl: './gdr.component.css',
   template:`
 
@@ -20,13 +19,11 @@ import { InfoModalComponent } from "./oblioModal.component copy";
   <header> <div class="container">
     <aside>
       <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal" type="button" aria-labelledby="modal">
-        <mat-icon>info</mat-icon>
+        <i class="bi bi-info-lg"></i>
       </button>
-      <button class="btn btn-success" (click)="assist.onAddCharacter()">
-        <mat-icon>add</mat-icon>
-      </button>
+      <button class="btn btn-success bi bi-plus-lg" (click)="assist.onAddCharacter()"></button>
       <button class="btn btn-danger" *ngIf="assist.mainCard" (click)="assist.onDelete()">
-        <mat-icon>delete</mat-icon>
+        <i class="bi bi-trash3-fill"></i>
       </button>
     </aside>
 

@@ -1,10 +1,6 @@
 import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
@@ -14,7 +10,7 @@ import { siteActions } from '../personalArea/siteActions';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ RouterModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule,
+  imports: [ RouterModule, FormsModule, 
     NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgStyle,
     CommonModule, NavbarComponent, HomeDirective
   ],

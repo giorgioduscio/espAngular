@@ -3,23 +3,22 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { HierarchyService } from './hierarchy.service';
 import { ListItem } from '../../interfaces/list';
 import { NgFor } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
 import { randomString } from '../../tools/randomCompiler';
 
 @Component({
   selector: 'app-hierarchyBB',
   standalone: true,
-  imports: [ MatIcon, NgFor, NavbarComponent, ],
+  imports: [ NgFor, NavbarComponent, ],
   // FIX HTML
   template: `
     <main class="hierarchy">
       <header>
-        <button class="btn btn-outline-success" (click)="onAdd()"><mat-icon>add</mat-icon></button>
+        <button class="btn btn-outline-success bi bi-plus-lg" (click)="onAdd()"></button>
         <h2>BB</h2>
       </header>
 
       <div class="grid">@for (item of localList; track item; let i=$index){ 
-        <button class="btn btn-outline-danger" (click)="onDelete(item.key!)"><mat-icon>delete</mat-icon></button>
+        <button class="btn btn-outline-danger bi bi-trash3-fill" (click)="onDelete(item.key!)"></button>
         <input class="form-check-input" 
           type="checkbox" 
           name="complete"

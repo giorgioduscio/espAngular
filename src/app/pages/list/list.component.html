@@ -17,10 +17,10 @@
           >
           <label for="title">Inserisci azione</label>
         </div>
-        <button class="btn btn-secondary"  
+        <button 
+          class="btn btn-secondary bi bi-plus-lg"  
           type="submit" 
-          [disabled]="formdata.invalid"
-        > <mat-icon>add</mat-icon> </button>
+          [disabled]="formdata.invalid"></button>
       </form>
     </header>
   
@@ -48,7 +48,7 @@
             </td>
             <td>
               <button class="btn btn-danger" (click)="onDelete(i)">
-                <mat-icon>delete</mat-icon>
+                <i class="bi bi-trash3-fill"></i>
               </button>
             </td>
           </tr>

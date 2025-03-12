@@ -4,7 +4,6 @@ import { Chat } from '../../interfaces/chat';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { NavChatComponent } from './navChat/nav-chat.component';
 import { EditModeService } from './edit-mode.service';
 import { randomImage, randomNumber } from '../../tools/randomCompiler';
@@ -13,7 +12,7 @@ import { ChatModalsComponent } from './chatModals/chatModals.component';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [NavChatComponent, FormsModule, NgFor, RouterLink, MatIconModule, ChatModalsComponent],
+  imports: [NavChatComponent, FormsModule, NgFor, RouterLink, ChatModalsComponent],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
