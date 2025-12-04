@@ -1,0 +1,106 @@
+/* COLORAZIONE CUSTOM */
+:host {
+  --dnd1: #3b2f27;
+  --dnd2: #4a3f35;
+  --dnd3: #6a5a49;
+  --dnd4: #d3c0a5;
+  --dnd5: #f4eade;
+
+
+  --verde-chiaro: #d4edda;
+  --verde-scuro: #155724;
+  --bordo-verde: #c3e6cb;
+  --rosso-chiaro: #f8d7da;
+  --rosso-scuro: #721c24;
+  --bordo-rosso: #f5c6cb;
+}
+.text-bg-dnd1{
+  background: var(--dnd1);
+  color: var(--dnd5);
+}
+.text-bg-dnd2{
+  background: var(--dnd2);
+  color: var(--dnd5);
+}
+.text-bg-dnd3{
+  background: var(--dnd3);
+  color: var(--dnd5);
+}
+.text-bg-dnd4{
+  background: var(--dnd4);
+  color: var(--dnd1);
+}
+.text-bg-dnd5{
+  background: var(--dnd5);
+  color: var(--dnd1);
+}
+
+
+/* FORMATTAZIONE TESTO */
+  .h2{
+    font-size: 1.5em;
+  }
+  /* prima lettera maiuscola */
+  .duckcase::first-letter {
+    text-transform: uppercase !important;
+  }
+
+
+/* FORM */
+  label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--dnd5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 100%;
+  }
+  input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--dnd3);
+  }
+  .form-control-dnd {
+    background-color: var(--dnd2);
+    color: var(--dnd5);
+    border-color: var(--dnd5);
+    font-family: 'Times New Roman', Times, serif !important;
+  }
+    .form-control-dnd:focus {
+      background-color: var(--dnd2);
+      color: var(--dnd5);
+      border-color: var(--dnd5);
+      box-shadow: none;
+    }
+
+
+/* TOAST */
+  .toast {
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    background: var(--verde-scuro);
+    color: var(--dnd5);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+    pointer-events: none;
+  }
+  .toast.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+
+/* ACCORDION */
+.accordion-item,
+.accordion-button,
+.accordion-button:not(.collapsed),
+.accordion-button:focus,
+.accordion-body {
+  background-color: transparent !important;
+  color: var(--dnd5) !important;
+}
+.accordion-button::after {
+  filter: invert(1) grayscale(100%);
+}

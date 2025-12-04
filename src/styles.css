@@ -11,9 +11,6 @@ html, body{
   background: var(--c1) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
-article{
-  min-height: 100vh;
-}
 *{
   box-sizing: border-box;
   transition: 0.3s;
@@ -42,4 +39,21 @@ input.form-control:focus{
 a{
   text-underline-offset: 5px;
   font-style: italic; 
+}
+
+/* PSEUDO BOOTSTRAP */
+.flex-1{
+  flex: 1;
+}
+.flex-auto{
+  flex: auto;
+}
+.bg-transparent{
+  background: transparent;
+}
+.border{
+  border-color: inherit !important;
+}
+.form-control::placeholder{
+  color: #ffffff80 !important;
 }

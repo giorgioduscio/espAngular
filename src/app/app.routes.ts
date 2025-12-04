@@ -11,6 +11,7 @@ import { Error404Component } from './pages/error404/error404.component';
 import { CalcComponent } from './pages/calc/calc.component';
 import { PersonalAreaComponent } from './pages/personalArea/personalArea.component';
 import { GdrComponent } from './pages/gdr/gdr.component';
+import { DndComponent } from './pages/dnd/dnd.component';
 
 export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ export const { routes, smartRoutes } =buildSmartRouter([
   { path: 'user/:userKey', component: PersonalAreaComponent, auth:[] },
   { path: 'gdr/:userKey/:charKey', component: GdrComponent, auth:[] },
   { show:true, path: 'dashboard', component: DashboardComponent, auth:[0] },
+  { show:true, path: 'dnd', component: DndComponent },
 
   // LOGIN
   { path: 'login', component: LoginComponent },
