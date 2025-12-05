@@ -1,3 +1,4 @@
+import toast from "../../tools/toast";
 import { Personaggio } from "./dndManual";
 
 export const local = {
@@ -18,10 +19,10 @@ export const local = {
     const requiredChars = ['{', '}', '[', ']', ':'];
     const hasRequiredChars = requiredChars.every(char => text.includes(char));
     if (!hasRequiredChars) {
-      alert("Il contenuto degli appunti non sembra essere un JSON valido.");
+      toast("Il contenuto degli appunti non è un JSON valido.", "danger");
       return;
     }
     const result = JSON.parse(text);
     return result;
-  }
+  },
 }

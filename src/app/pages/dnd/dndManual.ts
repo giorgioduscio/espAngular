@@ -54,7 +54,6 @@ interface Oggetto {
 }
 
 export const DND = {
-
   getClassi:()=> Object.keys(DND.sottoclassi) 
                 .sort((a, b) => a.localeCompare(b)) as string[],
   
@@ -72,1692 +71,1678 @@ export const DND = {
     });
     return result .filter(c => c.classe && c.livello);
   },
+
   classi: [
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 1,
       privilege: 'Difesa senza armatura',
       description: 'Se non indossi armatura pesante, CA = 10 + mod DES + mod COS, anche con scudo.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 1,
       privilege: 'Ira',
       description: 'Puoi entrare in ira fino a 2 volte per riposo lungo.\n- Dura 1 minuto, termina se cadi privo di sensi o se non attacchi/subisci danni in un turno.\n- Vantaggio su prove di Forza e tiri salvezza su Forza.\n- Bonus ai danni da mischia con armi basate su Forza.\n- Resistenza a danni contundenti, perforanti e taglienti.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 2,
       privilege: 'Attacco temerario',
       description: 'Puoi ottenere vantaggio sul primo attacco del turno, ma gli attacchi contro di te hanno vantaggio fino al prossimo turno.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 2,
       privilege: 'Privilegio del Cammino primordiale',
       description: 'Scegli un cammino primordiale che conferisce abilità uniche.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 5,
       privilege: 'Attacco extra',
       description: 'Puoi effettuare due attacchi invece di uno quando usi l’azione Attacco.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 5,
       privilege: 'Movimento veloce',
       description: 'Se non indossi armatura pesante, aumenti la velocità di 3 metri.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 6,
       privilege: 'Privilegio del Cammino primordiale',
       description: 'Miglioramenti aggiuntivi alle abilità del cammino primordiale scelto.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 7,
       privilege: 'Istinto ferino',
       description: 'Agisci normalmente se sorpreso solo se entri in ira all’inizio del combattimento.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 8,
       privilege: 'Incremento punteggi caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 9,
       privilege: 'Critico brutale',
       description: 'Aggiungi 1 dado al danno di un colpo critico.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 10,
       privilege: 'Privilegio del Cammino primordiale',
       description: 'Ulteriori miglioramenti alle abilità del cammino primordiale.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 11,
       privilege: 'Ira implacabile',
       description: 'Se cadi a 0 HP in ira, puoi fare un tiro salvezza CD 10 su Costituzione per restare a 1 HP.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 12,
       privilege: 'Incremento punteggi caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 13,
       privilege: 'Critico brutale',
       description: 'Aggiungi 2 dadi al danno di un colpo critico.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 14,
       privilege: 'Privilegio del Cammino primordiale',
       description: 'Ancora miglioramenti alle abilità del cammino primordiale.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 15,
       privilege: 'Inarrestabile',
       description: 'Come reazione, puoi ignorare una condizione di incapacità fino alla fine del turno.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 16,
       privilege: 'Incremento punteggi caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 17,
       privilege: 'Critico brutale',
       description: 'Aggiungi 3 dadi al danno di un colpo critico.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 18,
       privilege: 'Potere indomabile',
       description: 'Puoi ritirare un tiro salvezza fallito una volta per riposo lungo.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 19,
       privilege: 'Incremento punteggi caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'barbaro',
+      class: 'Barbaro',
       level: 20,
       privilege: 'Campione primordiale',
       description: 'Forza e Costituzione aumentano di 4 (max 24).'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 1,
       privilege: "Attacco Furtivo",
       description: "Una volta per turno, puoi infliggere danni extra a una creatura che colpisci con un attacco con arma con arma accurata. Puoi avvinare quando, dadi di vantaggio sul tiro per colpire a quando il bersaglio ha un avversario a 1,5m."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 1,
       privilege: "Gergo Ladresco",
       description: "Impari gergo e codici che criptano messaggi. Sali un altro ladro più comprendi. Ci vuole il quadrupolo del tempo per trasmetterli. Inoltre, comprendi una serie di segni e simboli segreti per messaggi semplici e brevi (area pericolosa, territorio della gilda dei ladri, bottino nelle vicinanze, abitanti facili prede o possono fermarti in luogo ad un ladro in fuga)."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 2,
       privilege: "Maestria",
       description: "Puoi scegliere due abilità o un'abilità e un attacco da scasso) in cui ha competenza. Il Bonus Competenza per quelle prove è raddoppiato."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 2,
       privilege: "Ladro",
       description: "Puoi scattare guadagnati azione bonus una volta a turno per Disimpegno, Nascondersi o Scattare."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 3,
       privilege: "Privilegio dell'archetipo - Mira Stabile (Tasha)",
       description: "Se non ti muovi nel tuo turno, puoi spendere l'azione bonus per darti vantaggio sul tuo prossimo tiro per colpire di tiro con arma."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 4,
       privilege: "Incremento punteggi di caratteristica",
       description: "Aumenta di 2 un punteggio di caratteristica."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 5,
       privilege: "Schivata Prodigiosa",
       description: "Quando un attaccante che sei in grado di vedere ti colpisce con un attacco, puoi usare la tua reazione per dimezzare il danno dell'attacco effettuato contro di te."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 6,
       privilege: "Maestria 2",
       description: "Puoi scegliere altre due competenze."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 7,
       privilege: "Illusione",
       description: "Quando sei vittima di un effetto che ti permette di compiere un tiro salvezza su Destrezza per dimezzare i danni, non subisci danni se superi il tiro salvezza, e solo metà danni se lo fallisci."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 8,
       privilege: "Incremento punteggi di caratteristica",
       description: "Aumenta di 2 un punteggio di caratteristica."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 9,
       privilege: "Privilegio dell'archetipo",
       description: "Privilegio speciale dell'archetipo a questo livello."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 10,
       privilege: "Incremento punteggi di caratteristica",
       description: "Aumenta di 2 un punteggio di caratteristica."
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 11,
       privilege: 'Talento Affidabile',
       description: 'Quando tiri un d20 per una prova con competenza, tratti i risultati inferiori a 10 come 10.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 12,
       privilege: 'Incremento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 13,
       privilege: "Privilegio dell'archetipo",
       description: 'Privilegio speciale dell’archetipo a questo livello.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 14,
       privilege: 'Senso Cieco',
       description: 'Percepisci le creature invisibili entro 3 metri se non sono completamente coperte.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 15,
       privilege: 'Mente Sfuggente',
       description: 'Ottieni competenza nei tiri salvezza su Saggezza.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 16,
       privilege: 'Incremento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 17,
       privilege: "Privilegio dell'archetipo",
       description: 'Privilegio speciale dell’archetipo a questo livello.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 18,
       privilege: 'Inafferrabile',
       description: 'Finché non sei incapacitato, gli attacchi contro di te non hanno mai vantaggio.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 19,
       privilege: 'Incremento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica.'
     },
     {
-      class: 'ladro',
+      class: 'Ladro',
       level: 20,
       privilege: 'Colpo di Fortuna',
       description: 'Una volta per riposo breve, puoi trasformare un tiro mancato in un colpo riuscito o far riuscire una prova.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 1,
       privilege: 'Imparare 2 lingue e duplicare la competenza',
       description: 'Impari 2 lingue e duplichi la tua competenza in un’abilità in cui sei competente.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 2,
       privilege: 'Stile di Combattimento',
       description: 'Scegli uno stile di combattimento tra quelli disponibili per migliorare le tue capacità in battaglia.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 3,
       privilege: 'Archetipo Ranger',
       description: 'Scegli un archetipo che definisce il tuo stile e le tue abilità uniche.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 5,
       privilege: 'Attacco Extra',
       description: 'Puoi effettuare due attacchi invece di uno quando usi l’azione Attacco.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 6,
       privilege: 'Consapevolezza Primordiale',
       description: 'Puoi spendere uno slot incantesimo e per 1 minuto +incantesimo, puoi percepire le creature entro 1,5 km (10 km in territorio affine).'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 7,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 8,
       privilege: 'Attacco Extra',
       description: 'Puoi effettuare due attacchi invece di uno quando usi l’azione Attacco.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 9,
       privilege: 'Vagabondo',
       description: 'La velocità aumenta di 1,5m e il movimento di nuoto e scalata hanno la stessa velocità di camminata. Danni aumentati di 6 se avversario prescelto.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 10,
       privilege: 'Andatura sul Territorio',
       description: 'Puoi attraversare territori e vegetali senza essere rallentato o senza subire danni da essi, e puoi percepire i pericoli naturali.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 11,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 12,
       privilege: 'Implacabile',
       description: 'Come reazione, puoi ignorare condizioni di incapacità fino alla fine del turno.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 13,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 14,
       privilege: 'Avversario prescelto',
       description: 'I danni aumentano di 8 contro il tuo avversario prescelto.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 15,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 17,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 18,
       privilege: 'Sensi Ferini',
       description: 'Quando attacchi una creatura che non puoi vedere, hai vantaggio ai tiri per colpire.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Un punteggio di caratteristica di 2 o due punteggi di 1.'
     },
     {
-      class: 'ranger',
+      class: 'Ranger',
       level: 20,
       privilege: 'Sterminatore di Nemici',
       description: 'Puoi sommare un dado danno extra al tuo attacco per turno. Usa questo privilegio prima o dopo il tiro.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 1,
       privilege: 'Recupero energia',
       description: 'Dopo un riposo, puoi spendere un\'azione bonus e recuperare punti ferita pari a d10 + livello guerriero.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 1,
       privilege: 'Stile combattimento',
       description: 'Armi possenti, 2 armi, Difesa, Duellare, Protezione, Tiri.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 2,
       privilege: 'Azione impetuosa',
       description: 'Dopo un riposo, ottieni un\'azione aggiuntiva e una possibile azione bonus nel proprio turno.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 3,
       privilege: 'Privilegio archetipo',
       description: 'Scegli un archetipo di guerriero che conferisce abilità speciali.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta un punteggio di caratteristica di 2, o due punteggi di 1.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 5,
       privilege: 'Attacco extra +1',
       description: 'Effettui due attacchi invece di uno quando usi l\'azione Attacco.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 7,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta un punteggio di caratteristica di 2, o due punteggi di 1.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 8,
       privilege: 'Privilegio archetipo',
       description: ''
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 9,
       privilege: 'Indomito',
       description: 'Dopo un riposo, puoi ritirare un tiro salvezza che fallisce.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 10,
       privilege: 'Privilegio archetipo',
       description: ''
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 11,
       privilege: 'Attacco extra +2',
       description: 'Effettui tre attacchi invece di uno quando usi l\'azione Attacco.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta un punteggio di caratteristica di 2, o due punteggi di 1.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 13,
       privilege: 'Indomito',
       description: 'Puoi ritirare due tiri salvezza che fallisci tra i riposi.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 14,
       privilege: 'Privilegio archetipo',
       description: ''
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 15,
       privilege: 'Attacco extra +3',
       description: 'Effettui quattro attacchi invece di uno quando usi l\'azione Attacco.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta un punteggio di caratteristica di 2, o due punteggi di 1.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 17,
       privilege: 'Indomito',
       description: 'Puoi ritirare tre tiri salvezza che fallisci tra i riposi.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 18,
       privilege: 'Privilegio archetipo',
       description: ''
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta un punteggio di caratteristica di 2, o due punteggi di 1.'
     },
     {
-      class: 'guerriero',
+      class: 'Guerriero',
       level: 20,
       privilege: 'Attacco extra +4',
       description: 'Effettui cinque attacchi invece di uno quando usi l\'azione Attacco.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 1,
       privilege: 'Difesa senza armatura',
       description: 'Se non indossi armatura pesante, CA = 10 + mod Destrezza + mod Saggezza.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 1,
       privilege: 'Uso delle armi senza armatura',
       description: 'Le armi da monaco usano il modificatore di Destrezza per attacchi e danni.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 1,
       privilege: 'Aumento colpo senz\'armi',
       description: 'Danni del colpo senz\'armi diventano d6.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 2,
       privilege: 'Movimento senza armatura',
       description: 'La velocità aumenta di 9 metri se non indossi armatura o scudo.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 3,
       privilege: 'Privilegio della tradizione monastica',
       description: 'Scegli una tradizione monastica che conferisce abilità uniche.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 4,
       privilege: 'Aumento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 5,
       privilege: 'Movimento senza armatura',
       description: 'La velocità aumenta di ulteriori 9 metri se non indossi armatura o scudo.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 5,
       privilege: 'Aumento colpo senz\'armi',
       description: 'Danni del colpo senz\'armi diventano d8.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 6,
       privilege: 'Corpo vuoto',
       description: 'Resistenza a malattie e veleni.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 7,
       privilege: 'Movimento senza armatura',
       description: 'La velocità aumenta di ulteriori 9 metri se non indossi armatura o scudo.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 8,
       privilege: 'Aumento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 9,
       privilege: 'Movimento senza armatura',
       description: 'La velocità aumenta di ulteriori 9 metri se non indossi armatura o scudo.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 9,
       privilege: 'Aumento colpo senz\'armi',
       description: 'Danni del colpo senz\'armi diventano d10.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 10,
       privilege: 'Perfezione interiore',
       description: 'Se rimani senza Ki, non ne recuperi 4.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 11,
       privilege: 'Aumento colpo senz\'armi',
       description: 'Danni del colpo senz\'armi diventano d12.'
-    },    
+    },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 12,
       privilege: 'Aumento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 13,
       privilege: 'Linguaggio del Sole e della Luna',
       description: 'Comprendi e ti fai comprendere da qualsiasi creatura che conosca almeno una lingua.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 14,
       privilege: 'Anima di Diamante',
       description: 'Competenza in tutti i tiri salvezza; puoi spendere 1 Ki per ritirare un TS fallito.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 15,
       privilege: 'Corpo senza Tempo',
       description: 'Non soffri gli effetti dell’età in combattimento e non puoi essere invecchiato magicamente.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 16,
       privilege: 'Aumento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 17,
       privilege: 'Privilegio della tradizione monastica',
       description: 'La tua tradizione conferisce un privilegio aggiuntivo a questo livello.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 18,
       privilege: 'Corpo Vuoto',
       description: 'Puoi diventare invisibile e ottenere resistenza ai danni con un uso del Ki; puoi anche proiettare la tua presenza.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 19,
       privilege: 'Aumento punteggi di caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi di 1.'
     },
     {
-      class: 'monaco',
+      class: 'Monaco',
       level: 20,
       privilege: 'Sé Perfetto',
       description: 'Quando tiri iniziativa e non hai punti Ki, ne recuperi automaticamente.'
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 1,
       privilege: 'Imposizione delle Mani',
       description: "Dopo riposo lungo, ripristini Punti ferita - liv * 5, puoi spendere 5 punti ferita per curare da malattie e veleni, non ha effetto su contratti e non morti."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 1,
       privilege: 'Percezione del Divino',
       description: "Il paladino percepisce la presenza e il tipo di ogni creatura entro 18m da lui e che non si trovi sotto copertura totale. Utilizzi 1° mod CAR e dal riposo lungo recupera tutti gli utilizzi."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 2,
       privilege: 'Stile di Combattimento',
       description: "Puoi combattere con un'arma da mischia, puoi spendere uno slot incantesimo per infliggere danni radiosi."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 3,
       privilege: 'Salute Divina',
       description: "Il paladino diventa immune alle malattie."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 4,
       privilege: 'Aumento di Punteggi Caratteristica',
       description: "Aumenta di 2 o due di 1."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 5,
       privilege: 'Attacco Extra',
       description: "Puoi attaccare una seconda volta entro 3m durante un turno."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 7,
       privilege: 'Aura di Protezione',
       description: "Se il paladino o un alleato entro 3m devono fare un tiro salvezza, ottengono un bonus pari a mod CAR."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 8,
       privilege: 'Privilegio del giuramento',
       description: "Privilegio speciale conferito dall'archetipo scelto."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 9,
       privilege: 'Aumento di Punteggi Caratteristica',
       description: "Aumenta di 2 o due di 1."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 10,
       privilege: 'Aura di Coraggio',
       description: "Paladino e creature amiche entro 3m non possono essere spaventate finché il paladino è cosciente."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 11,
       privilege: 'Punizione Divina Migliorata',
       description: "Danni radiosi migliorati."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 12,
       privilege: 'Aumento di Punteggi Caratteristica',
       description: "Aumenta di 2 o due di 1."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 13,
       privilege: 'Privilegio del giuramento',
       description: "Privilegio speciale conferito dall'archetipo scelto."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 14,
       privilege: 'Incorruzione Punitrice',
       description: "Con un tocco, puoi cessare un incantesimo su te stesso e i consenzienti. Numero utilizzi = mod CAR, si ricarica dopo riposo."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 15,
       privilege: 'Privilegio del giuramento',
       description: "Privilegio speciale conferito dall'archetipo scelto."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 16,
       privilege: 'Aumento di Punteggi Caratteristica',
       description: "Aumenta di 2 o due di 1."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 17,
       privilege: 'Privilegio del giuramento',
       description: "Privilegio speciale conferito dall'archetipo scelto."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 18,
       privilege: 'Aura Migliorata',
       description: "Aura migliorata con raggio di 9m."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 19,
       privilege: 'Aumento di Punteggi Caratteristica',
       description: "Aumenta di 2 o due di 1."
     },
     {
-      class: 'paladino',
+      class: 'Paladino',
       level: 20,
       privilege: 'Campione Divino',
       description: "Privilegio speciale di alto livello, migliora poteri divini."
     },
-
-    // --- Bardo ---
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 1,
       privilege: 'Ispirazione Bardica',
       description: 'Come azione bonus, conferisci un dado ispirazione a un alleato; usi per riposo.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 2,
       privilege: 'Canto del Riposo',
       description: 'Durante un riposo breve, gli alleati che ascoltano recuperano PF extra.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 2,
       privilege: 'Maestria Parziale',
       description: 'Aggiungi un bonus a tiri di abilità non competenti (Jack of All Trades).'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 3,
       privilege: 'Collegio Bardico',
       description: 'Scegli un collegio che conferisce privilegi unici.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 3,
       privilege: 'Maestria (Expertise)',
       description: 'Scegli due abilità in cui raddoppi il bonus di competenza.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 5,
       privilege: 'Fonti di Ispirazione',
       description: 'Recuperi usi di Ispirazione Bardica con un riposo breve.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 5,
       privilege: 'Ispirazione Bardica (dado migliorato)',
       description: 'Il dado di Ispirazione Bardica aumenta di taglia.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 6,
       privilege: 'Controincanto',
       description: 'Come azione, esegui una performance che conferisce vantaggio ai TS su charme/paura agli alleati vicini.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 7,
       privilege: 'Magia Avanzata',
       description: 'Accedi a incantesimi di livello superiore e perfezioni le tue arti magiche.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 9,
       privilege: 'Canto del Riposo (migliorato)',
       description: 'Il bonus di Canto del Riposo aumenta.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 10,
       privilege: 'Segreti Magici',
       description: 'Impari 2 incantesimi da qualunque lista; diventano incantesimi da bardo per te.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 10,
       privilege: 'Maestria (ulteriore)',
       description: 'Scegli altre due abilità per raddoppiare il bonus di competenza.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 10,
       privilege: 'Ispirazione Bardica (dado migliorato)',
       description: 'Il dado di Ispirazione Bardica aumenta nuovamente di taglia.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 11,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello più alto.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 13,
       privilege: 'Canto del Riposo (migliorato)',
       description: 'Il bonus di Canto del Riposo aumenta.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 14,
       privilege: 'Segreti Magici Superiori',
       description: 'Impari 2 ulteriori incantesimi da qualunque lista; diventano incantesimi da bardo.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 15,
       privilege: 'Ispirazione Bardica (dado migliorato)',
       description: 'Il dado di Ispirazione Bardica raggiunge la sua taglia massima.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 17,
       privilege: 'Canto del Riposo (migliorato)',
       description: 'Il bonus di Canto del Riposo aumenta al valore finale.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 18,
       privilege: 'Segreti Magici Ulteriori',
       description: 'Impari 2 ulteriori incantesimi da qualunque lista; diventano incantesimi da bardo.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'bardo',
+      class: 'Bardo',
       level: 20,
       privilege: 'Maestro dell’Ispirazione',
       description: 'Ispirazione quasi inesauribile e più potente.'
     },
-
-    // --- Chierico ---
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 1,
       privilege: 'Dominio Divino',
       description: 'Scegli un Dominio che conferisce incantesimi e privilegi unici.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 2,
       privilege: 'Canale Divino',
       description: 'Usi il potere divino per effetti speciali; include Scacciare Non Morti.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 3,
       privilege: 'Privilegio del Dominio',
       description: 'Il tuo Dominio conferisce un nuovo privilegio.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 5,
       privilege: 'Distruzione dei Non Morti',
       description: 'Non morti di GS basso vengono distrutti quando falliscono Scacciare.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 6,
       privilege: 'Canale Divino (usi aggiuntivi)',
       description: 'Ottieni un uso addizionale di Canale Divino tra un riposo lungo e l’altro.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 7,
       privilege: 'Privilegio del Dominio',
       description: 'Il tuo Dominio conferisce un nuovo privilegio.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 8,
       privilege: 'Distruzione dei Non Morti (migliorata)',
       description: 'La soglia di GS dei non morti che vengono distrutti aumenta.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 9,
       privilege: 'Privilegio del Dominio',
       description: 'Il tuo Dominio conferisce un nuovo privilegio.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 10,
       privilege: 'Intervento Divino',
       description: 'Puoi richiedere l’aiuto diretto della tua divinità una volta per riposo lungo.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 11,
       privilege: 'Distruzione dei Non Morti (migliorata)',
       description: 'La soglia di GS dei non morti che vengono distrutti aumenta.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 13,
       privilege: 'Privilegio del Dominio',
       description: 'Il tuo Dominio conferisce un nuovo privilegio.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 14,
       privilege: 'Distruzione dei Non Morti (migliorata)',
       description: 'La soglia di GS dei non morti che vengono distrutti aumenta.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 15,
       privilege: 'Privilegio del Dominio',
       description: 'Il tuo Dominio conferisce un nuovo privilegio.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 17,
       privilege: 'Distruzione dei Non Morti (migliorata)',
       description: 'La soglia di GS dei non morti che vengono distrutti aumenta.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 18,
       privilege: 'Canale Divino (usi aggiuntivi)',
       description: 'Ottieni un ulteriore uso di Canale Divino tra i riposi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'chierico',
+      class: 'Chierico',
       level: 20,
       privilege: 'Campione del Divino',
       description: 'Potere divino al suo apice, privilegi del Dominio potenziati.'
     },
-
-    // --- Druido ---
     {
-      class: 'druido',
+      class: 'Druido',
       level: 1,
       privilege: 'Linguaggio Druidico',
       description: 'Conosci il linguaggio segreto dei druidi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 2,
       privilege: 'Forma Selvatica',
       description: 'Ti trasformi in bestie conosciute un certo numero di volte per riposo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 2,
       privilege: 'Circolo Druidico',
       description: 'Scegli un Circolo che conferisce privilegi unici.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 3,
       privilege: 'Approfondimento del Circolo',
       description: 'Il tuo Circolo Druidico ti concede ulteriori tecniche e conoscenze.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 5,
       privilege: 'Forma Migliorata',
       description: 'Miglioramenti alla Forma Selvatica e agli incantesimi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 6,
       privilege: 'Privilegio del Circolo',
       description: 'Il tuo Circolo Druidico conferisce un nuovo privilegio.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 7,
       privilege: 'Approfondimento del Circolo',
       description: 'Ottieni un ulteriore beneficio legato al tuo Circolo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 9,
       privilege: 'Approfondimento del Circolo',
       description: 'Affini le pratiche del tuo Circolo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 10,
       privilege: 'Privilegio del Circolo',
       description: 'Il tuo Circolo Druidico conferisce un nuovo privilegio.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 11,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello più alto.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 13,
       privilege: 'Approfondimento del Circolo',
       description: 'Ulteriori insegnamenti dal tuo Circolo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 14,
       privilege: 'Privilegio del Circolo',
       description: 'Il tuo Circolo Druidico conferisce un nuovo privilegio.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 15,
       privilege: 'Approfondimento del Circolo',
       description: 'Migliori capacità legate al tuo Circolo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 17,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello più alto.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 18,
       privilege: 'Corpo Senza Tempo',
       description: 'Invecchi più lentamente e subisci meno effetti del tempo.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 18,
       privilege: 'Incantesimi Bestiali',
       description: 'Puoi lanciare molti incantesimi anche in Forma Selvatica.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'druido',
+      class: 'Druido',
       level: 20,
       privilege: 'Arcidruido',
       description: 'Usi Forma Selvatica illimitati e grandi poteri naturali.'
     },
-
-    // --- Mago ---
     {
-      class: 'mago',
+      class: 'Mago',
       level: 1,
       privilege: 'Recupero Arcano',
       description: 'Recuperi slot incantesimo dopo un riposo breve una volta al giorno.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 2,
       privilege: 'Tradizione Arcana',
       description: 'Scegli una scuola di magia che conferisce privilegi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 3,
       privilege: 'Studio Arcano',
       description: 'Approfondisci le tue ricerche e tecniche arcane.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 5,
       privilege: 'Magia Superiore',
       description: 'Accesso agli incantesimi di 3° livello e superiori.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 6,
       privilege: 'Privilegio della Tradizione Arcana',
       description: 'La tua scuola di magia conferisce un nuovo privilegio.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 7,
       privilege: 'Studio Arcano',
       description: 'Perfezioni le pratiche di lancio e studio degli incantesimi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 9,
       privilege: 'Magia Avanzata',
       description: 'Accedi a incantesimi di livello superiore.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 10,
       privilege: 'Privilegio della Tradizione Arcana',
       description: 'La tua scuola di magia conferisce un nuovo privilegio.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 11,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello più alto.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 13,
       privilege: 'Studio Arcano',
       description: 'Rafforzi la comprensione di formule e rituali.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 14,
       privilege: 'Privilegio della Tradizione Arcana',
       description: 'La tua scuola di magia conferisce un nuovo privilegio.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 15,
       privilege: 'Studio Arcano',
       description: 'Affini ulteriormente la tua padronanza arcana.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 17,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello più alto.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 18,
       privilege: 'Maestria degli Incantesimi',
       description: 'Lanci alcuni incantesimi di basso livello senza spendere slot.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'mago',
+      class: 'Mago',
       level: 20,
       privilege: 'Maestro Arcano',
       description: 'Padroneggi la magia arcana con poteri eccezionali.'
     },
-
-    // --- Stregone ---
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 1,
       privilege: 'Origine Stregonesca',
       description: 'Scegli un’origine che conferisce poteri innati.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 2,
       privilege: 'Punti Stregoneria e Metamagia',
       description: 'Ottieni Punti Stregoneria e opzioni di Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 3,
       privilege: 'Metamagia Aggiuntiva',
       description: 'Ottieni ulteriori opzioni di Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 5,
       privilege: 'Magia Potenziata',
       description: 'Accesso a incantesimi più potenti e uso avanzato della Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 6,
       privilege: 'Punti Stregoneria (aumentati)',
       description: 'Ottieni più Punti Stregoneria per alimentare la Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 7,
       privilege: 'Magia Avanzata',
       description: 'Accedi a incantesimi di livello superiore e perfezioni l’uso della Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 9,
       privilege: 'Incantesimi Superiori',
       description: 'Ottieni accesso a incantesimi di livello più alto.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 10,
       privilege: 'Metamagia (opzioni aggiuntive)',
       description: 'Ottieni ulteriori opzioni o usi di Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 11,
       privilege: 'Magia Avanzata',
       description: 'Perfezioni ulteriormente le tue capacità innate con gli incantesimi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 13,
       privilege: 'Incantesimi Superiori',
       description: 'Accedi a incantesimi di livello ancora più alto.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 14,
       privilege: 'Potenziamenti dell’Origine',
       description: 'La tua Origine Stregonesca conferisce benefici aggiuntivi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 15,
       privilege: 'Metamagia Affinata',
       description: 'Ottieni maggiore efficienza nell’uso dei Punti Stregoneria e della Metamagia.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 17,
       privilege: 'Incantesimi Epici',
       description: 'Accedi ai massimi livelli di incantesimi consentiti alla classe.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 18,
       privilege: 'Magia Trascendente',
       description: 'I tuoi incantesimi diventano più difficili da contrastare e dispellere.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'stregone',
+      class: 'Stregone',
       level: 20,
       privilege: 'Ascendenza Sovrannaturale',
       description: 'I tuoi poteri innati raggiungono l’apice.'
     },
-
-    // --- Warlock ---
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 1,
       privilege: 'Patto con il Patrono',
       description: 'Stringi un patto con un’entità; ottieni incantesimi e privilegi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 2,
       privilege: 'Invocazioni Occulte',
       description: 'Ottieni invocazioni che modificano e potenziano le tue capacità.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 3,
       privilege: 'Patto (Catena/Lama/Tomo)',
       description: 'Scegli un patto che definisce ulteriormente i tuoi poteri.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 5,
       privilege: 'Misteri Aumentati',
       description: 'Slot di incantesimo più potenti e nuove invocazioni.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 6,
       privilege: 'Invocazioni Aggiuntive',
       description: 'Ottieni o migliori le tue Invocazioni Occulte.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 7,
       privilege: 'Invocazioni Occulte (ulteriori)',
       description: 'Ottieni un’ulteriore Invocazione o migliori una esistente.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 9,
       privilege: 'Potere Occulto Superiore',
       description: 'I tuoi slot di incantesimo aumentano di potenza e durata.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 10,
       privilege: 'Privilegio del Patrono',
       description: 'Il tuo Patrono conferisce un nuovo privilegio.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 11,
       privilege: 'Arcanum Mistico (6°)',
       description: 'Ottieni un incantesimo a livello fisso (6°) lanciabile 1/giorno.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 13,
       privilege: 'Arcanum Mistico (7°)',
       description: 'Ottieni un incantesimo a livello fisso (7°) lanciabile 1/giorno.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 14,
       privilege: 'Privilegio del Patrono',
       description: 'Il tuo Patrono conferisce un nuovo privilegio.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 15,
       privilege: 'Arcanum Mistico (8°)',
       description: 'Ottieni un incantesimo a livello fisso (8°) lanciabile 1/giorno.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 15,
       privilege: 'Arcanum Mistico (8°)',
       description: 'Ottieni un incantesimo a livello fisso (8°) lanciabile 1/giorno.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 17,
       privilege: 'Arcanum Mistico (9°)',
       description: 'Ottieni un incantesimo a livello fisso (9°) lanciabile 1/giorno.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 18,
       privilege: 'Invocazioni Occulte (maestria)',
       description: 'Ottieni un’ulteriore Invocazione e affini le tue capacità occulte.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'warlock',
+      class: 'Warlock',
       level: 20,
       privilege: 'Arcanum Eldritch',
       description: 'Accedi ad Arcanum di alto livello una volta per riposo lungo.'
     },
-
-    // --- Artificiere ---
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 1,
       privilege: 'Tinker e Incantesimi',
       description: 'Competenze con strumenti e accesso a incantesimi da Artificiere.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 2,
       privilege: 'Infondere Oggetti',
       description: 'Infondi oggetti con poteri magici temporanei.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 3,
       privilege: 'Specializzazione',
       description: 'Scegli una specializzazione (Alchimista, Artefice da Battaglia, Corazzato).'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 4,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 5,
       privilege: 'Strumenti Potenziati',
       description: 'Migliori i benefici degli oggetti infusi e delle tue creazioni.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 6,
       privilege: 'Maestria negli Strumenti',
       description: 'Raddoppi il bonus di competenza con gli strumenti con cui sei competente.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 7,
       privilege: 'Colpo di Genio',
       description: 'Usa la reazione per aggiungere il tuo mod INT a un TS o prova di un alleato vicino.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 8,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 9,
       privilege: 'Perito di Oggetti Magici',
       description: 'Più rapido nell’identificare/creare oggetti magici; limiti di sintonia aumentati.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 10,
       privilege: 'Esperto di Oggetti Magici',
       description: 'Ulteriori miglioramenti nell’uso e nella sintonia con oggetti magici.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 11,
       privilege: 'Oggetto che Immagazzina Incantesimi',
       description: 'Crei un oggetto che può contenere e rilasciare un incantesimo più volte.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 12,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 13,
       privilege: 'Infusioni Migliorate',
       description: 'Ottieni nuove infusioni e potenzi le esistenti.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 14,
       privilege: 'Intenditore di Oggetti Magici',
       description: 'Puoi sintonizzarti a più oggetti magici e ne ignori alcuni prerequisiti.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 15,
       privilege: 'Progetto Geniale',
       description: 'Un progetto migliora le tue capacità e i tuoi infusi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 16,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 17,
       privilege: 'Ingegneria Suprema',
       description: 'Le tue creazioni raggiungono un’efficacia straordinaria.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 18,
       privilege: 'Maestro di Oggetti Magici',
       description: 'Ulteriori slot di sintonia e maggiore efficacia con gli oggetti.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 19,
       privilege: 'Incremento Caratteristica',
       description: 'Aumenta di 2 un punteggio di caratteristica o di 1 due punteggi.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 20,
       privilege: 'Anima dell’Artefice',
       description: 'Aumenti la resilienza aggiungendo INT ai PF e mantieni la sintonia a oggetti in situazioni difficili.'
     },
     {
-      class: 'artefice',
+      class: 'Artefice',
       level: 20,
       privilege: 'Genio dell’Invenzione',
       description: 'Accesso a creazioni e infusi straordinari.'
     },
   ] as Classe[],
-
-  /** @type {SottoclassiMap} */
+  
   sottoclassi: {
     barbaro: {
       'cammino del berserker': [
@@ -3021,9 +3006,10 @@ export const DND = {
     });
     return Array.from(new Set(out)).sort((a, b) => a.localeCompare(b));
   },
+
   sottorazze: [
     {
-      nome: "dragonide",
+      nome: "Dragonide",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3038,7 +3024,7 @@ export const DND = {
       ]
     },
     {
-      nome: "elfo alto",
+      nome: "Elfo Alto",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3058,7 +3044,7 @@ export const DND = {
       ]
     },
     {
-      nome: "elfo dei boschi",
+      nome: "Elfo Dei Boschi",
       velocita: [
         { key: 'camminare', value: 10.5 },
         { key: 'nuotare', value: 6 },
@@ -3078,7 +3064,7 @@ export const DND = {
       ]
     },
     {
-      nome: "elfo oscuro (Drow)",
+      nome: "Elfo Oscuro (Drow)",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3096,7 +3082,7 @@ export const DND = {
       ]
     },
     {
-      nome: "gnomo delle rocce",
+      nome: "Gnomo Delle Rocce",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3113,7 +3099,7 @@ export const DND = {
       ]
     },
     {
-      nome: "gnomo delle foreste",
+      nome: "Gnomo Delle Foreste",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3130,7 +3116,7 @@ export const DND = {
       ]
     },
     {
-      nome: "halfling piedelesto",
+      nome: "Halfling Piedelesto",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3147,7 +3133,7 @@ export const DND = {
       ]
     },
     {
-      nome: "halfling tozzo",
+      nome: "Halfling Tozzo",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3164,7 +3150,7 @@ export const DND = {
       ]
     },
     {
-      nome: "mezzelfo",
+      nome: "Mezzelfo",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3180,7 +3166,7 @@ export const DND = {
       ]
     },
     {
-      nome: "mezzorco",
+      nome: "Mezzorco",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3197,7 +3183,7 @@ export const DND = {
       ]
     },
     {
-      nome: "umano",
+      nome: "Umano",
       velocita: [
         { key: 'camminare', value: 9 },
         { key: 'nuotare', value: 4.5 },
@@ -3209,7 +3195,7 @@ export const DND = {
       privilegi: []
     },
     {
-      nome: "nano delle colline",
+      nome: "Nano Delle Colline",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3228,7 +3214,7 @@ export const DND = {
       ]
     },
     {
-      nome: "nano delle montagne",
+      nome: "Nano Delle Montagne",
       velocita: [
         { key: 'camminare', value: 7.5 },
         { key: 'nuotare', value: 3 },
@@ -3246,11 +3232,10 @@ export const DND = {
       ]
     }
   ] as Sottorazza[],
-  
-  /** @type {{name: string, abilita: string[], strumenti: string[], linguaggi: string, equipaggiamento: string, privilegi: {name: string, description: string}[]}[]} */
-  background :[
+
+  background: [
     {
-      name: "accolito",
+      name: "Accolito",
       abilita: ["intuizione", "religione"],
       strumenti: [],
       linguaggi: "due a scelta",
@@ -3263,7 +3248,7 @@ export const DND = {
       ]
     },
     {
-      name: "artigiano della gilda",
+      name: "Artigiano della Gilda",
       abilita: ["intuizione", "persuasione"],
       strumenti: ["uno strumento da artigiano a scelta"],
       linguaggi: "uno a scelta",
@@ -3276,7 +3261,7 @@ export const DND = {
       ]
     },
     {
-      name: "ciarlatano",
+      name: "Ciarlatano",
       abilita: ["inganno", "rapidità di mano"],
       strumenti: ["arnesi da falsario", "trucchi per il camuffamento"],
       linguaggi: "",
@@ -3289,7 +3274,7 @@ export const DND = {
       ]
     },
     {
-      name: "criminale",
+      name: "Criminale",
       abilita: ["furtività", "inganno"],
       strumenti: ["arnesi da scasso", "un tipo di gioco a scelta"],
       linguaggi: "",
@@ -3302,7 +3287,7 @@ export const DND = {
       ]
     },
     {
-      name: "eremita",
+      name: "Eremita",
       abilita: ["medicina", "religione"],
       strumenti: ["borsa da erborista"],
       linguaggi: "uno a scelta",
@@ -3315,7 +3300,7 @@ export const DND = {
       ]
     },
     {
-      name: "eroe popolare",
+      name: "Eroe Popolare",
       abilita: ["addestrare animali", "sopravvivenza"],
       strumenti: ["uno strumento da artigiano a scelta", "veicoli (terrestri)"],
       linguaggi: "",
@@ -3328,7 +3313,7 @@ export const DND = {
       ]
     },
     {
-      name: "forestiero",
+      name: "Forestiero",
       abilita: ["atletica", "sopravvivenza"],
       strumenti: ["uno strumento musicale a scelta"],
       linguaggi: "uno a scelta",
@@ -3341,7 +3326,7 @@ export const DND = {
       ]
     },
     {
-      name: "intrattenitore",
+      name: "Intrattenitore",
       abilita: ["acrobazia", "intrattenere"],
       strumenti: ["trucchi per il camuffamento", "uno strumento musicale a scelta"],
       linguaggi: "",
@@ -3354,7 +3339,7 @@ export const DND = {
       ]
     },
     {
-      name: "marinaio",
+      name: "Marinaio",
       abilita: ["atletica", "percezione"],
       strumenti: ["strumenti da navigatore", "veicoli (acquatici)"],
       linguaggi: "",
@@ -3363,11 +3348,11 @@ export const DND = {
         {
           name: "Passaggio Via Nave",
           description: "Può ottenere passaggi gratuiti via mare per sé e il gruppo, a condizione di aiutare l’equipaggio durante il viaggio."
-        },
+        }
       ]
     },
     {
-      name: "pirata",
+      name: "Pirata",
       abilita: ["atletica", "percezione"],
       strumenti: ["strumenti da navigatore", "veicoli (acquatici)"],
       linguaggi: "",
@@ -3380,7 +3365,7 @@ export const DND = {
       ]
     },
     {
-      name: "monello",
+      name: "Monello",
       abilita: ["furtività", "rapidità di mano"],
       strumenti: ["arnesi da scasso", "trucchi per il camuffamento"],
       linguaggi: "",
@@ -3393,7 +3378,7 @@ export const DND = {
       ]
     },
     {
-      name: "nobile",
+      name: "Nobile",
       abilita: ["persuasione", "storia"],
       strumenti: ["un tipo di gioco a scelta"],
       linguaggi: "uno a scelta",
@@ -3410,7 +3395,7 @@ export const DND = {
       ]
     },
     {
-      name: "sapiente",
+      name: "Sapiente",
       abilita: ["arcano", "storia"],
       strumenti: [],
       linguaggi: "due a scelta",
@@ -3423,7 +3408,7 @@ export const DND = {
       ]
     },
     {
-      name: "soldato",
+      name: "Soldato",
       abilita: ["atletica", "intimidire"],
       strumenti: ["un tipo di gioco", "veicoli (terrestri)"],
       linguaggi: "",
@@ -3451,7 +3436,6 @@ export const DND = {
     const arrBase = this.classi.filter(p => p.class === cl && p.level === livello) || [];
     return arrBase;
   },
-
 
   oggetti:[
     { key: "abaco", prezzo: "2 mo", peso: 1 },
@@ -3966,7 +3950,9 @@ export const DND = {
    * @returns {{name:string, privileges:any[], level:number, srcIndex?:number}[]}
    */
   privilegiMappati(character :Personaggio){
-    const result = [];
+    const result :{name:string, level:number, srcIndex?:number |null
+      privileges:{ privilege: string, description:string }[]
+    }[] = [];
     //  RAZZA
     const characterRace = String(character.generali.find(g => g.key === 'razza')?.value ??'');
     const allRaces = DND.sottorazze;
@@ -3976,6 +3962,7 @@ export const DND = {
         name: 'Razza',
         privileges: raceMatch.privilegi.map(p => ({ privilege: p.name, description: p.description })),
         level: 0,
+        srcIndex: null
       });
     }
     //  BACKGROUND
@@ -3989,6 +3976,7 @@ export const DND = {
         name: 'Background',
         privileges: backgroundMatch.privilegi.map(p => ({ privilege: p.name, description: p.description })),
         level: 0,
+        srcIndex: null
       });
     }
     //  CLASSE
@@ -4009,6 +3997,7 @@ export const DND = {
 
     return result.concat(classEntries);
   },
+  
   getValorePassivoAbilita(nomeAbilita:string, personaggio:Personaggio): number {
     let trovata =false
     let abilitaMatch =false;

@@ -1,16 +1,16 @@
-import { Component, signal, effect, WritableSignal, numberAttribute, OnInit, HostListener } from '@angular/core';
+import { Component, signal, effect, WritableSignal, OnInit, HostListener } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DND, initCharacter, Personaggio } from './dndManual';
 import { local } from './localStorage';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import toast from '../../tools/toast';
-import { ModalComponent } from "../../components/modal/modal.component";
+import agree from '../../tools/agree';
 
 @Component({
   selector: 'app-dnd',
   standalone: true,
-  imports: [NgIf, NgFor, CommonModule, FormsModule, NavbarComponent, ModalComponent],
+  imports: [NgIf, CommonModule, FormsModule, NavbarComponent],
   templateUrl: './dnd.component.html',
   styleUrl: './dnd.component.css'
 })
@@ -24,7 +24,7 @@ export class DndComponent implements OnInit { // Implement OnInit
   constructor() {
     effect(() => {
       localStorage.setItem('character', JSON.stringify(this._character()));
-      document.title =`Scheda di ${this._character().nome_personaggio}`;
+      document.title =`Scheda di ${this._character().nome_personaggio}`;        
     });
 
     setTimeout(()=> toast('Inizializzazione scheda'), 1000)
@@ -41,17 +41,21 @@ export class DndComponent implements OnInit { // Implement OnInit
       public isMobileView: boolean = false; // Add this line
       private checkScreenSize(): void {
         this.isMobileView = window.innerWidth < 768; 
-        console.log('isMobileView', this.isMobileView);
       }
       mobileButtons = [
-        { key: 'generalita', label: 'Generalità' },
+        { key: 'generalita', label: 'Generalità', 
+          info:()=> this.character().nome_personaggio || '-' 
+        },
         { key: 'punteggi', label: 'Punteggi', 
           info:()=> this.character().punteggi
                     .map(punteggio=> this.mod(punteggio.value))
                     .join(' | ')
         },
         { key: 'competenzeLinguaggi', label: 'Competenze e Linguaggi' },
-        { key: 'combattimento', label: 'Combattimento' },
+        { key: 'combattimento', label: 'Combattimento', 
+          info:()=>`CA: ${this.character().classe_armatura};
+          HP: ${this.character().punti_ferita_attuali}/${DND.puntiFeritaMassimi(this.character())}`,
+        },
         { key: 'attacchiIncantesimi', label: 'Attacchi e Incantesimi' },
         { key: 'equipaggiamento', label: 'Equipaggiamento', 
           info:()=> DND.trasporto(this.character()) +'kg'
@@ -121,22 +125,33 @@ export class DndComponent implements OnInit { // Implement OnInit
       
       return personaggioNuovo;
     });
-    toast('Aggiornamento dati');
+    toast('Aggiornamento dati', 'primary');
+  }
 
+  async reset(){
+    if(await agree('Resettare il personaggio?', 'Reset', 'danger')){
+      this._character.set(initCharacter());
+      local.set(this.character());
+      toast("Personaggio preimpostato", "danger")
+    }
   }
 
   //  LISTE
-  deleteFromList(listName: keyof Personaggio, index: number) {
-    this._character.update(char => {
-      const newChar = JSON.parse(JSON.stringify(char));
-      if (Array.isArray(newChar[listName])) {
-        (newChar[listName] as any[]).splice(index, 1);
-      } else console.error(listName, 'non è una lista');
-      
-      console.warn(newChar[listName].value || newChar[listName]);
-      return newChar;
-    });
-    toast('Aggiornamento dati');
+  async deleteFromList(listName: keyof Personaggio, index: number) {
+    if(index<0) return console.error('indice non valido', index);
+    
+    if(await agree(`Confermi eliminazione da ${listName}?`, 'Elimina', 'danger')){
+      this._character.update(char => {
+        const newChar = JSON.parse(JSON.stringify(char));
+        if (Array.isArray(newChar[listName])) {
+          (newChar[listName] as any[]).splice(index, 1);
+        } else console.error(listName, 'non è una lista');
+        
+        console.warn(newChar[listName].value || newChar[listName]);
+        return newChar;
+      });
+      toast('Eliminazione completata', 'danger');
+    }
   }
 
   addToList(listName: string, event: Event) {
@@ -188,12 +203,9 @@ export class DndComponent implements OnInit { // Implement OnInit
           }
           return newChar;
         });
-    toast('Aggiornamento dati');
+    toast('Inserimento eseguito', 'success');
     form.reset();
-
   }
-
-
 
   //  STAT
       getClassesString(): string {
@@ -233,14 +245,14 @@ export class DndComponent implements OnInit { // Implement OnInit
   //  LOCALSTORAGE
       async copyCharacter() {
         await this.local.copy(this.character());
-        toast('Copiato')
+        toast('Copiato negli appunti')
       }
       async pasteCharacter() {
         try {
           const pastedChar = await this.local.paste();
           if (pastedChar) {
             this._character.set(pastedChar);
-            toast('Aggiornato')
+            toast('Personaggio impostato dagli appunti')
           }
         } catch (error) {
           console.error("Failed to parse character from clipboard", error);
