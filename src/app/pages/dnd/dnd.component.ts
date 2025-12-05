@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { DND, initCharacter, Personaggio } from './dndManual';
 import { local } from './localStorage';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import toast from '../../tools/toast';
 
 @Component({
   selector: 'app-dnd',
@@ -22,8 +23,10 @@ export class DndComponent implements OnInit { // Implement OnInit
   constructor() {
     effect(() => {
       localStorage.setItem('character', JSON.stringify(this._character()));
-      document.title =`Scheda di ${this._character().nome_personaggio}`
+      document.title =`Scheda di ${this._character().nome_personaggio}`;
     });
+
+    setTimeout(()=> toast('Inizializzazione scheda'), 1000)
   }
   ngOnInit(): void {
     this.checkScreenSize();
@@ -97,7 +100,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       
       return personaggioNuovo;
     });
-    // Mostra un messaggio di conferma
+    toast('Aggiornamento dati');
 
   }
 
@@ -112,7 +115,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       console.warn(newChar[listName].value || newChar[listName]);
       return newChar;
     });
-
+    toast('Aggiornamento dati');
   }
 
   addToList(listName: string, event: Event) {
@@ -164,7 +167,7 @@ export class DndComponent implements OnInit { // Implement OnInit
           }
           return newChar;
         });
-
+    toast('Aggiornamento dati');
     form.reset();
 
   }
@@ -190,19 +193,20 @@ export class DndComponent implements OnInit { // Implement OnInit
   //  LOCALSTORAGE
       async copyCharacter() {
         await this.local.copy(this.character());
-
+        toast('Copiato')
       }
       async pasteCharacter() {
         try {
           const pastedChar = await this.local.paste();
           if (pastedChar) {
             this._character.set(pastedChar);
-
+            toast('Aggiornato')
           }
         } catch (error) {
           console.error("Failed to parse character from clipboard", error);
-
         }
       }
+
+
 }
 
