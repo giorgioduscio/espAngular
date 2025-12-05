@@ -9,810 +9,595 @@
   </button>
 </header>
 
+<div *ngIf="isMobileView" class="d-flex flex-column" id="buttonsList">
+  @for (btn of mobileButtons; track $index) {
+    <button class="btn rounded-0 d-flex justify-content-between"
+            type="button" data-bs-toggle="modal" 
+            [attr.data-bs-target]="'#'+btn.key">
+      <span>{{ btn.label }}</span> 
+      <i *ngIf="btn.info" class="small text-secondary">{{ btn.info() }}</i>
+      <i class="bi bi-arrow-bar-right"></i>
+    </button>
+  }
+</div>
+
 <article class="d-flex flex-wrap justify-content-center align-items-start gap-1 p-1 m-auto"
          style="max-width: 1000px;"
-         (input)="handleChange($event)">
+         (change)="handleChange($event)">
 
-  <ng-container *ngIf="isMobileView; else desktopView">
-    <div class="accordion w-100" style="max-height: 50vh;"  id="dndAccordion">
-      
-      <!-- GENERALITA' -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGeneralita">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGeneralita" aria-expanded="false" aria-controls="collapseGeneralita">
-            Generalità
-          </button>
-        </h2>
-        <div id="collapseGeneralita" class="accordion-collapse collapse" aria-labelledby="headingGeneralita" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <div>
-              <main class="d-flex flex-wrap justify-content-start gap-1">
-                <div class="d-flex flex-column gap-1">
-                  <input [value]="character().nome_personaggio" name="nome_personaggio" id="nome_personaggio" type="text" class="form-control form-control-dnd">
-                  <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <div class="p-2 border rounded">{{ getClassesString() }}</div>
-                  <label class="duckcase" for="classe">Classe</label>
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <div class="p-2 border rounded">{{ liv() || '-' }}</div>
-                  <label class="duckcase" for="livello">Livello</label>
-                </div>
-                @for (campo of character().generali; track campo.key; let i = $index) {
-                  @if (campo.key === 'allineamento') {
-                    <div class="d-flex flex-column gap-1">
-                      <select name="generali-{{i}}-value" [id]="campo.key" class="form-control-dnd form-select">
-                        @for (allineamento of allineamenti; track allineamento) {
-                          <option [selected]="campo.value===allineamento" [value]="allineamento">{{ allineamento }}</option>
-                        }
-                      </select>
-                      <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
-                    </div>
-                  } @else if (campo.key === 'background') {
-                    <div class="d-flex flex-column gap-1">
-                      <select name="generali-{{i}}-value" [id]="campo.key" class="form-control-dnd form-select">
-                        @for (b of dnd.background; track b.name) {
-                          <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" [value]="b.name">{{ b.name }}</option>
-                        }
-                      </select>
-                      <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-                    </div>
-                  } @else {
-                    <div class="d-flex flex-column gap-1">
-                      <input [value]="campo.value" name="generali-{{i}}-value" [id]="campo.key" [type]="campo.type" class="form-control form-control-dnd">
-                      <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-                    </div>
-                  }
-                }
-              </main>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PUNTEGGI -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingPunteggi">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePunteggi" aria-expanded="false" aria-controls="collapsePunteggi">
-            <div class="d-flex flex-column gap-1" style="color: #f4eade;">
-              <div>Punteggi</div>
-              <small>(
-                @for (punteggio of character().punteggi; track punteggio.key; let i = $index){
-                  <i class="mx-1">{{ mod(punteggio.value) }};</i>
-                }
-              )</small>
-            </div>
-          </button>
-        </h2>
-        <div id="collapsePunteggi" class="accordion-collapse collapse" aria-labelledby="headingPunteggi" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <section>
-              <div>
-                <main class="d-flex flex-column gap-2 p-2">
-                  <div class="d-flex flex-row align-items-center justify-content-between gap-1">
-                    <label class="duckcase" for="ispirazione">Ispirazione:</label>
-                    <input [value]="character().ispirazione" name="ispirazione" id="ispirazione" type="number" inputmode="numeric" step="1" min="0" class="form-control form-control-dnd" style="max-width: 80px;">
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center justify-content-between gap-1">
-                    <label class="duckcase">Bonus Competenza:</label>
-                    <span class="p-2 border rounded">+{{ BC() }}</span>
-                  </div>
-
-                  @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
-                    <div style="display:grid; grid-template-columns: auto 1fr;">
-                      <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" style="width: 80px; height: fit-content;">
-                        <label class="duckcase" [for]="punteggio.key" style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;">{{ punteggio.key }}</label>
-                        <label [for]="punteggio.key" class="fs-4 fw-bold duckcase" style="transform: translateY(10px);">{{ mod(punteggio.value) > 0 ? '+' + mod(punteggio.value) : mod(punteggio.value) }}</label>
-                        <input [value]="character().punteggi[i].value" name="punteggi-{{i}}-value" [id]="punteggio.key" type="text" max="25" class="form-control form-control-dnd" style="transform: translateY(10px); width: 40px; text-align: center;">
-                      </div>
-
-                      <ul class="p-1 m-0">
-                        @for (abilita of punteggio.abilities; track abilita.key; let j = $index) {
-                          <li style="display: grid; grid-template-columns: auto 1fr; gap:5px; align-items: center;">
-                            <div>
-                              <input [checked]="abilita.value" type="checkbox" id="punteggi-{{i}}-abilities-{{j}}-value" name="punteggi-{{i}}-abilities-{{j}}-value">
-                              <b class="pe-1">{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
-                            </div>
-
-                            <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">{{ abilita.key }}</label>
-                          </li>
-                        }
-                      </ul>
-                    </div>
-                  }
-                  <div class="d-flex flex-row align-items-center justify-content-between gap-1">
-                    <i>Saggezza Passiva (Percezione):</i>
-                    <span class="p-2 border rounded">{{ passiva("percezione") }}</span>
-                  </div>
-
-                </main>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      <!-- COMPETENZE E LINGUAGGI -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingCompetenze">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompetenze" aria-expanded="false" aria-controls="collapseCompetenze">
-            Competenze e Linguaggi
-          </button>
-        </h2>
-
-        <div id="collapseCompetenze" class="accordion-collapse collapse" aria-labelledby="headingCompetenze" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent">
-              <div>
-                <main>
-                  @for (comp of character().competenze; track comp.key; let i = $index) {
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" [for]="comp.key">{{ comp.key }}:</label>
-                      <textarea name="competenze-{{i}}-value" [id]="comp.key" class="form-control form-control-dnd">{{ comp.value }}</textarea>
-                    </div>
-                  }
-                </main>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      <!-- COMBATTIMENTO -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingCombattimentoAttacchi">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCombattimentoAttacchi" aria-expanded="false" aria-controls="collapseCombattimentoAttacchi">
-            Combattimento
-          </button>
-        </h2>
-        <div id="collapseCombattimentoAttacchi" class="accordion-collapse collapse" aria-labelledby="headingCombattimentoAttacchi" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent">
-              <div>
-                <main class="p-2">
-                  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px">
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" for="ca">Classe armatura</label>
-                      <input [value]="character().classe_armatura" name="classe_armatura" id="classe_armatura" type="number" class="form-control form-control-dnd">
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase">Iniziativa</label>
-                      <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase">Velocità</label>
-                      @for (velocita of dnd.getVelocita(character()); track velocita.key) {
-                        @if(velocita.value) {
-                          <small>{{ velocita.key }}: <b>{{ velocita.value }}m</b></small>
-                        }
-                      }
-                    </div>
-                  </div>
-
-                  <label class="mt-2 duckcase">Punti Ferita</label>
-                  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" for="pfm">Massimi</label>
-                      <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" for="pfa">Attuali</label>
-                      <input [value]="character().punti_ferita_attuali" name="punti_ferita_attuali" id="pfa" type="number" class="form-control form-control-dnd">
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" for="pft">Temporanei</label>
-                      <input [value]="character().punti_ferita_temporanei" name="punti_ferita_temporanei" id="pft" type="number" class="form-control form-control-dnd">
-                    </div>
-                  </div>
-
-                  <div class="mt-2" style="display:grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 5px;">
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase">Dadi Vita</label>
-                      <div class="p-2 border rounded">
-                        @for (dado of dnd.dadi_vita(character()); track dado.dado; let last = $last) {
-                          {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
-                        }
-                      </div>
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase">Tiri Salvezza</label>
-                      <div style="display:grid; grid-template-columns: 1fr auto auto auto;">
-                        <label class="duckcase">Successi</label>
-                        @for (value of [1, 2, 3]; track value) {
-                          <input type="checkbox" [checked]="character().ts_successi == value" [value]="value" name="ts_successi" id="ts_successi-{{value}}">
-                        }
-                        <label class="duckcase">Fallimenti</label>
-                        @for(value of [1, 2, 3]; track value) {
-                          <input type="checkbox" [checked]="character().ts_falliti == value" [value]="value" name="ts_falliti" id="ts_falliti-{{value}}">
-                        }
-                      </div>
-                    </div>
-                  </div>
-                </main>
-              </div>
-              <div>
-                <h6 class="p-2 fw-bold">Attacchi e Incantesimi</h6>
-                <main class="p-2">
-                  <form class="d-flex gap-1" (ngSubmit)="addToList('attacchi', $event)">
-                    <button type="submit" class="btn btn-success p-1 px-2" aria-label="Aggiungi attacco">
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
-                    <input name="value" id="value" type="text" placeholder="Aggiungi attacco" class="form-control form-control-dnd" style="max-width: 150px;" (input)="$event.stopPropagation()">
-                  </form>
-                  <div style="display:grid; grid-template-columns: auto 100px auto 1fr; align-items: center; gap: 5px; text-align: center;">
-                    <label></label><label>Nome</label>
-                    <label>Attacco</label> <label>Danno</label>
-                    @for (attacco of character().attacchi; track attacco; let i = $index) {
-                      <button class="btn btn-danger p-1 px-2" (click)="deleteFromList('attacchi', i)">
-                        <i class="bi bi-x-lg"></i>
-                      </button>
-                      <div style="position: relative; display: inline-block;">
-                        <input [value]="attacco" type="text" id="attacchi-{{i}}" name="attacchi-{{i}}" class="form-control form-control-dnd">
-                      </div>
-                      <label class="duckcase" [for]="'attacchi-' + i">{{ dnd.bonusAttacco(character(), attacco) }}</label>
-                      <label class="duckcase" [for]="'attacchi-' + i">{{ dnd.bonusDanno(character(), attacco) }}</label>
-                    }
-                  </div>
-                </main>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      <!-- EQUAGGIAMENTO -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingEquipaggiamento">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipaggiamento" aria-expanded="false" aria-controls="collapseEquipaggiamento">
+  <!-- GENERALITA' -->
+  <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'"
+       [attr.id]="isMobileView ? 'generalita' : null"
+       [attr.tabindex]="isMobileView ? '-1' : null"
+       [attr.aria-labelledby]="isMobileView ? 'generalitaLabel' : null"
+       [attr.aria-hidden]="isMobileView ? 'true' : null"
+       [style.display]="!isMobileView ? 'block' : null">
+    <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+      <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+        <div [ngClass]="{'modal-body': isMobileView}">
+          <h5 *ngIf="isMobileView" class="p-2 fw-bold">Generalità</h5>
+          <main class="d-flex flex-wrap justify-content-start gap-1">
             <div class="d-flex flex-column gap-1">
-              <div style="color: #f4eade;">Equipaggiamento</div>
-              <small><i>({{ dnd.trasporto(character()) }} kg)</i></small>
+              <input [value]="character().nome_personaggio" 
+                      name="nome_personaggio" 
+                      id="nome_personaggio" 
+                      type="text" 
+                      class="form-control form-control-dnd"
+                      placeholder="Es: Bilbo Baggins">
+              <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
             </div>
-          </button>
-        </h2>
-        <div id="collapseEquipaggiamento" class="accordion-collapse collapse" aria-labelledby="headingEquipaggiamento" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent">
-              <div>
-                <main class="p-2">
-                  <form class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr;" (ngSubmit)="addToList('equipaggiamento', $event)">
-                    <button type="submit" class="btn btn-success p-1 px-2" aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i></button>
-                    <input type="text" placeholder="Quantità" name="qta" id="qta" class="form-control form-control-dnd" (input)="$event.stopPropagation()">
-                    <input type="text" placeholder="Aggiungi equipaggiamento" id="value" name="value" class="form-control form-control-dnd" (input)="$event.stopPropagation()">
-                  </form>
-                  <div class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
-                    @for (e of character().equipaggiamento; track e.value; let i = $index) {
-                      <button class="btn btn-danger p-1 px-2" (click)="deleteFromList('equipaggiamento', i)">
-                        <i class="bi bi-x-lg"></i>
-                      </button>
-                      <input [value]="e.qta || 1" name="equipaggiamento-{{i}}-qta" id="equipaggiamento-{{i}}-qta" type="text" class="form-control form-control-dnd">
-                      <div style="position: relative; display: inline-block;">
-                        <input [value]="e.value || ''" name="equipaggiamento-{{i}}-value" id="equipaggiamento-{{i}}-value'" type="text" placeholder="Nome oggetto" class="form-control form-control-dnd">
-                      </div>
-                      <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
+
+            <div class="d-flex flex-column gap-1">
+              <div class="p-2 border rounded">{{ getClassesString() }}</div>
+              <label class="duckcase" for="classe">Classe</label>
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <div class="p-2 border rounded">{{ liv() || '-' }}</div>
+              <label class="duckcase" for="livello">Livello</label>
+            </div>
+            @for (campo of character().generali; track campo.key; let i = $index) {
+              @if (campo.key === 'allineamento') {
+                <div class="d-flex flex-column gap-1">
+                  <select name="generali-{{i}}-value" 
+                          [id]="campo.key" 
+                          class="form-control-dnd form-select">
+                    @for (allineamento of allineamenti; track allineamento) {
+                      <option [selected]="campo.value===allineamento" 
+                              [value]="allineamento"
+                              >{{ allineamento }}</option>
                     }
-                  </div>
-                </main>
-              </div>
-            </section>
-          </div>
+                  </select>
+                  <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
+                </div>
+
+              } @else if (campo.key === 'background') {
+                <div class="d-flex flex-column gap-1">
+                  <select name="generali-{{i}}-value" 
+                          [id]="campo.key" 
+                          class="form-control-dnd form-select">
+                    <option value="">Nessuno</option>
+                    @for (b of dnd.background; track b.name) {
+                      <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" 
+                              [value]="b.name"
+                              >{{ b.name }}</option>
+                    }
+                  </select>
+                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+                </div>
+
+              } @else if (campo.key === 'razza') {
+                <div class="d-flex flex-column gap-1">
+                  <select name="generali-{{i}}-value" 
+                          [id]="campo.key" 
+                          class="form-control-dnd form-select">
+                    <option value="">Nessuna</option>
+                    @for (r of dnd.sottorazze; track r.nome) {
+                      <option [selected]="(campo.value||'').toLowerCase()===r.nome.toLowerCase()" 
+                              [value]="r.nome"
+                              >{{ r.nome }}</option>
+                    }
+                  </select>
+                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+                </div>
+              
+              } @else {
+                <div class="d-flex flex-column gap-1">
+                  <input [value]="campo.value" 
+                          name="generali-{{i}}-value" 
+                          [id]="campo.key" 
+                          [type]="campo.type" 
+                          class="form-control form-control-dnd"
+                          [placeholder]="getPlaceholder(campo.key, campo.type)">
+                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+                </div>
+              }
+            }
+          </main>
+        </div>
+        <div *ngIf="isMobileView" class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingPersonalita">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePersonalita" aria-expanded="false" aria-controls="collapsePersonalita">
-            Personalità
-          </button>
-        </h2>
-        <div id="collapsePersonalita" class="accordion-collapse collapse" aria-labelledby="headingPersonalita" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <!-- DESTRA -->
-            <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent">
-              <div>
-                <main>
-                  @for (p of character().personalita; track p.key; let i = $index) {
-                    <div class="d-flex flex-column gap-1">
-                      <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
-                      <textarea name="personalita-{{i}}-value" id="personalita-{{i}}-value" class="form-control form-control-dnd">{{ p.value }}</textarea>
-                    </div>
-                  }
-                </main>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTratti">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTratti" aria-expanded="false" aria-controls="collapseTratti">
-            Tratti e Privilegi
-          </button>
-        </h2>
-        <div id="collapseTratti" class="accordion-collapse collapse" aria-labelledby="headingTratti" data-bs-parent="#dndAccordion">
-          <div class="accordion-body p-2">
-            <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent">
-              <div>
-                <main class="p-2">
-                  <div>
-                    @for (item of dnd.privilegiMappati(character()); track item.name) {
-                      @if (item.level === 0) {
-                        <div>
-                          <section style="display: grid; grid-template-columns: 1fr; gap: 5px; padding: 5px 0;">
-                            <label>{{ item.name }}</label>
-                          </section>
-                          <section>
-                            <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                              @if (item.privileges && item.privileges.length > 0) {
-                                @for (p of item.privileges; track p.privilege) {
-                                  <li style="list-style: disc;">
-                                    <div><b>{{ p.privilege }}</b>
-                                      @if (p.description) {
-                                        <span>: {{ p.description }}</span>
-                                      }
-                                    </div>
-                                  </li>
-                                }
-                              }
-                            </ul>
-                          </section>
-                        </div>
-                      }
-                    }
-                  </div>
-                  <form (ngSubmit)="addToList('privilegi', $event)" class="d-flex gap-2">
-                    <button type="submit" class="btn btn-success p-1 px-2" aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i></button>
-                    <input name="value" id="value" type="text" placeholder="Aggiungi classe" class="form-control form-control-dnd" style="max-width: 150px;" (input)="$event.stopPropagation()">
-                  </form>
-                  <div>
-                    @for (privilegio of dnd.privilegiMappati(character()); track privilegio.name; let i = $index) {
-                      @if (privilegio.level > 0) {
-                        <div>
-                          <section style="display: grid; grid-template-columns: auto 1fr; gap:5px; gap: 5px; padding: 5px 0;">
-                            <button class="btn btn-danger p-1 px-2" (click)="deleteFromList('privilegi', i)"><i class="bi bi-x-lg"></i></button>
-                            <div style="position: relative; display: inline-block;">
-                              <input [value]="privilegio.name" type="text" id="privilegi-{{i}}" name="privilegi-{{i}}" class="form-control form-control-dnd">
-                            </div>
-                          </section>
-                          <section>
-                            <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                              @if (privilegio.privileges && privilegio.privileges.length > 0) {
-                                @for (p of privilegio.privileges; track p.privilege) {
-                                  <li style="list-style: disc;">
-                                    <div>
-                                      <b>{{ p.privilege }}</b>
-                                      @if (p.description) {
-                                        <span>: {{ p.description }}</span>
-                                      }
-                                    </div>
-                                  </li>
-                                }
-                              }
-                            </ul>
-                          </section>
-                        </div>
-                      }
-                    }
-                  </div>
-                </main>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-      
     </div>
-  </ng-container>
-
-  <ng-template #desktopView>
-    <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-      <main class="d-flex flex-wrap justify-content-start gap-1">
-        <div class="d-flex flex-column gap-1">
-          <input [value]="character().nome_personaggio" 
-                 name="nome_personaggio" 
-                 id="nome_personaggio" 
-                 type="text" 
-                 class="form-control form-control-dnd">
-          <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
-        </div>
-
-        <div class="d-flex flex-column gap-1">
-          <div class="p-2 border rounded">{{ getClassesString() }}</div>
-          <label class="duckcase" for="classe">Classe</label>
-        </div>
-        <div class="d-flex flex-column gap-1">
-          <div class="p-2 border rounded">{{ liv() || '-' }}</div>
-          <label class="duckcase" for="livello">Livello</label>
-        </div>
-        @for (campo of character().generali; track campo.key; let i = $index) {
-          @if (campo.key === 'allineamento') {
-            <div class="d-flex flex-column gap-1">
-              <select name="generali-{{i}}-value" 
-                      [id]="campo.key" 
-                      class="form-control-dnd form-select">
-                @for (allineamento of allineamenti; track allineamento) {
-                  <option [selected]="campo.value===allineamento" 
-                          [value]="allineamento"
-                          >{{ allineamento }}</option>
-                }
-              </select>
-              <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
-            </div>
-
-          } @else if (campo.key === 'background') {
-            <div class="d-flex flex-column gap-1">
-              <select name="generali-{{i}}-value" 
-                      [id]="campo.key" 
-                      class="form-control-dnd form-select">
-                @for (b of dnd.background; track b.name) {
-                  <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" 
-                          [value]="b.name"
-                          >{{ b.name }}</option>
-                }
-              </select>
-              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-            </div>
-
-          } @else {
-            <div class="d-flex flex-column gap-1">
-              <input [value]="campo.value" 
-                     name="generali-{{i}}-value" 
-                     [id]="campo.key" 
-                     [type]="campo.type" 
-                     class="form-control form-control-dnd">
-              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-            </div>
-          }
-        }
-      </main>
   </div>
 
-    <!--SINISTRA-->
-    <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
-             style="min-width: 250px; max-width: 400px;">
-      <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-        <h4 class="p-2 fw-bold">Punteggi</h4>
-        <main class="d-flex flex-column gap-2 p-2">
-          <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-            <label class="duckcase" for="ispirazione">Ispirazione:</label> 
-            <input [value]="character().ispirazione" 
-                    name="ispirazione" id="ispirazione" 
-                    type="number" inputmode="numeric" step="1" min="0" 
-                    class="form-control form-control-dnd" style="max-width: 80px;">
-          </div>
-          <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-            <label class="duckcase">Bonus Competenza:</label>
-            <b>+{{ BC() }}</b>
-          </div>
-          @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
-            <div style="display:grid; grid-template-columns: auto 1fr;">
-              <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" 
-                   style="width: 80px; height: fit-content;">
-                <label class="duckcase" [for]="punteggio.key" 
-                       style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
-                       >{{ punteggio.key }}</label> 
-                <label [for]="punteggio.key" 
-                       class="fs-4 fw-bold duckcase" 
-                       style="transform: translateY(10px);"
-                       >{{ mod(punteggio.value) > 0 ? '+' + mod(punteggio.value) : mod(punteggio.value) }}</label>
-                <input [value]="character().punteggi[i].value" 
-                       name="punteggi-{{i}}-value" 
-                       [id]="punteggio.key" 
-                       type="text" max="25" 
-                       class="form-control form-control-dnd" 
-                       style="transform: translateY(10px); width: 40px; text-align: center;">
+  <!--SINISTRA-->
+  <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
+            style="min-width: 250px; max-width: 400px;">
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
+         [attr.id]="isMobileView ? 'punteggi' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'punteggiLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+
+        <!-- PUNTEGGI -->
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Punteggi</h5>
+            <main class="d-flex flex-column gap-2 p-2">
+              <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
+                <label class="duckcase" for="ispirazione">Ispirazione:</label> 
+                <input [value]="character().ispirazione" 
+                        name="ispirazione" id="ispirazione" 
+                        type="number" inputmode="numeric" step="1" min="0" 
+                        class="form-control form-control-dnd" style="max-width: 80px;">
               </div>
-              <ul class="p-1 m-0">
-                @for (abilita of punteggio.abilities; track abilita.key; let j = $index) {
-                  <li style="display: grid; grid-template-columns: auto 1fr; gap:5px; align-items: center;">
+              <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
+                <label class="duckcase">Bonus Competenza:</label>
+                <b>+{{ BC() }}</b>
+              </div>
+              @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
+                <div style="display:grid; grid-template-columns: auto 1fr;">
+                  <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" 
+                        style="width: 80px; height: fit-content;">
+                    <label class="duckcase" [for]="punteggio.key" 
+                            style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
+                            >{{ punteggio.key }}</label> 
+                    <label [for]="punteggio.key" 
+                            class="fs-4 fw-bold duckcase" 
+                            style="transform: translateY(10px);"
+                            >{{ mod(punteggio.value) > 0 ? '+' + mod(punteggio.value) : mod(punteggio.value) }}</label>
+                    <input [value]="character().punteggi[i].value" 
+                            name="punteggi-{{i}}-value" 
+                            [id]="punteggio.key" 
+                            type="text" max="25" 
+                            class="form-control form-control-dnd" 
+                            style="transform: translateY(10px); width: 40px; text-align: center;"
+                            placeholder="Es: 10">
+                  </div>
+                  <ul class="p-1 m-0">
+                    @for (abilita of punteggio.abilities; track abilita.key; let j = $index) {
+                      <li style="display: grid; grid-template-columns: auto 1fr; gap:5px; align-items: center;">
+                        <div>
+                          <input [checked]="abilita.value" 
+                                  type="checkbox" 
+                                  id="punteggi-{{i}}-abilities-{{j}}-value"
+                                  name="punteggi-{{i}}-abilities-{{j}}-value"> 
+                          <b class="pe-1">{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
+                        </div>
+                        <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">{{ abilita.key }}</label>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+              <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
+                <i>Saggezza Passiva (Percezione):</i> 
+                <b>{{ passiva("percezione") }}</b>
+              </div>
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div> <!-- MODAL-CONTENT -->
+
+      </div>
+    </div>
+    <!-- COMPETENZE E LINGUAGGI -->
+    <div [class]="isMobileView ?'modal fade' :'rounded-2 w-100 mt-2 border flex-auto p-2'"
+         [attr.id]="isMobileView ? 'competenzeLinguaggi' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'competenzeLinguaggiLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Competenze e Linguaggi</h5>
+            <main class="p-2">
+              @for (comp of character().competenze; track comp.key; let i = $index) {
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" 
+                          [for]="comp.key"
+                          >{{ comp.key }}:</label>
+                  <textarea name="competenze-{{i}}-value" 
+                            [id]="comp.key" 
+                            class="form-control form-control-dnd"
+                            placeholder="Es: Comune, Elfico"
+                            >{{ comp.value }}</textarea>
+                </div>
+              }
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--CENTRO-->
+  <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" style="min-width: 250px; max-width: 400px;">
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
+         [attr.id]="isMobileView ? 'combattimento' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'combattimentoLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <main class="p-2">
+              <h5 class="p-2 fw-bold">Combattimento</h5>
+              <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px">
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" for="ca">Classe armatura</label>
+                  <input [value]="character().classe_armatura" 
+                          name="classe_armatura" id="classe_armatura" 
+                          type="number" 
+                          class="form-control form-control-dnd"
+                          placeholder="Es: 10">
+                </div>
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase">Iniziativa</label>
+                  <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase">Velocità</label>
+                  @for (velocita of dnd.getVelocita(character()); track velocita.key) {
+                    @if(velocita.value) {
+                      <small>{{ velocita.key }}: <b>{{ velocita.value }}m</b></small>
+                    }
+                  }
+                </div>
+              </div>
+
+              <label class="duckcase">Punti Ferita</label>
+              <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" for="pfm">Massimi</label>
+                  <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" for="pfa">Attuali</label>
+                  <input [value]="character().punti_ferita_attuali" 
+                          name="punti_ferita_attuali" id="pfa" 
+                          type="number" 
+                          class="form-control form-control-dnd"
+                          placeholder="Es: 10">
+                </div>
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" for="pft">Temporanei</label>
+                  <input [value]="character().punti_ferita_temporanei" 
+                          name="punti_ferita_temporanei" id="pft" 
+                          type="number" 
+                          class="form-control form-control-dnd"
+                          placeholder="Es: 0">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 5px;">
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase">Dadi Vita</label>
+                  <div class="p-2 border rounded">
+                    @for (dado of dnd.dadi_vita(character()); track dado.dado; let last = $last) {
+                      {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
+                    }
+                  </div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase">Tiri Salvezza</label>
+                  <div style="display:grid; grid-template-columns: 1fr auto auto auto;">
+                    <label class="duckcase">Successi</label>
+                    @for (value of [1, 2, 3]; track value) {
+                      <input  type="checkbox" 
+                              [checked]="character().ts_successi >= value" 
+                              [value]="value"
+                              name="ts_successi"
+                              id="ts_successi-{{value}}">
+                    }
+                    <label class="duckcase">Fallimenti</label>
+                    @for(value of [1, 2, 3]; track value) {
+                      <input  type="checkbox" 
+                              [checked]="character().ts_falliti >= value" 
+                              [value]="value"
+                              name="ts_falliti"
+                              id="ts_falliti-{{value}}">
+                    }
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
+         [attr.id]="isMobileView ? 'attacchiIncantesimi' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'attacchiIncantesimiLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Attacchi e Incantesimi</h5>
+            <main class="p-2">
+              <form class="d-flex gap-1" (ngSubmit)="addToList('attacchi', $event)">
+                <button type="submit" class="btn btn-success p-1 px-2" 
+                        aria-label="Aggiungi attacco">
+                        <i class="bi bi-plus-lg"></i>
+                </button>
+                <select name="value" 
+                        id="value" 
+                        class="form-control form-control-dnd">
+                  <option value="">Seleziona attacco</option>
+                  @for (obj of dnd.oggetti; track obj.key) {
+                    @if(obj.arma) {
+                      <option [value]="obj.key">{{ obj.key }}</option>
+                    }
+                  }
+                </select>
+              </form>
+              <div style="display:grid; grid-template-columns: auto 100px auto 1fr; align-items: center; gap: 5px; text-align: center;">
+                <label></label><label>Nome</label> 
+                <label>Attacco</label> <label>Danno</label>
+                @for (attacco of character().attacchi; track attacco; let i = $index) {
+                  <button class="btn btn-danger p-1 px-2" 
+                          (click)="deleteFromList('attacchi', i)">
+                          <i class="bi bi-x-lg"></i>
+                  </button>
+                  <div style="position: relative; display: inline-block;">
+                    <input [value]="attacco" type="text" 
+                            id="attacchi-{{i}}" 
+                            name="attacchi-{{i}}" 
+                            class="form-control form-control-dnd">
+                  </div>
+                  <label class="duckcase" [for]="'attacchi-' + i">
+                    {{ dnd.bonusAttacco(character(), attacco) }}
+                  </label>
+                  <label class="duckcase" [for]="'attacchi-' + i">
+                    {{ dnd.bonusDanno(character(), attacco) }}
+                  </label>
+                }
+              </div>
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
+         [attr.id]="isMobileView ? 'equipaggiamento' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'equipaggiamentoLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Equipaggiamento</h5> 
+                          
+            <main class="p-2">
+              <h6>Monete</h6>
+              <div class="d-grid gap-1 pb-3" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+                @for (moneta of character().monete; track $index) {
+                  <div class="d-flex flex-column gap-1">
+                    <label class="duckcase" for="monete-{{ $index }}-value">
+                      {{moneta.key}}</label>
+                    <input [value]="moneta.value" 
+                            name="monete-{{ $index }}-value" 
+                            id="monete-{{ $index }}-value" 
+                            type="number" class="form-control form-control-dnd"
+                            placeholder="Es: 0">
+                  </div>
+                }
+              </div>
+
+              <h6>Inventario ({{ dnd.trasporto(character()) }} kg)</h6>
+              <form class="d-grid pb-2 gap-2 align-items-center" 
+                    style="grid-template-columns: auto 50px 1fr;"
+                    (ngSubmit)="addToList('equipaggiamento', $event)">
+                <button type="submit" class="btn btn-success p-1 px-2" 
+                        aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i>
+                </button>
+                <input type="text" 
+                        placeholder="Es: 1" 
+                        name="qta" id="qta"
+                        class="form-control form-control-dnd"
+                        (input)="$event.stopPropagation()">
+                <select name="value" 
+                        id="value" 
+                        class="form-control form-control-dnd">
+                  <option value="">Seleziona oggetto</option>
+                  @for (obj of dnd.oggetti; track obj.key) {
+                    <option [value]="obj.key">{{ obj.key }}</option>
+                  }
+                </select>
+              </form>
+
+              <div class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
+                @for (e of character().equipaggiamento; track e.value; let i = $index) {
+                  <button class="btn btn-danger p-1 px-2" 
+                          (click)="deleteFromList('equipaggiamento', i)">
+                          <i class="bi bi-x-lg"></i>
+                        
+                  </button>
+                  <input [value]="e.qta || 1" 
+                          name="equipaggiamento-{{i}}-qta" 
+                          id="equipaggiamento-{{i}}-qta" 
+                          type="text" 
+                          class="form-control form-control-dnd">
+                  <div style="position: relative; display: inline-block;"> 
+                    <input [value]="e.value || ''" 
+                            name="equipaggiamento-{{i}}-value" 
+                            id="equipaggiamento-{{i}}-value'" 
+                            type="text" 
+                            placeholder="Nome oggetto" 
+                            class="form-control form-control-dnd">
+                  </div>
+                  <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
+                }
+              </div>
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--DESTRA-->
+  <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
+            style="min-width: 250px; max-width: 400px;">
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
+         [attr.id]="isMobileView ? 'personalita' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'personalitaLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Personalità</h5>
+            <main class="p-2">
+              @for (p of character().personalita; track p.key; let i = $index) {
+                <div class="d-flex flex-column gap-1">
+                  <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
+                  <textarea name="personalita-{{i}}-value" 
+                            id="personalita-{{i}}-value" 
+                            class="form-control form-control-dnd"
+                            [placeholder]="getPlaceholder(p.key, 'textarea')"
+                            >{{ p.value }}</textarea>
+                </div>
+              }
+            </main>
+          </div>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 mt-2 border flex-auto p-2'"
+         [attr.id]="isMobileView ? 'trattiPrivilegi' : null"
+         [attr.tabindex]="isMobileView ? '-1' : null"
+         [attr.aria-labelledby]="isMobileView ? 'trattiPrivilegiLabel' : null"
+         [attr.aria-hidden]="isMobileView ? 'true' : null"
+         [style.display]="!isMobileView ? 'block' : null">
+      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable m-0': isMobileView}">
+        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
+          <div [ngClass]="{'modal-body': isMobileView}">
+            <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
+            <main>
+              <div>
+                @for (item of dnd.privilegiMappati(character()); track item.name) {
+                  @if (item.level === 0) {
                     <div>
-                      <input [checked]="abilita.value" 
-                              type="checkbox" 
-                              id="punteggi-{{i}}-abilities-{{j}}-value"
-                              name="punteggi-{{i}}-abilities-{{j}}-value"> 
-                      <b class="pe-1">{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
+                      <section style="display: grid; grid-template-columns: 1fr; gap: 5px; padding: 5px 0;">
+                        <label>{{ item.name }}</label>
+                      </section>
+                      <section>
+                        <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
+                          @if (item.privileges && item.privileges.length > 0) {
+                            @for (p of item.privileges; track p.privilege) {
+                              <li style="list-style: disc;">
+                                <div><b>{{ p.privilege }}</b>
+                                  @if (p.description) {
+                                    <span>: {{ p.description }}</span>
+                                  }
+                                </div>
+                              </li>
+                            }
+                          }
+                        </ul>
+                      </section>
                     </div>
-                    <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">{{ abilita.key }}</label>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-          <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-            <i>Saggezza Passiva (Percezione):</i> 
-            <b>{{ passiva("percezione") }}</b>
-          </div>
-        </main>
-      </div>
-
-      <div class="rounded-2 w-100 mt-2 border flex-auto">
-        <h4 class="p-2 fw-bold">Competenze e Linguaggi</h4>
-        <main class="p-2">
-          @for (comp of character().competenze; track comp.key; let i = $index) {
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" 
-                     [for]="comp.key"
-                     >{{ comp.key }}:</label>
-              <textarea name="competenze-{{i}}-value" 
-                        [id]="comp.key" 
-                        class="form-control form-control-dnd"
-                        >{{ comp.value }}</textarea>
-            </div>
-          }
-        </main>
-      </div>
-    </section>
-
-    <!--CENTRO-->
-    <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" style="min-width: 250px; max-width: 400px;">
-      <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-        <h4 class="p-2 fw-bold">Combattimento</h4>
-        <main class="p-2">
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px">
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="ca">Classe armatura</label>
-              <input [value]="character().classe_armatura" 
-                     name="classe_armatura" id="classe_armatura" 
-                     type="number" 
-                     class="form-control form-control-dnd">
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Iniziativa</label>
-              <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Velocità</label>
-              @for (velocita of dnd.getVelocita(character()); track velocita.key) {
-                @if(velocita.value) {
-                  <small>{{ velocita.key }}: <b>{{ velocita.value }}m</b></small>
-                }
-              }
-            </div>
-          </div>
-
-          <label class="duckcase">Punti Ferita</label>
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pfm">Massimi</label>
-              <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pfa">Attuali</label>
-              <input [value]="character().punti_ferita_attuali" 
-                     name="punti_ferita_attuali" id="pfa" 
-                     type="number" 
-                     class="form-control form-control-dnd">
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pft">Temporanei</label>
-              <input [value]="character().punti_ferita_temporanei" 
-                     name="punti_ferita_temporanei" id="pft" 
-                     type="number" 
-                     class="form-control form-control-dnd">
-            </div>
-          </div>
-
-          <div style="display:grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 5px;">
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Dadi Vita</label>
-              <div class="p-2 border rounded">
-                @for (dado of dnd.dadi_vita(character()); track dado.dado; let last = $last) {
-                  {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
+                  }
                 }
               </div>
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Tiri Salvezza</label>
-              <div style="display:grid; grid-template-columns: 1fr auto auto auto;">
-                <label class="duckcase">Successi</label>
-                @for (value of [1, 2, 3]; track value) {
-                  <input  type="checkbox" 
-                          [checked]="character().ts_successi == value" 
-                          [value]="value"
-                          name="ts_successi"
-                          id="ts_successi-{{value}}">
-                }
-                <label class="duckcase">Fallimenti</label>
-                @for(value of [1, 2, 3]; track value) {
-                  <input  type="checkbox" 
-                          [checked]="character().ts_falliti == value" 
-                          [value]="value"
-                          name="ts_falliti"
-                          id="ts_falliti-{{value}}">
-                }
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
 
-      <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-        <h4 class="p-2 fw-bold">Attacchi e Incantesimi</h4>
-        <main class="p-2">
-          <form class="d-flex gap-1" (ngSubmit)="addToList('attacchi', $event)">
-            <button type="submit" class="btn btn-success p-1 px-2" 
-                    aria-label="Aggiungi attacco">
-                    <i class="bi bi-plus-lg"></i>
-            </button>
-            <input  name="value" id="value" type="text" 
-                    placeholder="Aggiungi attacco" 
-                    class="form-control form-control-dnd" 
-                    style="max-width: 150px;"
-                    (input)="$event.stopPropagation()">
-          </form>
-          <div style="display:grid; grid-template-columns: auto 100px auto 1fr; align-items: center; gap: 5px; text-align: center;">
-            <label></label><label>Nome</label> 
-            <label>Attacco</label> <label>Danno</label>
-            @for (attacco of character().attacchi; track attacco; let i = $index) {
-              <button class="btn btn-danger p-1 px-2" 
-                      (click)="deleteFromList('attacchi', i)">
-                      <i class="bi bi-x-lg"></i>
-              </button>
-              <div style="position: relative; display: inline-block;">
-                <input [value]="attacco" type="text" 
-                       id="attacchi-{{i}}" 
-                       name="attacchi-{{i}}" 
-                       class="form-control form-control-dnd">
-              </div>
-              <label class="duckcase" [for]="'attacchi-' + i">
-                {{ dnd.bonusAttacco(character(), attacco) }}
-              </label>
-              <label class="duckcase" [for]="'attacchi-' + i">
-                {{ dnd.bonusDanno(character(), attacco) }}
-              </label>
-            }
-          </div>
-        </main>
-      </div>
+              <form (ngSubmit)="addToList('privilegi', $event)" 
+                    class="d-flex gap-2 mb-2">
+                <button type="submit" class="btn btn-success p-1 px-2" 
+                        aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i>
+                </button>
+                <select name="value" 
+                        id="value" 
+                        class="form-control form-control-dnd">
+                  <option value="">Seleziona classe</option>
+                  @for (c of dnd.getSottoclasse('full'); track c) {
+                    <option [value]="c">{{ c }}</option>
+                  }
+                </select>
+              </form>
 
-      <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-        <h4 class="p-2 fw-bold">Equipaggiamento — {{ dnd.trasporto(character()) }}kg</h4>
-        <main class="p-2">
-          <form class="d-grid pb-2 gap-2 align-items-center" 
-                style="grid-template-columns: auto 50px 1fr;"
-                (ngSubmit)="addToList('equipaggiamento', $event)">
-            <button type="submit" class="btn btn-success p-1 px-2" 
-                    aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i>
-            </button>
-            <input type="text" 
-                   placeholder="Quantità" 
-                   name="qta" id="qta"
-                   class="form-control form-control-dnd"
-                   (input)="$event.stopPropagation()">
-            <input  type="text" 
-                    placeholder="Aggiungi equipaggiamento" 
-                    id="value" 
-                    name="value" 
-                    class="form-control form-control-dnd"
-                    (input)="$event.stopPropagation()">
-          </form>
-
-          <div class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
-            @for (e of character().equipaggiamento; track e.value; let i = $index) {
-              <button class="btn btn-danger p-1 px-2" 
-                      (click)="deleteFromList('equipaggiamento', i)">
-                      <i class="bi bi-x-lg"></i>
-                    
-              </button>
-              <input [value]="e.qta || 1" 
-                     name="equipaggiamento-{{i}}-qta" 
-                     id="equipaggiamento-{{i}}-qta" 
-                     type="text" 
-                     class="form-control form-control-dnd">
-              <div style="position: relative; display: inline-block;"> 
-                <input [value]="e.value || ''" 
-                       name="equipaggiamento-{{i}}-value" 
-                       id="equipaggiamento-{{i}}-value'" 
-                       type="text" 
-                       placeholder="Nome oggetto" 
-                       class="form-control form-control-dnd">
-              </div>
-              <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
-            }
-          </div>
-        </main>
-      </div>
-    </section>
-
-    <!--DESTRA-->
-    <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
-             style="min-width: 250px; max-width: 400px;">
-      <div class="rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto">
-        <h4 class="p-2 fw-bold">Personalità</h4>
-        <main class="p-2">
-          @for (p of character().personalita; track p.key; let i = $index) {
-            <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
-              <textarea name="personalita-{{i}}-value" 
-                        id="personalita-{{i}}-value" 
-                        class="form-control form-control-dnd"
-                        >{{ p.value }}</textarea>
-            </div>
-          }
-        </main>
-      </div>
-
-      <div class="rounded-2 w-100 mt-2 border flex-auto">
-        <h4 class="p-2 fw-bold">Tratti e Privilegi</h4>
-        <main class="p-2">
-          <div>
-            @for (item of dnd.privilegiMappati(character()); track item.name) {
-              @if (item.level === 0) {
-                <div>
-                  <section style="display: grid; grid-template-columns: 1fr; gap: 5px; padding: 5px 0;">
-                    <label>{{ item.name }}</label>
-                  </section>
-                  <section>
-                    <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                      @if (item.privileges && item.privileges.length > 0) {
-                        @for (p of item.privileges; track p.privilege) {
-                          <li style="list-style: disc;">
-                            <div><b>{{ p.privilege }}</b>
-                              @if (p.description) {
-                                <span>: {{ p.description }}</span>
-                              }
-                            </div>
-                          </li>
-                        }
-                      }
-                    </ul>
-                  </section>
-                </div>
-              }
-            }
-          </div>
-
-          <form (ngSubmit)="addToList('privilegi', $event)" 
-                class="d-flex gap-2">
-            <button type="submit" class="btn btn-success p-1 px-2" 
-                    aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i>
-            </button>
-            <input  name="value" id="value" type="text" 
-                    placeholder="Aggiungi classe" 
-                    class="form-control form-control-dnd" 
-                    style="max-width: 150px;"
-                    (input)="$event.stopPropagation()">
-          </form>
-
-          <div>
-            @for (privilegio of dnd.privilegiMappati(character()); track privilegio.name; let i = $index) {
-              @if (privilegio.level > 0) {
-                <div>
-                  <section style="display: grid; grid-template-columns: auto 1fr; gap:5px; gap: 5px; padding: 5px 0;">
-                    <button class="btn btn-danger p-1 px-2" (click)="deleteFromList('privilegi', i)"><i class="bi bi-x-lg"></i></button>
-                    <div style="position: relative; display: inline-block;">
-                      <input [value]="privilegio.name" 
-                              type="text" 
-                              id="privilegi-{{i}}" 
-                              name="privilegi-{{i}}" 
-                              class="form-control form-control-dnd">
+              <div>
+                @for (privilegio of dnd.privilegiMappati(character()); track privilegio.name; let i = $index) {
+                  @if (privilegio.level > 0) {
+                    <div>
+                      <section class="d-flex gap-2">
+                        <button class="btn btn-danger p-1 px-2" (click)="deleteFromList('privilegi', i)"><i class="bi bi-x-lg"></i></button>
+                        <input [value]="privilegio.name" 
+                                type="text" 
+                                id="privilegi-{{i}}" 
+                                name="privilegi-{{i}}" 
+                                class="form-control form-control-dnd">
+                      </section>
+                      <section>
+                        <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
+                          @if (privilegio.privileges && privilegio.privileges.length > 0) {
+                            @for (p of privilegio.privileges; track p.privilege) {
+                              <li style="list-style: disc;">
+                                <div>
+                                  <b>{{ p.privilege }}</b>
+                                  @if (p.description) {
+                                    <span>: {{ p.description }}</span>
+                                  }
+                                </div>
+                              </li>
+                            }
+                          }
+                        </ul>
+                      </section>
                     </div>
-                  </section>
-                  <section>
-                    <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                      @if (privilegio.privileges && privilegio.privileges.length > 0) {
-                        @for (p of privilegio.privileges; track p.privilege) {
-                          <li style="list-style: disc;">
-                            <div>
-                              <b>{{ p.privilege }}</b>
-                              @if (p.description) {
-                                <span>: {{ p.description }}</span>
-                              }
-                            </div>
-                          </li>
-                        }
-                      }
-                    </ul>
-                  </section>
-                </div>
-              }
-            }
+                  }
+                }
+              </div>
+            </main>
           </div>
-        </main>
+          <div *ngIf="isMobileView" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
       </div>
-    </section>
-  </ng-template>
+    </div>
+  </section>
+
 </article>
 
 

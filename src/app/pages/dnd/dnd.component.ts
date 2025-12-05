@@ -1,15 +1,16 @@
 import { Component, signal, effect, WritableSignal, numberAttribute, OnInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DND, initCharacter, Personaggio } from './dndManual';
 import { local } from './localStorage';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import toast from '../../tools/toast';
+import { ModalComponent } from "../../components/modal/modal.component";
 
 @Component({
   selector: 'app-dnd',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent],
+  imports: [NgIf, NgFor, CommonModule, FormsModule, NavbarComponent, ModalComponent],
   templateUrl: './dnd.component.html',
   styleUrl: './dnd.component.css'
 })
@@ -42,6 +43,22 @@ export class DndComponent implements OnInit { // Implement OnInit
         this.isMobileView = window.innerWidth < 768; 
         console.log('isMobileView', this.isMobileView);
       }
+      mobileButtons = [
+        { key: 'generalita', label: 'Generalità' },
+        { key: 'punteggi', label: 'Punteggi', 
+          info:()=> this.character().punteggi
+                    .map(punteggio=> this.mod(punteggio.value))
+                    .join(' | ')
+        },
+        { key: 'competenzeLinguaggi', label: 'Competenze e Linguaggi' },
+        { key: 'combattimento', label: 'Combattimento' },
+        { key: 'attacchiIncantesimi', label: 'Attacchi e Incantesimi' },
+        { key: 'equipaggiamento', label: 'Equipaggiamento', 
+          info:()=> DND.trasporto(this.character()) +'kg'
+        },
+        { key: 'personalita', label: 'Personalità' },
+        { key: 'trattiPrivilegi', label: 'Tratti e Privilegi' },
+      ]
 
 
   private loadCharacter(): Personaggio {
@@ -56,16 +73,20 @@ export class DndComponent implements OnInit { // Implement OnInit
   ];
 
   handleChange(event: Event) {
+    // se fa parte di un form, annulla
+    const form = (event.target as HTMLFormElement).closest('form');
+    if (form) return;
+    
     // Estrae le proprietà target dall'evento
     const { name, value, type, checked } = event.target as HTMLInputElement;
     
     // Converte il valore in numero se possibile, altrimenti mantiene la stringa
     const nuovoValore =
-      name.includes('ts_') ? Number(value)
+      name.includes('ts_') ? (checked ? Number(value) : Number(value) - 1)
       : type == 'checkbox' ? checked
       : value === '' ? '' 
       : !isNaN(Number(value)) ? Number(value) 
-      : value.toLowerCase().trim();
+      : value.trim();
 
     // Divide il nome dell'input in un array di chiavi per navigare nell'oggetto
     let keys: (string | number)[] = name.split('-');
@@ -189,6 +210,25 @@ export class DndComponent implements OnInit { // Implement OnInit
       BC =()=> DND.getBonusCompetenza(this.character());
       mod = DND.getModificatore;
       passiva =(nomeAbilita:string)=> DND.getValorePassivoAbilita(nomeAbilita, this.character())
+
+  getPlaceholder(key: string, type: string): string {
+    switch (key) {
+      case 'nome_giocatore':
+        return 'Es: Mario Rossi';
+      case 'punti_esperienza':
+        return 'Es: 0';
+      case 'tratti_caratteriali':
+        return 'Es: Sono coraggioso e leale.';
+      case 'ideali':
+        return 'Es: La libertà è sacra.';
+      case 'legami':
+        return 'Es: Proteggo la mia famiglia.';
+      case 'difetti':
+        return 'Es: Sono impulsivo.';
+      default:
+        return type === 'number' ? 'Es: 0' : 'Inserisci qui...';
+    }
+  }
 
   //  LOCALSTORAGE
       async copyCharacter() {

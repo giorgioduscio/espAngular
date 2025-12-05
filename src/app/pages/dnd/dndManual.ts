@@ -6,20 +6,10 @@ interface Privilegio {
 }
 
 interface Classe {
-  key: string;
-  name: string;
-  hd: number; // Hit Dice
-  competenze: {
-    armature: string[];
-    armi: string[];
-    strumenti: string[];
-    tiriSalvezza: ('forza' | 'destrezza' | 'costituzione' | 'intelligenza' | 'saggezza' | 'carisma')[];
-    abilita: {
-      choose: number;
-      from: string[];
-    };
-  };
-  privilegi?: Privilegio[];
+  class: string,
+  level: number,
+  privilege: string,
+  description: string
 }
 
 interface Sottoclasse {
@@ -64,7 +54,24 @@ interface Oggetto {
 }
 
 export const DND = {
-  /** @type {BasePrivilegioItem[]} */
+
+  getClassi:()=> Object.keys(DND.sottoclassi) 
+                .sort((a, b) => a.localeCompare(b)) as string[],
+  
+  classiCollegate(character: Personaggio) {
+    const result = [{ classe: '', sottoclasse: '', livello: 0 }];
+    const source = character.privilegi;
+    source.forEach(val => {
+      const first = String(val || '').split(' ')[0].
+        replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
+      const second = String(val || '').split(' ').slice(1).join(' ');
+      if (!first) return;
+      const found = result.find(c => c.classe === first);
+      if (found) found.livello++;
+      else       result.push({ classe: first, sottoclasse: second, livello: 1 });
+    });
+    return result .filter(c => c.classe && c.livello);
+  },
   classi: [
     {
       class: 'barbaro',
@@ -1748,7 +1755,7 @@ export const DND = {
       privilege: 'Genio dell’Invenzione',
       description: 'Accesso a creazioni e infusi straordinari.'
     },
-  ],
+  ] as Classe[],
 
   /** @type {SottoclassiMap} */
   sottoclassi: {
@@ -3003,6 +3010,17 @@ export const DND = {
     ], //paladino
   }, //classe
   
+  // Restituisce l'elenco delle sottoclassi; se nomeCompleto=true => "classe sottoclasse"
+  getSottoclasse(nomeCompleto :boolean |'completi' | 'completo' | 'full' = false) {
+    const full = nomeCompleto === true || nomeCompleto === 'completi' || nomeCompleto === 'completo' || nomeCompleto === 'full';
+    const out :string[] = [];
+    const mappa = this.sottoclassi || {};
+    Object.keys(mappa).forEach(cl => {
+      const subs = Object.keys((mappa as any)[cl] || {});
+      subs.forEach(sc => out.push(full ? `${cl} ${sc}` : sc));
+    });
+    return Array.from(new Set(out)).sort((a, b) => a.localeCompare(b));
+  },
   sottorazze: [
     {
       nome: "dragonide",
@@ -3227,7 +3245,7 @@ export const DND = {
         { name: "esperto minatore", description: "Raddoppio del bonus di competenza su Storia relativa a muratura." }
       ]
     }
-  ],
+  ] as Sottorazza[],
   
   /** @type {{name: string, abilita: string[], strumenti: string[], linguaggi: string, equipaggiamento: string, privilegi: {name: string, description: string}[]}[]} */
   background :[
@@ -3417,18 +3435,8 @@ export const DND = {
         }
       ]
     }
-  ],
+  ] as Background[],
   
-  /**
-   * Cerca i privilegi dato classe, sottoclasse e livello.
-   * - Se esiste una sottoclasse per la classe data, ritorna l'array di privilegi della sottoclasse per quel livello.
-   * - Altrimenti ritorna i privilegi base della classe a quel livello.
-   * - Se parametri non validi, ritorna null.
-   * @param {string} classe
-   * @param {string} sottoclasse
-   * @param {number} livello
-   * @returns {{privilege: string, description: string, level: number}[] | null}
-   */
   // cerca i privilegi tra classe e sottoclasse per un dato livello
   getPrivilegi(classe ='', sottoclasse ='', livello =0) {
     if (!classe || !sottoclasse || !livello) return null;
@@ -3444,35 +3452,6 @@ export const DND = {
     return arrBase;
   },
 
-  /**
-   * Elenca le classi disponibili (chiavi dell'oggetto sottoclassi)
-   * @returns {string[]}
-   */
-  // Elenca le classi disponibili (chiavi di sottoclassi)
-  getClassi() {
-    // output: ['barbaro', 'monaco', ecc...]
-    return Object.keys(this.sottoclassi || {})
-      .sort((a, b) => a.localeCompare(b));
-  },
-
-  /**
-   * Restituisce l'elenco delle sottoclassi.
-   * Se nomeCompleto=true, ritorna voci nel formato "classe sottoclasse".
-   * @param {boolean | 'completi' | 'completo' | 'full'} [nomeCompleto=false]
-   * @returns {string[]}
-   */
-  // Restituisce l'elenco delle sottoclassi
-  // se nomeCompleto=true => "classe sottoclasse"
-  getSottoclasse(nomeCompleto :boolean |'completi' | 'completo' | 'full' = false) {
-    const full = nomeCompleto === true || nomeCompleto === 'completi' || nomeCompleto === 'completo' || nomeCompleto === 'full';
-    const out :string[] = [];
-    const mappa = this.sottoclassi || {};
-    Object.keys(mappa).forEach(cl => {
-      const subs = Object.keys((mappa as any)[cl] || {});
-      subs.forEach(sc => out.push(full ? `${cl} ${sc}` : sc));
-    });
-    return Array.from(new Set(out)).sort((a, b) => a.localeCompare(b));
-  },
 
   oggetti:[
     { key: "abaco", prezzo: "2 mo", peso: 1 },
@@ -3664,21 +3643,7 @@ export const DND = {
     return {dadi, tipo};
   },
   
-  classiCollegate(character: Personaggio) {
-    const result = [{ classe: '', sottoclasse: '', livello: 0 }];
-    const source = character.privilegi;
-    source.forEach(val => {
-      const first = String(val || '').split(' ')[0].
-        replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
-      const second = String(val || '').split(' ').slice(1).join(' ');
-      if (!first) return;
-      const found = result.find(c => c.classe === first);
-      if (found) found.livello++;
-      else       result.push({ classe: first, sottoclasse: second, livello: 1 });
-    });
-    return result .filter(c => c.classe && c.livello);
-  },
-  //!colonna sinistra
+  //  logica di scheda
   /**
    * Calcola il modificatore di caratteristica
    * @param {number} score
@@ -4118,7 +4083,6 @@ export interface Personaggio {
       { key: 'Persuasione', value: boolean }
     ]},
   ],
-  saggezza_passiva: number,
   competenze:[
     {key:'linguaggi', value:string},
     {key:'armi', value:string},
@@ -4133,11 +4097,7 @@ export interface Personaggio {
   ts_falliti: number,
   ts_successi: number,
   attacchi:string[],
-  equipaggiamento: [
-    {qta:number, value:string},
-    {qta:number, value:string},
-    {qta:number, value:string},
-  ],
+  equipaggiamento: {qta:number, value:string}[],
   monete: [ 
     { key: 'rame', value: number },
     { key: 'argento', value: number },
@@ -4158,32 +4118,32 @@ export interface Personaggio {
 
 export function initCharacter() :Personaggio {
   return {
-    nome_personaggio: 'Grog Strongjaw',
+    nome_personaggio: '',
     generali: [
-      { key: 'background', value: 'Soldato', type: 'text' },
-      { key: 'nome_giocatore', value: 'Travis', type: 'text' },
-      { key: 'razza', value: 'nano', type: 'text' },
-      { key: 'allineamento', value: 'Caotico Neutrale', type: 'text' },
-      { key: 'punti_esperienza', value: 15000, type: 'number' },
+      { key: 'background', value: '', type: 'text' },
+      { key: 'nome_giocatore', value: '', type: 'text' },
+      { key: 'razza', value: '', type: 'text' },
+      { key: 'allineamento', value: '', type: 'text' },
+      { key: 'punti_esperienza', value: 0, type: 'number' },
     ],
 
     // colonna sinistra
-    ispirazione: 1,
+    ispirazione: 0,
     punteggi: [
-      { key: 'forza', value: 20, abilities: [
-        { key: 'Tiro Salvezza', value: true }, 
-        { key: 'Atletica', value: true }
+      { key: 'forza', value: 15, abilities: [
+        { key: 'Tiro Salvezza', value: false }, 
+        { key: 'Atletica', value: false }
       ]},
-      { key: 'destrezza', value: 15, abilities: [
+      { key: 'destrezza', value: 14, abilities: [
         { key: 'Tiro Salvezza', value: false }, 
         { key: 'Acrobatica', value: false }, 
         { key: 'Rapidità di Mano', value: false }, 
         { key: 'Furtività', value: false }
       ]},
-      { key: 'costituzione', value: 18, abilities: [
-        { key: 'Tiro Salvezza', value: true }
+      { key: 'costituzione', value: 13, abilities: [
+        { key: 'Tiro Salvezza', value: false }
       ]},
-      { key: 'intelligenza', value: 6, abilities: [
+      { key: 'intelligenza', value: 12, abilities: [
         { key: 'Tiro Salvezza', value: false }, 
         { key: 'Arcano', value: false }, 
         { key: 'Indagare', value: false }, 
@@ -4191,27 +4151,26 @@ export function initCharacter() :Personaggio {
         { key: 'Religione', value: false }, 
         { key: 'Storia', value: false }
       ]},
-      { key: 'saggezza', value: 12, abilities: [
+      { key: 'saggezza', value: 10, abilities: [
         { key: 'Tiro Salvezza', value: false }, 
-        { key: 'Addestrare Animali', value: true }, 
+        { key: 'Addestrare Animali', value: false }, 
         { key: 'Intuizione', value: false }, 
         { key: 'Medicina', value: false }, 
-        { key: 'Percezione', value: true }, 
+        { key: 'Percezione', value: false }, 
         { key: 'Sopravvivenza', value: false }
       ]},
-      { key: 'carisma', value: 13, abilities: [
+      { key: 'carisma', value: 8, abilities: [
         { key: 'Tiro Salvezza', value: false }, 
         { key: 'Inganno', value: false }, 
-        { key: 'Intimidire', value: true }, 
+        { key: 'Intimidire', value: false }, 
         { key: 'Intrattenere', value: false }, 
         { key: 'Persuasione', value: false }
       ]},
     ],
-    saggezza_passiva: 15,
     competenze:[
-      {key:'linguaggi', value:'Comune e Gigante'},
-      {key:'armi', value:'Tutte'},
-      {key:'armature', value:'leggere e medie'},
+      {key:'linguaggi', value:'Comune, -'},
+      {key:'armi', value:'Semplici, da guerra'},
+      {key:'armature', value:'Leggere, medie e scudi, pesanti'},
       {key:'strumenti', value:'Giochi da tavolo'},
     ],
     
@@ -4219,29 +4178,34 @@ export function initCharacter() :Personaggio {
     classe_armatura: 10,
     punti_ferita_attuali: 10,
     punti_ferita_temporanei: 10,
-    ts_falliti: 2,
-    ts_successi: 1,
-    attacchi:['ascia bipenne', 'alabarda', 'lancia'],
+    ts_falliti: 0,
+    ts_successi: 0,
+    attacchi:[],
     equipaggiamento: [
-      {qta:3, value:'torcia'},
+      {qta:1, value:'zaino'},
+      {qta:1, value:'giaciglio'},
+      {qta:1, value:'gavetta'},
       {qta:1, value:'acciarino'},
+      {qta:1, value:'corda canapa'},
+      {qta:10, value:'torcia'},
+      {qta:1, value:'otre'},
       {qta:10, value:'razioni'},
     ],
     monete: [ 
-      { key: 'rame', value: 5 },
-      { key: 'argento', value: 10 },
+      { key: 'rame', value: 0 },
+      { key: 'argento', value: 25 },
       { key: 'electrum', value: 0 },
-      { key: 'oro', value: 25 },
-      { key: 'platino', value: 1 }
+      { key: 'oro', value: 0 },
+      { key: 'platino', value: 0 }
     ],
 
     // colonna destra
     personalita: [
-      {key:'tratti_caratteriali', value:'Mi piace spaccare le cose. Sono diretto e onesto.'},
-      {key:'ideali', value:'La gloria della battaglia è tutto ciò che conta.'},
-      {key:'legami', value:'Proteggerò i miei amici, specialmente Pike.'},
-      {key:'difetti', value:'Non penso mai prima di agire. Mai.'},
+      {key:'tratti_caratteriali', value:'Es: Mi piace spaccare le cose. Sono diretto e onesto.'},
+      {key:'ideali', value:'Es: La gloria della battaglia è tutto ciò che conta.'},
+      {key:'legami', value:'Es: Proteggerò i miei amici, specialmente Pike.'},
+      {key:'difetti', value:'Es: Non penso mai prima di agire. Mai.'},
     ],
-    privilegi:['barbaro', 'barbaro', 'stregone', 'barbaro', 'stregone']
+    privilegi:[]
   }
 }
