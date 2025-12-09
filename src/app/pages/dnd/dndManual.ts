@@ -56,6 +56,46 @@ interface Oggetto {
 export const DND = {
   getClassi:()=> Object.keys(DND.sottoclassi) 
                 .sort((a, b) => a.localeCompare(b)) as string[],
+
+  getSottoclasse(param: string): string[] {
+    if (param !== 'full') return [];
+    
+    const result: string[] = [];
+    const sottoclassiObj = this.sottoclassi as { [key: string]: { [key: string]: any } };
+
+    for (const classe of Object.keys(sottoclassiObj)) {
+      for (const sottoclasse of Object.keys(sottoclassiObj[classe])) {
+        const classeCapitalized = classe.charAt(0).toUpperCase() + classe.slice(1);
+        result.push(`${classeCapitalized} ${sottoclasse}`);
+      }
+    }
+    return result.sort((a, b) => a.localeCompare(b));
+  },
+  // restituisce tutte le sottoclassi, rimuovendo le sottoclassi già occupate
+  getSottoclassiDisponibili(personaggio: Personaggio): string[] {
+    const tutteSottoclassi = this.getSottoclasse('full');
+    const sottoclassiPersonaggio = personaggio.privilegi.map(p => p.toLowerCase()) || [];
+
+    if (sottoclassiPersonaggio.length === 0) {
+      return tutteSottoclassi;
+    }
+
+    const classiOccupate = new Set<string>();
+    sottoclassiPersonaggio.forEach(privilegio => {
+      const classeBase = privilegio.split(' ')[0].toLowerCase();
+      classiOccupate.add(classeBase);
+    });
+
+    const sottoclassiFiltrate = tutteSottoclassi.filter(sottoclasse => {
+      const classeBase = sottoclasse.split(' ')[0].toLowerCase();
+      const stessaClasse = classiOccupate.has(classeBase);
+      const stessaSottoclasse = sottoclassiPersonaggio.includes(sottoclasse.toLowerCase());
+
+      return stessaSottoclasse || !stessaClasse;
+    });
+
+    return sottoclassiFiltrate;
+  },
   
   classiCollegate(character: Personaggio) {
     const result = [{ classe: '', sottoclasse: '', livello: 0 }];
@@ -2994,18 +3034,6 @@ export const DND = {
       }
     ], //paladino
   }, //classe
-  
-  // Restituisce l'elenco delle sottoclassi; se nomeCompleto=true => "classe sottoclasse"
-  getSottoclasse(nomeCompleto :boolean |'completi' | 'completo' | 'full' = false) {
-    const full = nomeCompleto === true || nomeCompleto === 'completi' || nomeCompleto === 'completo' || nomeCompleto === 'full';
-    const out :string[] = [];
-    const mappa = this.sottoclassi || {};
-    Object.keys(mappa).forEach(cl => {
-      const subs = Object.keys((mappa as any)[cl] || {});
-      subs.forEach(sc => out.push(full ? `${cl} ${sc}` : sc));
-    });
-    return Array.from(new Set(out)).sort((a, b) => a.localeCompare(b));
-  },
 
   sottorazze: [
     {
@@ -3627,7 +3655,7 @@ export const DND = {
     return {dadi, tipo};
   },
   
-  //  logica di scheda
+  //  LOGICA DI SCHEDA
   /**
    * Calcola il modificatore di caratteristica
    * @param {number} score

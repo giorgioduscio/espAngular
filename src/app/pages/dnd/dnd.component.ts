@@ -7,6 +7,8 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import toast from '../../tools/toast';
 import agree from '../../tools/agree';
 
+import { Autocomplete } from '../../tools/autocomplete';
+
 @Component({
   selector: 'app-dnd',
   standalone: true,
@@ -22,6 +24,7 @@ export class DndComponent implements OnInit { // Implement OnInit
   public character = this._character.asReadonly();
 
   constructor() {
+    new Autocomplete();
     effect(() => {
       localStorage.setItem('character', JSON.stringify(this._character()));
       document.title =`Scheda di ${this._character().nome_personaggio}`;        
@@ -159,50 +162,63 @@ export class DndComponent implements OnInit { // Implement OnInit
     const form = (event.target as HTMLFormElement).closest('form');
     if(!form) return console.error('form non trovato');
     
-    //  Recupera i valori direttamente dal form
-        const valueInput = (form.elements.namedItem('value') as HTMLInputElement);
-        const qtaInput = (form.elements.namedItem('qta') as HTMLInputElement);
-        if (valueInput==null ||
-            listName=="equipaggiamento" && qtaInput==null
-        ) return console.error('input non validi', valueInput, qtaInput);
+    let valueInputName = 'value';
+    if (listName === 'attacchi') {
+      valueInputName = 'attacco-value';
+    } else if (listName === 'equipaggiamento') {
+      valueInputName = 'equip-value';
+    } else if (listName === 'privilegi') {
+      valueInputName = 'privilegio-value';
+    }
 
-        let value: string = valueInput.value;
-        let qta: number = Number(qtaInput?.value ||0);
-        if(listName=="equipaggiamento" && qta==0) qta=1;
+    const valueInput = (form.elements.namedItem(valueInputName) as HTMLInputElement);
+    const qtaInput = (form.elements.namedItem('qta') as HTMLInputElement);
+    
+    if (valueInput==null || (listName=="equipaggiamento" && qtaInput==null) ) {
+      return console.error('input non validi', valueInput, qtaInput);
+    }
+      
+    let value: string = valueInput.value;
+    let qta: number = Number(qtaInput?.value || 0);
+    if(listName=="equipaggiamento" && qta==0) qta=1;
 
-        if (!value) return console.error('Valore input vuoto');
-        if (listName=="equipaggiamento" && isNaN(Number(qta))) 
-          return console.error('Valore input non valido');
+    if (!value) return console.error('Valore input vuoto');
+    if (listName=="equipaggiamento" && isNaN(Number(qta))) {
+      return console.error('Valore input non valido');
+    }
 
-        console.warn(listName, qta||'', value);
+    console.warn(listName, qta||'', value);
 
     //  AGGIORNAMENTO DATI
-        this._character.update(char => {
-          const newChar: any = JSON.parse(JSON.stringify(char));
+    this._character.update(char => {
+      const newChar: any = JSON.parse(JSON.stringify(char));
 
-          if (!Array.isArray(newChar[listName])) {
-            console.error('non è una lista', listName);
-            newChar[listName] = [];
-          }
+      if (!Array.isArray(newChar[listName])) {
+        console.error('non è una lista', listName);
+        newChar[listName] = [];
+      }
 
-          if (listName === 'equipaggiamento') {
-            const elementoEsistente = newChar.equipaggiamento.find((item: any) => 
-              item.value.toLowerCase() === value.toLowerCase()
-            );
-            if (elementoEsistente) {
-              elementoEsistente.qta = (elementoEsistente.qta || 1) + qta;
-            } else {
-              newChar.equipaggiamento.push({ qta, value: value });
-            }
+      if (listName === 'equipaggiamento') { // duplicati: aumenta quantità
+        const elementoEsistente = newChar.equipaggiamento.find((item: any) => 
+          item.value.toLowerCase() === value.toLowerCase()
+        );
+        if (elementoEsistente) {
+          elementoEsistente.qta = (elementoEsistente.qta || 1) + qta;
+        } else {
+          newChar.equipaggiamento.push({ qta, value: value });
+        }
 
-          } else if (listName === 'attacchi' || listName === 'privilegi') {
-            const list = newChar[listName] as string[];
-            if (!list.some(item => item.toLowerCase() === value.toLowerCase())) {
-              list.push(value);
-            }
-          }
-          return newChar;
-        });
+      } else if (listName === 'attacchi') { // niente duplicati
+        const list = newChar[listName] as string[];
+        if (!list.some(item => item.toLowerCase() === value.toLowerCase())) {
+          list.push(value);
+        }
+      } else if (listName === 'privilegi') { // inserisce duplicati
+        const list = newChar[listName] as string[];
+        list.push(value);
+      }
+      return newChar;
+    });
     toast('Inserimento eseguito', 'success');
     form.reset();
   }

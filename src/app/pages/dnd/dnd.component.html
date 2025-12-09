@@ -1,15 +1,16 @@
 <app-navbar></app-navbar>
-
-<header class="container p-3 d-flex justify-content-between gap-2">
-  <button class="btn btn-secondary text-truncate" (click)="pasteCharacter()">
-    <i class="bi bi-upload"></i> Importa
-  </button>
-  <button class="btn btn-primary text-truncate" (click)="copyCharacter()">
-    <i class="bi bi-copy"></i> Copia 
-  </button>
-  <button class="btn btn-danger text-truncate" (click)="reset()">
-    <i class="bi bi-x-lg"></i> Resetta 
-  </button>
+<header style="border-bottom: 1px solid #6c757d;">
+  <div class="container p-3 d-flex justify-content-between gap-2">
+    <button class="btn btn-secondary text-truncate" (click)="pasteCharacter()">
+      <i class="bi bi-upload"></i> Importa
+    </button>
+    <button class="btn btn-primary text-truncate" (click)="copyCharacter()">
+      <i class="bi bi-copy"></i> Copia 
+    </button>
+    <button class="btn btn-danger text-truncate" (click)="reset()">
+      <i class="bi bi-x-lg"></i> Resetta 
+    </button>
+  </div>
 </header>
 
 <div *ngIf="isMobileView" class="d-flex flex-column" id="buttonsList">
@@ -346,21 +347,27 @@
 
             <h5 class="p-2 fw-bold">Attacchi e Incantesimi</h5>
             <main class="p-2">
-              <form class="d-flex gap-1" (ngSubmit)="addToList('attacchi', $event)">
+              <form class="d-flex gap-1 align-items-end" (ngSubmit)="addToList('attacchi', $event)">
                 <button type="submit" class="btn btn-success p-1 px-2" 
                         aria-label="Aggiungi attacco">
                         <i class="bi bi-plus-lg"></i>
                 </button>
-                <select name="value" 
-                        id="value" 
-                        class="form-control form-control-dnd">
-                  <option value="">Seleziona attacco</option>
-                  @for (obj of dnd.oggetti; track obj.key) {
-                    @if(obj.arma) {
-                      <option [value]="obj.key">{{ obj.key }}</option>
+                <div>
+                  <label for="attacco-value">Seleziona Attacco</label>
+                  <input name="attacco-value" 
+                         id="attacco-value"
+                         type="search"
+                         autocomplete="off"
+                         class="form-control form-control-dnd"
+                         placeholder="Es: Ascia bipenne">
+                  <template autocomplete="attacco-value" chars="3" options="3">
+                    @for (obj of dnd.oggetti; track obj.key) {
+                      @if(obj.arma) {
+                        <li>{{ obj.key }}</li>
+                      }
                     }
-                  }
-                </select>
+                  </template>
+                </div>
               </form>
 
               @if (!character().attacchi.length) {
@@ -432,8 +439,12 @@
 
               <h6>Inventario ({{ dnd.trasporto(character()) }} kg)</h6>
               <form class="d-grid pb-2 gap-2 align-items-center" 
-                    style="grid-template-columns: auto 50px 1fr;"
+                    style="grid-template-columns: auto 60px 1fr;"
                     (ngSubmit)="addToList('equipaggiamento', $event)">
+                <i></i> 
+                <label for="qta">Quantità</label> 
+                <label for="equip-value">Seleziona oggetto</label>
+
                 <button type="submit" class="btn btn-success p-1 px-2" 
                         aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i>
                 </button>
@@ -442,14 +453,17 @@
                         name="qta" id="qta"
                         class="form-control form-control-dnd"
                         (input)="$event.stopPropagation()">
-                <select name="value" 
-                        id="value" 
+                <input type="search"
+                        autocomplete="off"
+                        placeholder="Es: Abaco" 
+                        name="equip-value" 
+                        id="equip-value"
                         class="form-control form-control-dnd">
-                  <option value="">Seleziona oggetto</option>
+                <template autocomplete="equip-value" chars="3" options="3">
                   @for (obj of dnd.oggetti; track obj.key) {
-                    <option [value]="obj.key">{{ obj.key }}</option>
+                    <li>{{ obj.key }}</li>
                   }
-                </select>
+                </template>
               </form>
 
               <div class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
@@ -561,18 +575,24 @@
               </div>
 
               <form (ngSubmit)="addToList('privilegi', $event)" 
-                    class="d-flex gap-2 mb-2">
+                    class="d-flex gap-2 mb-2 align-items-end">
                 <button type="submit" class="btn btn-success p-1 px-2" 
                         aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i>
                 </button>
-                <select name="value" 
-                        id="value" 
-                        class="form-control form-control-dnd">
-                  <option value="">Seleziona classe</option>
-                  @for (c of dnd.getSottoclasse('full'); track c) {
-                    <option [value]="c">{{ c }}</option>
-                  }
-                </select>
+                <div>
+                  <label for="privilegio-value">Seleziona classe</label>
+                  <input type="search"
+                         autocomplete="off"
+                         placeholder="Es: Guerriero campione" 
+                         name="privilegio-value" 
+                         id="privilegio-value"
+                         class="form-control form-control-dnd">
+                  <template autocomplete="privilegio-value" chars="3" options="3">
+                    @for (sottoclasse of dnd.getSottoclassiDisponibili(character()); track sottoclasse) {
+                      <li>{{ sottoclasse }}</li>
+                    }
+                  </template>
+                </div>
               </form>
 
               @if (!character().privilegi.length) {
@@ -580,6 +600,7 @@
                   <i class="bi bi-info-circle text-primary"></i>
                   Nessun privilegio
                 </div>
+                
               } @else {
                 <div>
                   @for (privilegio of dnd.privilegiMappati(character()); track privilegio.name; let i = $index) {
