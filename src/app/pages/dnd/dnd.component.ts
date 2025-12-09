@@ -1,13 +1,13 @@
 import { Component, signal, effect, WritableSignal, OnInit, HostListener } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DND, initCharacter, Personaggio } from './dndManual';
+import { DND, inizializzaPersonaggio } from './dndManual';
 import { local } from './localStorage';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import toast from '../../tools/toast';
 import agree from '../../tools/agree';
-
 import { Autocomplete } from '../../tools/autocomplete';
+import PersonaggioDND from '../../interfaces/personaggioDND';
 
 @Component({
   selector: 'app-dnd',
@@ -20,7 +20,7 @@ export class DndComponent implements OnInit { // Implement OnInit
   public dnd = DND;
   public local = local;
 
-  private _character: WritableSignal<Personaggio> = signal(this.loadCharacter());
+  private _character: WritableSignal<PersonaggioDND> = signal(this.loadCharacter());
   public character = this._character.asReadonly();
 
   constructor() {
@@ -68,9 +68,9 @@ export class DndComponent implements OnInit { // Implement OnInit
       ]
 
 
-  private loadCharacter(): Personaggio {
+  private loadCharacter(): PersonaggioDND {
     const saved = localStorage.getItem('character');
-    return saved ? JSON.parse(saved) : initCharacter();
+    return saved ? JSON.parse(saved) : inizializzaPersonaggio();
   }
   
   allineamenti =[
@@ -104,7 +104,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       }
     });
     
-    console.warn(keys, nuovoValore);
+    console.log(keys, nuovoValore);
 
     // Aggiorna lo stato del personaggio utilizzando la funzione update del segnale
     this._character.update(personaggioAttuale => {
@@ -133,14 +133,14 @@ export class DndComponent implements OnInit { // Implement OnInit
 
   async reset(){
     if(await agree('Resettare il personaggio?', 'Reset', 'danger')){
-      this._character.set(initCharacter());
+      this._character.set(inizializzaPersonaggio());
       local.set(this.character());
-      toast("Personaggio preimpostato", "danger")
+      toast("PersonaggioDND preimpostato", "danger")
     }
   }
 
   //  LISTE
-  async deleteFromList(listName: keyof Personaggio, index: number) {
+  async deleteFromList(listName: keyof PersonaggioDND, index: number) {
     if(index<0) return console.error('indice non valido', index);
     
     if(await agree(`Confermi eliminazione da ${listName}?`, 'Elimina', 'danger')){
@@ -232,6 +232,14 @@ export class DndComponent implements OnInit { // Implement OnInit
         }
         return classes.map(c => `${c.classe} ${c.livello}`).join(', ');
       }
+      getPrivilegiRazza(){
+        const razza =this.character().generali.find(g=>g.key==="razza")?.value +'';
+        return DND.getRazza(razza ||'')
+      }
+      getPrivilegiBackground(){
+        const background =this.character().generali.find(g=>g.key==="background")?.value +'';
+        return DND.getBackground(background ||'')
+      }
       liv(){
         return DND.getLivello(this.character());
       }
@@ -246,13 +254,13 @@ export class DndComponent implements OnInit { // Implement OnInit
       case 'punti_esperienza':
         return 'Es: 0';
       case 'tratti_caratteriali':
-        return 'Es: Sono coraggioso e leale.';
+        return 'Es: Mi piace spaccare le cose. Sono diretto e onesto.';
       case 'ideali':
-        return 'Es: La libertà è sacra.';
+        return 'Es: La gloria della battaglia è tutto ciò che conta.';
       case 'legami':
-        return 'Es: Proteggo la mia famiglia.';
+        return 'Es: Proteggerò i miei amici, specialmente il mio maestro.';
       case 'difetti':
-        return 'Es: Sono impulsivo.';
+        return 'Es: Non penso mai prima di agire. Mai.';
       default:
         return type === 'number' ? 'Es: 0' : 'Inserisci qui...';
     }
@@ -268,7 +276,7 @@ export class DndComponent implements OnInit { // Implement OnInit
           const pastedChar = await this.local.paste();
           if (pastedChar) {
             this._character.set(pastedChar);
-            toast('Personaggio impostato dagli appunti')
+            toast('PersonaggioDND impostato dagli appunti')
           }
         } catch (error) {
           console.error("Failed to parse character from clipboard", error);

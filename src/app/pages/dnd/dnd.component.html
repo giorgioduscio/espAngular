@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 <header style="border-bottom: 1px solid #6c757d;">
-  <div class="container p-3 d-flex justify-content-between gap-2">
+  <div class="container p-3 d-flex justify-content-between gap-2" 
+       style="max-width: max-content;">
     <button class="btn btn-secondary text-truncate" (click)="pasteCharacter()">
       <i class="bi bi-upload"></i> Importa
     </button>
@@ -50,7 +51,7 @@
                       type="text" 
                       class="form-control form-control-dnd"
                       placeholder="Es: Bilbo Baggins">
-              <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
+              <label class="duckcase" for="nome_personaggio">Nome PersonaggioDND</label>
             </div>
 
             <div class="d-flex flex-column gap-1">
@@ -295,12 +296,17 @@
                 </div>
               </div>
 
-              <div class="pt-3 d-grid gap-2 justify-items-center" style="grid-template-columns: 1fr 1fr;">
+              <div  class="pt-3 d-grid gap-2 justify-items-center" 
+                    style="grid-template-columns: 1fr 1fr;">
                 <div>
                   <label class="duckcase">Dadi Vita</label>
                   <div class="p-2 border rounded">
-                    @for (dado of dnd.dadi_vita(character()); track dado.dado; let last = $last) {
-                      {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
+                    @if(dnd.dadiVitaPersonaggio(character()).length) {
+                      @for (dado of dnd.dadiVitaPersonaggio(character()); track dado.dado; let last = $last) {
+                        {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
+                      }
+                    } @else {
+                      -
                     }
                   </div>
                 </div>
@@ -547,33 +553,24 @@
 
             <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
             <main>
-              <div>
-                @for (item of dnd.privilegiMappati(character()); track item.name) {
-                  @if (item.level === 0) {
-                    <div>
-                      <section style="display: grid; grid-template-columns: 1fr; gap: 5px; padding: 5px 0;">
-                        <label>{{ item.name }}</label>
-                      </section>
-                      <section>
-                        <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                          @if (item.privileges && item.privileges.length > 0) {
-                            @for (p of item.privileges; track p.privilege) {
-                              <li style="list-style: disc;">
-                                <div><b>{{ p.privilege }}</b>
-                                  @if (p.description) {
-                                    <span>: {{ p.description }}</span>
-                                  }
-                                </div>
-                              </li>
-                            }
-                          }
-                        </ul>
-                      </section>
-                    </div>
+              @if (getPrivilegiRazza()) {
+                <label>Razza</label>
+                <ul>
+                  @for (privilegio of getPrivilegiRazza()?.privilegi; track $index) {
+                    <li><b>{{ privilegio.name }}</b>: {{ privilegio.description }}</li>
                   }
-                }
-              </div>
+                </ul>
+              }
+              @if (getPrivilegiBackground()) {
+                <label>Background</label>
+                <ul>
+                  @for (privilegio of getPrivilegiBackground()?.privilegi; track $index) {
+                    <li><b>{{ privilegio.name }}</b>: {{ privilegio.description }}</li>
+                  }
+                </ul>
+              }
 
+              <label>Classe</label>
               <form (ngSubmit)="addToList('privilegi', $event)" 
                     class="d-flex gap-2 mb-2 align-items-end">
                 <button type="submit" class="btn btn-success p-1 px-2" 
@@ -603,37 +600,42 @@
                 
               } @else {
                 <div>
-                  @for (privilegio of dnd.privilegiMappati(character()); track privilegio.name; let i = $index) {
-                    @if (privilegio.level > 0) {
-                      <div>
-                        <section class="d-flex gap-2">
-                          <button class="btn btn-danger p-1 px-2" 
-                                 (click)="deleteFromList('privilegi', privilegio.srcIndex ?? -1)"
-                                 ><i class="bi bi-trash"></i></button>
-                          <input [value]="privilegio.name" 
-                                  type="text" 
-                                  id="privilegi-{{i}}" 
-                                  name="privilegi-{{i}}" 
-                                  class="form-control form-control-dnd">
-                        </section>
-                        <section>
-                          <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                            @if (privilegio.privileges && privilegio.privileges.length > 0) {
-                              @for (p of privilegio.privileges; track p.privilege) {
-                                <li style="list-style: disc;">
-                                  <div>
-                                    <b>{{ p.privilege }}</b>
-                                    @if (p.description) {
-                                      <span>: {{ p.description }}</span>
-                                    }
-                                  </div>
-                                </li>
-                              }
+                  @for (classe of dnd.privilegiMappati(character()); track i; let i = $index) {
+                    <div>
+                      <!-- INPUT CLASSE -->
+                      <section class="d-flex gap-2">
+                        <button class="btn btn-danger p-1 px-2" 
+                               (click)="deleteFromList('privilegi', classe.srcIndex ?? -1)"
+                               ><i class="bi bi-trash"></i></button>
+                        <input [value]="classe.name" 
+                                type="text" 
+                                id="privilegi-{{classe.srcIndex}}" 
+                                name="privilegi-{{classe.srcIndex}}" 
+                                class="form-control form-control-dnd">
+                      </section>
+                      <!-- DESCRIZIONE PRIVILEGI -->
+                      <section>
+                        <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
+                          @if (classe.privileges.length == 0) { 
+                            <i class="text-danger">Classe non riconosciuta</i>
+
+                          } @else {
+                            @for (privilegio of classe.privileges; track privilegio.privilege) {
+                              <li style="list-style: disc;">
+                                <div>
+                                  <b>{{ privilegio.privilege }}</b>
+                                  @if (privilegio.description) {
+                                    <span>: {{ privilegio.description }}</span>
+                                  } @else {
+                                    nessuna descrizione
+                                  }
+                                </div>
+                              </li>
                             }
-                          </ul>
-                        </section>
-                      </div>
-                    }
+                          }
+                        </ul>
+                      </section>
+                    </div>
                   }
                 </div>
               }

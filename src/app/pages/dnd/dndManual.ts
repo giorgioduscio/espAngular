@@ -1,3 +1,4 @@
+import PersonaggioDND from "../../interfaces/personaggioDND";
 
 interface Privilegio {
   level: number;
@@ -12,11 +13,14 @@ interface Classe {
   description: string
 }
 
-interface Sottoclasse {
-  key: string;
-  name: string;
-  classe: string;
-  privilegi: Privilegio[];
+interface Sottoclassi {
+  [classeKey:string]: {
+    [sottoclasseKey: string]: Array<{
+      level: number;
+      privilege: string;
+      description: string;
+    }>;
+  }
 }
 
 interface Sottorazza {
@@ -54,63 +58,6 @@ interface Oggetto {
 }
 
 export const DND = {
-  getClassi:()=> Object.keys(DND.sottoclassi) 
-                .sort((a, b) => a.localeCompare(b)) as string[],
-
-  getSottoclasse(param: string): string[] {
-    if (param !== 'full') return [];
-    
-    const result: string[] = [];
-    const sottoclassiObj = this.sottoclassi as { [key: string]: { [key: string]: any } };
-
-    for (const classe of Object.keys(sottoclassiObj)) {
-      for (const sottoclasse of Object.keys(sottoclassiObj[classe])) {
-        const classeCapitalized = classe.charAt(0).toUpperCase() + classe.slice(1);
-        result.push(`${classeCapitalized} ${sottoclasse}`);
-      }
-    }
-    return result.sort((a, b) => a.localeCompare(b));
-  },
-  // restituisce tutte le sottoclassi, rimuovendo le sottoclassi già occupate
-  getSottoclassiDisponibili(personaggio: Personaggio): string[] {
-    const tutteSottoclassi = this.getSottoclasse('full');
-    const sottoclassiPersonaggio = personaggio.privilegi.map(p => p.toLowerCase()) || [];
-
-    if (sottoclassiPersonaggio.length === 0) {
-      return tutteSottoclassi;
-    }
-
-    const classiOccupate = new Set<string>();
-    sottoclassiPersonaggio.forEach(privilegio => {
-      const classeBase = privilegio.split(' ')[0].toLowerCase();
-      classiOccupate.add(classeBase);
-    });
-
-    const sottoclassiFiltrate = tutteSottoclassi.filter(sottoclasse => {
-      const classeBase = sottoclasse.split(' ')[0].toLowerCase();
-      const stessaClasse = classiOccupate.has(classeBase);
-      const stessaSottoclasse = sottoclassiPersonaggio.includes(sottoclasse.toLowerCase());
-
-      return stessaSottoclasse || !stessaClasse;
-    });
-
-    return sottoclassiFiltrate;
-  },
-  
-  classiCollegate(character: Personaggio) {
-    const result = [{ classe: '', sottoclasse: '', livello: 0 }];
-    const source = character.privilegi;
-    source.forEach(val => {
-      const first = String(val || '').split(' ')[0].
-        replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
-      const second = String(val || '').split(' ').slice(1).join(' ');
-      if (!first) return;
-      const found = result.find(c => c.classe === first);
-      if (found) found.livello++;
-      else       result.push({ classe: first, sottoclasse: second, livello: 1 });
-    });
-    return result .filter(c => c.classe && c.livello);
-  },
 
   classi: [
     {
@@ -1783,1257 +1730,1272 @@ export const DND = {
     },
   ] as Classe[],
   
+  getClassi:()=> Object.keys(DND.sottoclassi) 
+                .sort((a, b) => a.localeCompare(b)) as string[],
+
+  classiCollegate(character: PersonaggioDND) {
+    const result = [{ classe: '', sottoclasse: '', livello: 0 }];
+    const source = character.privilegi;
+    source.forEach(val => {
+      const first = String(val || '').split(' ')[0].
+        replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
+      const second = String(val || '').split(' ').slice(1).join(' ');
+      if (!first) return;
+      const found = result.find(c => c.classe === first);
+      if (found) found.livello++;
+      else       result.push({ classe: first, sottoclasse: second, livello: 1 });
+    });
+    return result .filter(c => c.classe && c.livello);
+  },  
+
   sottoclassi: {
     barbaro: {
-      'cammino del berserker': [
+      "cammino del berserker": [
         {
           level: 3,
-          privilege: 'frenesia',
-          description: 'quando entri in ira, puoi scegliere se entrare in frenesia. così il barbaro può effettuare un singolo attacco con arma da mischia come azione bonus durante ciascun tuo turno oltre quello iniziale. al termine, subisci un livello di indebolimento.'
+          privilege: "frenesia",
+          description: "quando entri in ira, puoi scegliere se entrare in frenesia. così il barbaro può effettuare un singolo attacco con arma da mischia come azione bonus durante ciascun tuo turno oltre quello iniziale. al termine, subisci un livello di indebolimento.",
         },
         {
           level: 6,
-          privilege: 'ira incontenibile',
-          description: 'non puoi essere affascinato o spaventato mentre sei in ira. se sei già affascinato o spaventato mentre entri in ira, l’effetto è sospeso per la durata dell’ira.'
+          privilege: "ira incontenibile",
+          description: "non puoi essere affascinato o spaventato mentre sei in ira. se sei già affascinato o spaventato mentre entri in ira, l’effetto è sospeso per la durata dell’ira.",
         },
         {
           level: 10,
-          privilege: 'presenza intimidatoria',
-          description: 'può usare un’azione per provare a spaventare una creatura entro 9m, se fallisce un ts su sag (cd 8 + bc + mod car), resta spaventata fino al tuo prossimo turno. puoi rinnovare l’effetto. cessa se la creatura termina il suo turno fuori dalla visuale o a più di 18m. se la creatura lo supera, sarà immune per 24h.'
+          privilege: "presenza intimidatoria",
+          description: "può usare un’azione per provare a spaventare una creatura entro 9m, se fallisce un ts su sag (cd 8 + bc + mod car), resta spaventata fino al tuo prossimo turno. puoi rinnovare l’effetto. cessa se la creatura termina il suo turno fuori dalla visuale o a più di 18m. se la creatura lo supera, sarà immune per 24h.",
         },
         {
           level: 14,
-          privilege: 'ritorsione',
-          description: 'quando subisci danno da una creatura che si trova entro 1,5 metri da te, puoi usare la tua reazione per effettuare un attacco con arma da mischia contro quella creatura.'
-        }
+          privilege: "ritorsione",
+          description: "quando subisci danno da una creatura che si trova entro 1,5 metri da te, puoi usare la tua reazione per effettuare un attacco con arma da mischia contro quella creatura.",
+        },
       ],
-      'cammino dello zelota': [
+      "cammino dello zelota": [
         {
           level: 3,
-          privilege: 'furia divina',
-          description: 'quando il barbaro è in ira e colpisce una creatura con un’arma, gli infligge danni extra pari a 1d6 + metà del livello da barbaro. quando sceglie questo privilegio, sceglie se i danni extra saranno radianti o necrotici.'
+          privilege: "furia divina",
+          description: "quando il barbaro è in ira e colpisce una creatura con un’arma, gli infligge danni extra pari a 1d6 + metà del livello da barbaro. quando sceglie questo privilegio, sceglie se i danni extra saranno radianti o necrotici.",
         },
         {
           level: 3,
-          privilege: 'guerriero degli dei',
-          description: 'se una creatura utilizza un incantesimo per riportare in vita il barbaro, non necessita di componenti materiali.'
+          privilege: "guerriero degli dei",
+          description: "se una creatura utilizza un incantesimo per riportare in vita il barbaro, non necessita di componenti materiali.",
         },
         {
           level: 6,
-          privilege: 'concentrazione fanatica',
-          description: 'se il barbaro fallisce un tiro salvezza mentre è in ira, può ritirare il dado ed usare il nuovo risultato. può usare il privilegio solo una volta per ira.'
+          privilege: "concentrazione fanatica",
+          description: "se il barbaro fallisce un tiro salvezza mentre è in ira, può ritirare il dado ed usare il nuovo risultato. può usare il privilegio solo una volta per ira.",
         },
         {
           level: 10,
-          privilege: 'presenza zelante',
-          description: 'dopo un riposo lungo, con un’azione bonus il barbaro lancia un urlo infuso di energia divina. fino a 10 creature entro 18m in grado di sentirlo ottengono vantaggio ai tiri per colpire e tiri salvezza fino all’inizio del suo prossimo turno.'
+          privilege: "presenza zelante",
+          description: "dopo un riposo lungo, con un’azione bonus il barbaro lancia un urlo infuso di energia divina. fino a 10 creature entro 18m in grado di sentirlo ottengono vantaggio ai tiri per colpire e tiri salvezza fino all’inizio del suo prossimo turno.",
         },
         {
           level: 14,
-          privilege: 'ira imperitura',
-          description: 'mentre il barbaro è in ira e possiede 0 pf, può rimanere in vita per la durata dell’ira e muore solo se alla fine dell’ira ha ancora 0 pf. deve comunque fare i tiri salvezza contro morte e subisce i normali effetti di chi viene colpito a 0 pf.'
-        }
+          privilege: "ira imperitura",
+          description: "mentre il barbaro è in ira e possiede 0 pf, può rimanere in vita per la durata dell’ira e muore solo se alla fine dell’ira ha ancora 0 pf. deve comunque fare i tiri salvezza contro morte e subisce i normali effetti di chi viene colpito a 0 pf.",
+        },
       ],
-      'cammino del combattente totemico': [
+      "cammino del combattente totemico": [
         {
           level: 3,
-          privilege: 'cercatore di spiriti',
-          description: 'rituali: percezione delle bestie e parlare con gli animali.\n- percezione delle bestie: percepisce attraverso una bestia consenziente.\n- parlare con gli animali: comunicazione verbale per 10 minuti con animali, che potrebbero anche farti un favore.'
+          privilege: "cercatore di spiriti",
+          description: "rituali: percezione delle bestie e parlare con gli animali.\n- percezione delle bestie: percepisce attraverso una bestia consenziente.\n- parlare con gli animali: comunicazione verbale per 10 minuti con animali, che potrebbero anche farti un favore.",
         },
         {
           level: 3,
-          privilege: 'spirito totemico',
-          description: 'richiede un oggetto creato con resti animali. durante l’ira, puoi scegliere tra:\n- aquila: svantaggio agli attacchi di opportunità contro di te, puoi usare scatto come azione bonus.\n- lupo: vantaggio agli attacchi in mischia degli alleati entro 1,5m da te.\n- orso: resistenza a tutti i danni eccetto psichici.'
+          privilege: "spirito totemico",
+          description: "richiede un oggetto creato con resti animali. durante l’ira, puoi scegliere tra:\n- aquila: svantaggio agli attacchi di opportunità contro di te, puoi usare scatto come azione bonus.\n- lupo: vantaggio agli attacchi in mischia degli alleati entro 1,5m da te.\n- orso: resistenza a tutti i danni eccetto psichici.",
         },
         {
           level: 6,
-          privilege: 'aspetto della bestia',
-          description: '- aquila: vedi dettagli fino a 1,5km, nessun svantaggio in luce fioca.\n- lupo: segui tracce a passo veloce, muoviti furtivamente a passo normale.\n- orso: raddoppi capacità di carico, vantaggio a spingere, sollevare, trascinare, spezzare oggetti.'
+          privilege: "aspetto della bestia",
+          description: "- aquila: vedi dettagli fino a 1,5km, nessun svantaggio in luce fioca.\n- lupo: segui tracce a passo veloce, muoviti furtivamente a passo normale.\n- orso: raddoppi capacità di carico, vantaggio a spingere, sollevare, trascinare, spezzare oggetti.",
         },
         {
           level: 10,
-          privilege: 'viandante spirituale',
-          description: 'puoi lanciare il rituale "comunione con la natura", apprendendo fino a 3 aspetti dell’area (entro 4,5km in superficie o 90m nel sottosuolo):\n- terreni e acque\n- creature (animali, vegetali, celestiali, immondi, non morti, ecc.)\n- popolazioni\n- costruzioni'
+          privilege: "viandante spirituale",
+          description: "puoi lanciare il rituale 'comunione con la natura', apprendendo fino a 3 aspetti dell’area (entro 4,5km in superficie o 90m nel sottosuolo):\n- terreni e acque\n- creature (animali, vegetali, celestiali, immondi, non morti, ecc.)\n- popolazioni\n- costruzioni",
         },
         {
           level: 14,
-          privilege: 'sintonia totemica',
-          description: '- aquila: puoi volare per brevi tratti alla velocità del cammino.\n- lupo: durante l’ira, se colpisci una creatura con un’arma da mischia, puoi usare un’azione bonus per buttarla a terra (taglia grande o inferiore).\n- orso: un nemico entro 1,5m ha svantaggio a colpire tutte le creature che non abbiano questo privilegio.'
-        }
+          privilege: "sintonia totemica",
+          description: "- aquila: puoi volare per brevi tratti alla velocità del cammino.\n- lupo: durante l’ira, se colpisci una creatura con un’arma da mischia, puoi usare un’azione bonus per buttarla a terra (taglia grande o inferiore).\n- orso: un nemico entro 1,5m ha svantaggio a colpire tutte le creature che non abbiano questo privilegio.",
+        },
       ],
-      'guardiano ancestrale': [
+      "guardiano ancestrale": [
         {
           level: 3,
-          privilege: 'protettori ancestrali',
-          description: 'quando entri in ira, il primo nemico colpito ha svantaggio contro bersagli diversi da te e le sue vittime hanno resistenza ai danni finché non termina il tuo turno successivo.'
+          privilege: "protettori ancestrali",
+          description: "quando entri in ira, il primo nemico colpito ha svantaggio contro bersagli diversi da te e le sue vittime hanno resistenza ai danni finché non termina il tuo turno successivo.",
         },
         {
           level: 6,
-          privilege: 'spiriti protettori',
-          description: 'i tuoi spiriti ancestrali ostacolano la fuga dei nemici che danneggi mentre sei in ira; hanno svantaggio a colpirti se provano a muoversi o teletrasportarsi.'
+          privilege: "spiriti protettori",
+          description: "i tuoi spiriti ancestrali ostacolano la fuga dei nemici che danneggi mentre sei in ira; hanno svantaggio a colpirti se provano a muoversi o teletrasportarsi.",
         },
         {
           level: 10,
-          privilege: 'consultare gli spiriti',
-          description: 'puoi lanciare *augurio* o *parlare coi morti* come rituale, senza componenti materiali. bonus alle prove di intuizione o persuasione quando usi la saggezza degli spiriti.'
+          privilege: "consultare gli spiriti",
+          description: "puoi lanciare *augurio* o *parlare coi morti* come rituale, senza componenti materiali. bonus alle prove di intuizione o persuasione quando usi la saggezza degli spiriti.",
         },
         {
           level: 14,
-          privilege: 'antenati vendicativi',
-          description: 'quando una creatura danneggia un alleato mentre è soggetta al tuo effetto di protettore ancestrale, subisce danni da forza pari alla metà del tuo livello da barbaro.'
-        }
+          privilege: "antenati vendicativi",
+          description: "quando una creatura danneggia un alleato mentre è soggetta al tuo effetto di protettore ancestrale, subisce danni da forza pari alla metà del tuo livello da barbaro.",
+        },
       ],
-      'araldo della tempesta': [
+      "araldo della tempesta": [
         {
           level: 3,
-          privilege: 'aura tempestosa',
-          description: 'quando entri in ira, attivi un’aura elementale (deserto, mare o tundra). come azione bonus, infliggi effetti diversi in base all’aura.'
+          privilege: "aura tempestosa",
+          description: "quando entri in ira, attivi un’aura elementale (deserto, mare o tundra). come azione bonus, infliggi effetti diversi in base all’aura.",
         },
         {
           level: 6,
-          privilege: 'aura tempestosa migliorata',
-          description: 'l’aura attiva effetti passivi per te e chi ti sta vicino (es. vantaggio su ts contro incantesimi, bonus a velocità, resistenza al freddo).'
+          privilege: "aura tempestosa migliorata",
+          description: "l’aura attiva effetti passivi per te e chi ti sta vicino (es. vantaggio su ts contro incantesimi, bonus a velocità, resistenza al freddo).",
         },
         {
           level: 10,
-          privilege: 'anima tempestosa',
-          description: 'sei immune agli effetti dannosi della tua aura, e puoi estenderne i benefici a un alleato entro 9m.'
+          privilege: "anima tempestosa",
+          description: "sei immune agli effetti dannosi della tua aura, e puoi estenderne i benefici a un alleato entro 9m.",
         },
         {
           level: 14,
-          privilege: 'tempesta furiosa',
-          description: 'quando subisci danni da una creatura entro 1,5m, puoi usare la reazione per infliggerle i danni della tua aura.'
-        }
+          privilege: "tempesta furiosa",
+          description: "quando subisci danni da una creatura entro 1,5m, puoi usare la reazione per infliggerle i danni della tua aura.",
+        },
       ],
-    }, //barbaro
+    },
     monaco: {
-      'via dell’ombra': [
+      "via dell’ombra": [
         {
           level: 3,
-          privilege: 'arti dell’ombra',
-          description: 'accedi a incantesimi usando punti ki: illusione minore, oscurità, passare senza tracce, scurovisione e silenzio.'
+          privilege: "arti dell’ombra",
+          description: "accedi a incantesimi usando punti ki: illusione minore, oscurità, passare senza tracce, scurovisione e silenzio.",
         },
         {
           level: 6,
-          privilege: 'passo dell’ombra',
-          description: 'in luce fioca o oscurità, puoi teletrasportarti fino a 18m come azione bonus. vantaggio al primo attacco in mischia.'
+          privilege: "passo dell’ombra",
+          description: "in luce fioca o oscurità, puoi teletrasportarti fino a 18m come azione bonus. vantaggio al primo attacco in mischia.",
         },
         {
           level: 11,
-          privilege: 'manto di ombre',
-          description: 'in luce fioca o oscurità, puoi diventare invisibile con un’azione. l’effetto termina se attacchi, lanci incantesimi o entri in luce intensa.'
+          privilege: "manto di ombre",
+          description: "in luce fioca o oscurità, puoi diventare invisibile con un’azione. l’effetto termina se attacchi, lanci incantesimi o entri in luce intensa.",
         },
         {
           level: 17,
-          privilege: 'opportunista',
-          description: 'se una creatura entro 1,5m viene colpita da un altro, puoi usare la reazione per attaccarla in mischia.'
-        }
+          privilege: "opportunista",
+          description: "se una creatura entro 1,5m viene colpita da un altro, puoi usare la reazione per attaccarla in mischia.",
+        },
       ],
-      'via della mano aperta': [
+      "via della mano aperta": [
         {
           level: 3,
-          privilege: 'tecnica della mano aperta',
-          description: 'dopo raffica di colpi, puoi: far cadere prono (ts des), spingere di 4,5m (ts for), o impedire reazioni fino a fine turno.'
+          privilege: "tecnica della mano aperta",
+          description: "dopo raffica di colpi, puoi: far cadere prono (ts des), spingere di 4,5m (ts for), o impedire reazioni fino a fine turno.",
         },
         {
           level: 6,
-          privilege: 'integrità del corpo',
-          description: 'una volta per riposo lungo, puoi usare un’azione per recuperare pf pari al triplo del tuo livello da monaco.'
+          privilege: "integrità del corpo",
+          description: "una volta per riposo lungo, puoi usare un’azione per recuperare pf pari al triplo del tuo livello da monaco.",
         },
         {
           level: 11,
-          privilege: 'tranquillità',
-          description: 'dopo riposo lungo, ottieni l’effetto di *santuario* fino al prossimo riposo lungo. cd = 8 + mod sag + bonus competenza.'
+          privilege: "tranquillità",
+          description: "dopo riposo lungo, ottieni l’effetto di *santuario* fino al prossimo riposo lungo. cd = 8 + mod sag + bonus competenza.",
         },
         {
           level: 17,
-          privilege: 'palmo tremante',
-          description: 'colpo senz’armi con 3 ki: se il bersaglio fallisce ts cos, scende a 0 pf. altrimenti subisce 10d10 danni necrotici. puoi sospendere l’effetto per 1 ora.'
-        }
+          privilege: "palmo tremante",
+          description: "colpo senz’armi con 3 ki: se il bersaglio fallisce ts cos, scende a 0 pf. altrimenti subisce 10d10 danni necrotici. puoi sospendere l’effetto per 1 ora.",
+        },
       ],
-      'via dei quattro elementi': [
+      "via dei quattro elementi": [
         {
           level: 3,
-          privilege: 'disciplina elementale',
-          description: 'Conosci la disciplina "Sintonia Elementale" e un\'altra disciplina elementale a scelta che richieda massimo 2 punti Ki per essere lanciata.'
+          privilege: "disciplina elementale",
+          description: "Conosci la disciplina 'Sintonia Elementale' e un'altra disciplina elementale a scelta che richieda massimo 2 punti Ki per essere lanciata.",
         },
         {
           level: 3,
-          privilege: 'magia elementale',
-          description: 'Non sei obbligato a fornire componenti materiali quando lanci un incantesimo. Se un incantesimo ha la proprietà Livelli Superiori, puoi aumentare la potenza dell\'incantesimo spendendo 1 punto Ki aggiuntivo per ogni livello di incantesimo superiore.'
+          privilege: "magia elementale",
+          description: "Non sei obbligato a fornire componenti materiali quando lanci un incantesimo. Se un incantesimo ha la proprietà Livelli Superiori, puoi aumentare la potenza dell'incantesimo spendendo 1 punto Ki aggiuntivo per ogni livello di incantesimo superiore.",
         },
         {
           level: 6,
-          privilege: 'nuova disciplina elementale',
-          description: 'Impari un\'altra disciplina elementale a scelta che richieda massimo 3 punti Ki per essere lanciata.'
+          privilege: "nuova disciplina elementale",
+          description: "Impari un'altra disciplina elementale a scelta che richieda massimo 3 punti Ki per essere lanciata.",
         },
         {
           level: 11,
-          privilege: 'nuova disciplina elementale',
-          description: 'Impari un\'altra disciplina elementale a scelta che richieda massimo 4 punti Ki per essere lanciata.'
+          privilege: "nuova disciplina elementale",
+          description: "Impari un'altra disciplina elementale a scelta che richieda massimo 4 punti Ki per essere lanciata.",
         },
         {
           level: 17,
-          privilege: 'nuova disciplina elementale',
-          description: 'Impari un\'altra disciplina elementale a scelta che richieda massimo 6 punti Ki per essere lanciata.'
+          privilege: "nuova disciplina elementale",
+          description: "Impari un'altra disciplina elementale a scelta che richieda massimo 6 punti Ki per essere lanciata.",
         },
-      ]
-    }, //monaco
+      ],
+    },
     ladro: {
-      'assassino': [
+      "assassino": [
         {
           level: 3,
-          privilege: 'Competenze bonus',
-          description: 'Ottiene competenza in trucchi per il camuffamento e nelle sostanze da avvelenatore.'
+          privilege: "Competenze bonus",
+          description: "Ottiene competenza in trucchi per il camuffamento e nelle sostanze da avvelenatore.",
         },
         {
           level: 3,
-          privilege: 'Assassinare',
-          description: 'Dispone di vantaggio su chi non ha avuto il turno e ogni attacco a sorpresa diventa un critico.'
+          privilege: "Assassinare",
+          description: "Dispone di vantaggio su chi non ha avuto il turno e ogni attacco a sorpresa diventa un critico.",
         },
         {
           level: 9,
-          privilege: 'Maestro infiltrato',
-          description: 'Può creare identità fittizie in 7g e 25mo. Stabilire il falso Background.'
+          privilege: "Maestro infiltrato",
+          description: "Può creare identità fittizie in 7g e 25mo. Stabilire il falso Background.",
         },
         {
           level: 13,
-          privilege: 'Impostore',
-          description: 'In 3h di studio, diventa abile nell\'imitare parlata, calligrafia e il modo di fare di una persona. Per un osservatore casuale diventa impossibile sospettare, qualora qualcuno dovesse avere dei sospetti, ha vantaggio nell\'inganno.'
+          privilege: "Impostore",
+          description: "In 3h di studio, diventa abile nell'imitare parlata, calligrafia e il modo di fare di una persona. Per un osservatore casuale diventa impossibile sospettare, qualora qualcuno dovesse avere dei sospetti, ha vantaggio nell'inganno.",
         },
         {
           level: 17,
-          privilege: 'Colpo mortale',
-          description: 'Quando colpisci una creatura con attacco furtivo, deve superare un TS Cos (CD: 8 +mod DES +BC) altrimenti i danni raddoppiano.'
-        }
+          privilege: "Colpo mortale",
+          description: "Quando colpisci una creatura con attacco furtivo, deve superare un TS Cos (CD: 8 +mod DES +BC) altrimenti i danni raddoppiano.",
+        },
       ],
-      'pianificatore': [
+      "pianificatore": [
         {
           level: 3,
-          privilege: 'Maestro di intrighi',
-          description: 'Competenza nei trucchi di camuffamento, arnesi da falsario e un gioco di carte, apprende 2 linguaggi. Inoltre può imitare perfettamente la voce di una creatura che ha sentito parlare per almeno 1 min se conosce la sua lingua.'
+          privilege: "Maestro di intrighi",
+          description: "Competenza nei trucchi di camuffamento, arnesi da falsario e un gioco di carte, apprende 2 linguaggi. Inoltre può imitare perfettamente la voce di una creatura che ha sentito parlare per almeno 1 min se conosce la sua lingua.",
         },
         {
           level: 3,
-          privilege: 'Maestro di tattiche',
-          description: 'Può usare l’aiuto come a bonus. Quando aiuta una creatura ad attaccarne un’altra, il bersaglio può essere entro 9m, purchè possa sentire e vedere il Rogue.'
+          privilege: "Maestro di tattiche",
+          description: "Può usare l’aiuto come a bonus. Quando aiuta una creatura ad attaccarne un’altra, il bersaglio può essere entro 9m, purchè possa sentire e vedere il Rogue.",
         },
         {
           level: 9,
-          privilege: 'Manipolatore intuitivo',
-          description: 'Se trascorre 1 min ad ascoltare una creatura, apprende 2 delle informazioni\n- Punteggio di Intelligenza\n- Punteggio di Saggezza\n- Punteggio di Carisma\n- Livelli di classe\nPuò anche scoprire parte della storia o dei tratti caratteriali del bersaglio'
+          privilege: "Manipolatore intuitivo",
+          description: "Se trascorre 1 min ad ascoltare una creatura, apprende 2 delle informazioni\n- Punteggio di Intelligenza\n- Punteggio di Saggezza\n- Punteggio di Carisma\n- Livelli di classe\nPuò anche scoprire parte della storia o dei tratti caratteriali del bersaglio",
         },
         {
           level: 13,
-          privilege: 'Fuorviare',
-          description: 'Se il Rogue viene attaccato e ha un’altra creatura a 1.5m da lui che gli da copertura dall’attacco, può fare in modo che venga bersagliata quest\'ultima'
+          privilege: "Fuorviare",
+          description: "Se il Rogue viene attaccato e ha un’altra creatura a 1.5m da lui che gli da copertura dall’attacco, può fare in modo che venga bersagliata quest’ultima",
         },
         {
           level: 17,
-          privilege: 'Anima ingannevole',
-          description: 'Se bersagliato dalla telepatia, può proiettare falsi pensieri. Contrappone Inganno con Intuizione di chi prova a leggergli i pensieri. Il Rogue non può essere obbligato a dire la verità con la magia, anche quando mente, risulta dire la verità.'
-        }
+          privilege: "Anima ingannevole",
+          description: "Se bersagliato dalla telepatia, può proiettare falsi pensieri. Contrappone Inganno con Intuizione di chi prova a leggergli i pensieri. Il Rogue non può essere obbligato a dire la verità con la magia, anche quando mente, risulta dire la verità.",
+        },
       ],
-      'furfante': [
+      "furfante": [
         {
           level: 3,
-          privilege: 'Mani veloci',
-          description: 'Azione bonus, fare tiro in Rapidità di Mano, per usare gli arnesi (disattivare trappole, aprire serrature) o per utilizzare un oggetto.'
+          privilege: "Mani veloci",
+          description: "Azione bonus, fare tiro in Rapidità di Mano, per usare gli arnesi (disattivare trappole, aprire serrature) o per utilizzare un oggetto.",
         },
         {
           level: 3,
-          privilege: 'Lavoro al 2° piano',
-          description: 'Scalare non gli costa più un movimento extra ed è più veloce, il salto con rincorsa aumenta di 30cm ⋅mod DES.'
+          privilege: "Lavoro al 2° piano",
+          description: "Scalare non gli costa più un movimento extra ed è più veloce, il salto con rincorsa aumenta di 30cm ⋅mod DES.",
         },
         {
           level: 9,
-          privilege: 'Furtività suprema',
-          description: 'Dispone di vantaggio in furtività se si muove a metà della velocità.'
+          privilege: "Furtività suprema",
+          description: "Dispone di vantaggio in furtività se si muove a metà della velocità.",
         },
         {
           level: 13,
-          privilege: 'Usare oggetti magici',
-          description: 'Ignora i requisiti di classe, razza e livelli quando usa gli oggetti magici.'
+          privilege: "Usare oggetti magici",
+          description: "Ignora i requisiti di classe, razza e livelli quando usa gli oggetti magici.",
         },
         {
           level: 17,
-          privilege: 'Riflessi da Furfante',
-          description: 'Diventa abile a tendere imboscate e sfuggire. Può fare 2 turni al primo round di ogni combattimento. Il secondo round ha iniziativa -10.'
-        }
+          privilege: "Riflessi da Furfante",
+          description: "Diventa abile a tendere imboscate e sfuggire. Può fare 2 turni al primo round di ogni combattimento. Il secondo round ha iniziativa -10.",
+        },
       ],
-      'fantasma': [
+      "fantasma": [
         {
           level: 3,
-          privilege: 'Sussurri dei non morti',
-          description: 'Dopo un riposo, può ottenere competenza in uno strumento o abilità che non gli appartiene. Perde la competenza quando reitera questo privilegio scegliendone un’altra.'
+          privilege: "Sussurri dei non morti",
+          description: "Dopo un riposo, può ottenere competenza in uno strumento o abilità che non gli appartiene. Perde la competenza quando reitera questo privilegio scegliendone un’altra.",
         },
         {
           level: 3,
-          privilege: 'Lamenti dalla tomba',
-          description: 'Dopo un attacco accurato, sceglie un altra creatura entro 9m dal primo bersaglio. Quella creatura subisce danni necrotici pari alla metà dei dadi dell’attacco accurato. Dopo un riposo lungo, può utilizzare questo privilegio per un numero di volte pari al BC.'
+          privilege: "Lamenti dalla tomba",
+          description: "Dopo un attacco accurato, sceglie un altra creatura entro 9m dal primo bersaglio. Quella creatura subisce danni necrotici pari alla metà dei dadi dell’attacco accurato. Dopo un riposo lungo, può utilizzare questo privilegio per un numero di volte pari al BC.",
         },
         {
           level: 9,
-          privilege: 'Pegni dei defunti',
-          description: 'Quando una creatura muore in sua presenza, può utilizzare la sua reazione per creare un oggetto minuscolo e averne una quantità pari al BC. \n- Se ha un pegno, ha vantaggio ai TS contro morte e su Costituzione\n- Quando fa un Attacco Accurato, può spendere un pegno per usare subito ‘Lamenti della tomba’ spendere l’utilizzo di questo privilegio\n- Con un azione, può spendere un pegno, dovunque sia, per interrogare l’anima a cui era legato'
+          privilege: "Pegni dei defunti",
+          description: "Quando una creatura muore in sua presenza, può utilizzare la sua reazione per creare un oggetto minuscolo e averne una quantità pari al BC. \n- Se ha un pegno, ha vantaggio ai TS contro morte e su Costituzione\n- Quando fa un Attacco Accurato, può spendere un pegno per usare subito ‘Lamenti della tomba’ spendere l’utilizzo di questo privilegio\n- Con un azione, può spendere un pegno, dovunque sia, per interrogare l’anima a cui era legato",
         },
         {
           level: 13,
-          privilege: 'Cammino fantasma',
-          description: 'Dopo un riposo lungo o spendendo un pegno, con l’a bonus assume la forma spettrale per 10m. Ottiene velocità di volo di 3m, i TpC contro di lui hanno svantaggio, può muoversi dentro altri corpi come terreno difficile, ma subisce d10 danni se termina lì dentro il turno.'
+          privilege: "Cammino fantasma",
+          description: "Dopo un riposo lungo o spendendo un pegno, con l’a bonus assume la forma spettrale per 10m. Ottiene velocità di volo di 3m, i TpC contro di lui hanno svantaggio, può muoversi dentro altri corpi come terreno difficile, ma subisce d10 danni se termina lì dentro il turno.",
         },
         {
           level: 17,
-          privilege: 'Compagno della morte',
-          description: '- Quando utilizza ‘Lamenti dalla tomba’ può infliggere danni necrotici ad entrambe le creature colpite.\n- Se non ha pegni dopo un riposo lungo, ne ottiene uno'
-        }
+          privilege: "Compagno della morte",
+          description: "- Quando utilizza ‘Lamenti dalla tomba’ può infliggere danni necrotici ad entrambe le creature colpite.\n- Se non ha pegni dopo un riposo lungo, ne ottiene uno",
+        },
       ],
-      'lama spirituale': [
+      "lama spirituale": [
         {
           level: 3,
-          privilege: 'potere psionico',
-          description: 'dispone di un numero di dadi di energia psionica (d6) pari al doppio del bonus competenza (BC). Recupera i dadi dopo un riposo lungo. Con un’azione bonus dopo un riposo lungo, può recuperare un dado psionico.'
+          privilege: "potere psionico",
+          description: "dispone di un numero di dadi di energia psionica (d6) pari al doppio del bonus competenza (BC). Recupera i dadi dopo un riposo lungo. Con un’azione bonus dopo un riposo lungo, può recuperare un dado psionico.",
         },
         {
           level: 3,
-          privilege: 'abilità psico-rinforzata',
-          description: 'se fallisce una prova in cui è competente, può aggiungere il dado psionico al risultato. Se la prova fallisce comunque, il dado non è speso.'
+          privilege: "abilità psico-rinforzata",
+          description: "se fallisce una prova in cui è competente, può aggiungere il dado psionico al risultato. Se la prova fallisce comunque, il dado non è speso.",
         },
         {
           level: 3,
-          privilege: 'sussurri psichici',
-          description: 'può comunicare telepaticamente con creature entro 1km e a vista, in numero pari al BC. Spende il dado psionico solo dopo il primo utilizzo. La comunicazione dura un numero di ore pari al risultato del dado. Non è necessaria una lingua comune.'
+          privilege: "sussurri psichici",
+          description: "può comunicare telepaticamente con creature entro 1km e a vista, in numero pari al BC. Spende il dado psionico solo dopo il primo utilizzo. La comunicazione dura un numero di ore pari al risultato del dado. Non è necessaria una lingua comune.",
         },
         {
           level: 3,
-          privilege: 'lame psichiche',
-          description: 'può evocare una lama psichica (arma semplice, accurata, da lancio, gittata 18m). Infligge 1d6 danni psichici + modificatore. Scompare dopo l’attacco. Se ha una mano libera, può usare un’azione bonus per un secondo attacco (1d4 + modificatore).'
+          privilege: "lame psichiche",
+          description: "può evocare una lama psichica (arma semplice, accurata, da lancio, gittata 18m). Infligge 1d6 danni psichici + modificatore. Scompare dopo l’attacco. Se ha una mano libera, può usare un’azione bonus per un secondo attacco (1d4 + modificatore).",
         },
         {
           level: 5,
-          privilege: 'potere psionico potenziato',
-          description: 'il dado psionico diventa un d8.'
+          privilege: "potere psionico potenziato",
+          description: "il dado psionico diventa un d8.",
         },
         {
           level: 9,
-          privilege: 'lame dell’anima',
-          description: '- Colpi guidati: se fallisce un tiro per colpire, può aggiungere il dado psionico. Lo spende solo se colpisce.\n- Teletrasporto psichico: si teletrasporta in uno spazio libero entro 3m × il risultato del dado.'
+          privilege: "lame dell’anima",
+          description: "- Colpi guidati: se fallisce un tiro per colpire, può aggiungere il dado psionico. Lo spende solo se colpisce.\n- Teletrasporto psichico: si teletrasporta in uno spazio libero entro 3m × il risultato del dado.",
         },
         {
           level: 11,
-          privilege: 'potere psionico avanzato',
-          description: 'il dado psionico diventa un d10.'
+          privilege: "potere psionico avanzato",
+          description: "il dado psionico diventa un d10.",
         },
         {
           level: 13,
-          privilege: 'velo psichico',
-          description: 'dopo un riposo lungo o spendendo un dado psionico, può diventare invisibile con un’azione. L’effetto dura 1 ora o finché infligge danni o costringe a un tiro salvezza.'
+          privilege: "velo psichico",
+          description: "dopo un riposo lungo o spendendo un dado psionico, può diventare invisibile con un’azione. L’effetto dura 1 ora o finché infligge danni o costringe a un tiro salvezza.",
         },
         {
           level: 17,
-          privilege: 'potere psionico massimo',
-          description: 'il dado psionico diventa un d12.'
+          privilege: "potere psionico massimo",
+          description: "il dado psionico diventa un d12.",
         },
         {
           level: 17,
-          privilege: 'squarciare la mente',
-          description: 'dopo un riposo lungo o spendendo un dado psionico, se colpisce con un attacco accurato una creatura che fallisce un TS Saggezza (CD 8 + BC + mod Des), essa è stordita per 1 minuto (ripete il TS alla fine di ogni turno).'
-        }
+          privilege: "squarciare la mente",
+          description: "dopo un riposo lungo o spendendo un dado psionico, se colpisce con un attacco accurato una creatura che fallisce un TS Saggezza (CD 8 + BC + mod Des), essa è stordita per 1 minuto (ripete il TS alla fine di ogni turno).",
+        },
       ],
-  
-      'mistificatore arcano': [
+      "mistificatore arcano": [
         {
           level: 3,
-          privilege: 'incantesimi',
-          description: 'impara "Mano magica", 2 trucchi e 3 incantesimi di ammaliamento o illusione da mago. Usa Intelligenza come caratteristica da incantatore. CD TS = 8 + BC + Int. Recupera gli slot con un riposo lungo.'
+          privilege: "incantesimi",
+          description: "impara 'Mano magica', 2 trucchi e 3 incantesimi di ammaliamento o illusione da mago. Usa Intelligenza come caratteristica da incantatore. CD TS = 8 + BC + Int. Recupera gli slot con un riposo lungo.",
         },
         {
           level: 3,
-          privilege: 'mano magica migliorata',
-          description: 'la mano magica può diventare invisibile e usare "azione scaltra". Può riporre oggetti nelle tasche, borseggiare o usare arnesi da scasso. Non può essere scoperta se supera una prova contrapposta (rapidità di mano vs percezione).'
+          privilege: "mano magica migliorata",
+          description: "la mano magica può diventare invisibile e usare 'azione scaltra'. Può riporre oggetti nelle tasche, borseggiare o usare arnesi da scasso. Non può essere scoperta se supera una prova contrapposta (rapidità di mano vs percezione).",
         },
         {
           level: 9,
-          privilege: 'imboscata magica',
-          description: 'se lancia un incantesimo mentre è nascosto, il bersaglio ha svantaggio ai tiri salvezza contro l’incantesimo.'
+          privilege: "imboscata magica",
+          description: "se lancia un incantesimo mentre è nascosto, il bersaglio ha svantaggio ai tiri salvezza contro l’incantesimo.",
         },
         {
           level: 13,
-          privilege: 'ingannatore versatile',
-          description: 'può designare una creatura entro 1,5m dalla mano magica. Ha vantaggio ai tiri per colpire contro quella creatura nel suo turno.'
+          privilege: "ingannatore versatile",
+          description: "può designare una creatura entro 1,5m dalla mano magica. Ha vantaggio ai tiri per colpire contro quella creatura nel suo turno.",
         },
         {
           level: 17,
-          privilege: 'ladro di incantesimi',
-          description: 'se è bersaglio di un incantesimo di 1° livello, può usare la reazione per costringere l’incantatore a un TS (CD = mod incantatore). Se fallisce, l’incantesimo è annullato e il ladro può lanciarlo entro 8 ore.'
-        }
+          privilege: "ladro di incantesimi",
+          description: "se è bersaglio di un incantesimo di 1° livello, può usare la reazione per costringere l’incantatore a un TS (CD = mod incantatore). Se fallisce, l’incantesimo è annullato e il ladro può lanciarlo entro 8 ore.",
+        },
       ],
-  
-      'esploratore': [
+      "esploratore": [
         {
           level: 3,
-          privilege: 'schermagliatore',
-          description: 'quando un nemico termina il turno entro 1,5m, può usare la reazione per muoversi della metà della velocità senza provocare attacchi di opportunità.'
+          privilege: "schermagliatore",
+          description: "quando un nemico termina il turno entro 1,5m, può usare la reazione per muoversi della metà della velocità senza provocare attacchi di opportunità.",
         },
         {
           level: 3,
-          privilege: 'survivalista',
-          description: 'ottiene competenza in Natura e Sopravvivenza; il BC è raddoppiato per queste prove.'
+          privilege: "survivalista",
+          description: "ottiene competenza in Natura e Sopravvivenza; il BC è raddoppiato per queste prove.",
         },
         {
           level: 9,
-          privilege: 'mobilità superiore',
-          description: 'la velocità aumenta di 3 metri.'
+          privilege: "mobilità superiore",
+          description: "la velocità aumenta di 3 metri.",
         },
         {
           level: 13,
-          privilege: 'maestro di imboscate',
-          description: 'ha vantaggio all’iniziativa. La prima creatura che colpisce nel suo primo turno fornisce vantaggio ai tiri per colpire degli alleati contro di essa fino al suo prossimo turno.'
+          privilege: "maestro di imboscate",
+          description: "ha vantaggio all’iniziativa. La prima creatura che colpisce nel suo primo turno fornisce vantaggio ai tiri per colpire degli alleati contro di essa fino al suo prossimo turno.",
         },
         {
           level: 17,
-          privilege: 'colpo improvviso',
-          description: 'se attacca una creatura, può usare l’azione bonus per fare un attacco aggiuntivo. Se colpisce due creature diverse, può usare attacco accurato anche se lo ha già usato quel turno.'
-        }
-      ]
-    }, //ladro
+          privilege: "colpo improvviso",
+          description: "se attacca una creatura, può usare l’azione bonus per fare un attacco aggiuntivo. Se colpisce due creature diverse, può usare attacco accurato anche se lo ha già usato quel turno.",
+        },
+      ],
+    },
     guerriero: {
-      'maestro di battaglia': [
+      "maestro di battaglia": [
         {
           level: 3,
-          privilege: 'studioso di guerra',
-          description: 'ottiene competenza in uno strumento da artigiano (es. alchimista, costruttore, fabbro, inventore, tessitore, cuoco).'
+          privilege: "studioso di guerra",
+          description: "ottiene competenza in uno strumento da artigiano (es. alchimista, costruttore, fabbro, inventore, tessitore, cuoco).",
         },
         {
           level: 3,
-          privilege: 'superiorità',
-          description: 'apprende 3 manovre e ottiene 4d8 dadi di superiorità. I dadi si recuperano con un riposo. CD dei tiri salvezza = 8 + BC + For o Des.'
+          privilege: "superiorità",
+          description: "apprende 3 manovre e ottiene 4d8 dadi di superiorità. I dadi si recuperano con un riposo. CD dei tiri salvezza = 8 + BC + For o Des.",
         },
         {
           level: 7,
-          privilege: 'conosci il tuo nemico',
-          description: 'se stai osservando una creatura entro 1,5m fuori dal combattimento per almeno 1 minuto, puoi apprendere 2 delle seguenti informazioni: FOR, DES, COS, CA, PF, livello totale o livello da guerriero.'
+          privilege: "conosci il tuo nemico",
+          description: "se stai osservando una creatura entro 1,5m fuori dal combattimento per almeno 1 minuto, puoi apprendere 2 delle seguenti informazioni: FOR, DES, COS, CA, PF, livello totale o livello da guerriero.",
         },
         {
           level: 7,
-          privilege: 'superiorità migliorata',
-          description: '+2 manovre conosciute. Dadi di superiorità aumentano a 5d8.'
+          privilege: "superiorità migliorata",
+          description: "+2 manovre conosciute. Dadi di superiorità aumentano a 5d8.",
         },
         {
           level: 10,
-          privilege: 'superiorità migliorata',
-          description: '+2 manovre conosciute. Dadi di superiorità restano 5d8.'
+          privilege: "superiorità migliorata",
+          description: "+2 manovre conosciute. Dadi di superiorità restano 5d8.",
         },
         {
           level: 15,
-          privilege: 'implacabile',
-          description: 'se inizi un combattimento (inizio del turno) senza dadi di superiorità, ne recuperi 1 automaticamente.'
+          privilege: "implacabile",
+          description: "se inizi un combattimento (inizio del turno) senza dadi di superiorità, ne recuperi 1 automaticamente.",
         },
         {
           level: 15,
-          privilege: 'superiorità migliorata',
-          description: '+2 manovre conosciute. Dadi di superiorità diventano 6d10.'
+          privilege: "superiorità migliorata",
+          description: "+2 manovre conosciute. Dadi di superiorità diventano 6d10.",
         },
         {
           level: 18,
-          privilege: 'superiorità migliorata',
-          description: 'dadi di superiorità diventano 6d12.'
-        }
+          privilege: "superiorità migliorata",
+          description: "dadi di superiorità diventano 6d12.",
+        },
       ],
-
-      'campione': [
+      "campione": [
         {
           level: 3,
-          privilege: 'critico migliorato',
-          description: 'i tuoi attacchi con arma infliggono colpo critico con un tiro di 19 o 20.'
+          privilege: "critico migliorato",
+          description: "i tuoi attacchi con arma infliggono colpo critico con un tiro di 19 o 20.",
         },
         {
           level: 7,
-          privilege: 'atleta straordinario',
-          description: 'il salto in corsa aumenta di 30 cm × mod For. Se non sei competente in una prova su For, Des o Cos, aggiungi metà del BC (arrotondato per difetto).'
+          privilege: "atleta straordinario",
+          description: "il salto in corsa aumenta di 30 cm × mod For. Se non sei competente in una prova su For, Des o Cos, aggiungi metà del BC (arrotondato per difetto).",
         },
         {
           level: 10,
-          privilege: 'secondo stile di combattimento',
-          description: 'scegli un secondo stile di combattimento.'
+          privilege: "secondo stile di combattimento",
+          description: "scegli un secondo stile di combattimento.",
         },
         {
           level: 15,
-          privilege: 'critico migliorato',
-          description: 'i tuoi attacchi con arma infliggono colpo critico con un tiro di 18–20.'
+          privilege: "critico migliorato",
+          description: "i tuoi attacchi con arma infliggono colpo critico con un tiro di 18–20.",
         },
         {
           level: 18,
-          privilege: 'sopravvissuto',
-          description: 'se hai più della metà dei tuoi PF massimi, recuperi 5 + mod COS PF all’inizio di ogni tuo turno.'
-        }
+          privilege: "sopravvissuto",
+          description: "se hai più della metà dei tuoi PF massimi, recuperi 5 + mod COS PF all’inizio di ogni tuo turno.",
+        },
       ],
-
-      'cavaliere mistico': [
+      "cavaliere mistico": [
         {
           level: 3,
-          privilege: 'incantesimi',
-          description: 'impara 2 trucchetti da mago e un altro al livello 10. Ai livelli 3, 8, 14 e 20 apprende un incantesimo da qualsiasi scuola. Gli altri devono essere di Invocazione o Abiurazione. CD TS = 8 + BC + Int. Attacchi con incantesimi: d20 + BC + Int.'
+          privilege: "incantesimi",
+          description: "impara 2 trucchetti da mago e un altro al livello 10. Ai livelli 3, 8, 14 e 20 apprende un incantesimo da qualsiasi scuola. Gli altri devono essere di Invocazione o Abiurazione. CD TS = 8 + BC + Int. Attacchi con incantesimi: d20 + BC + Int.",
         },
         {
           level: 3,
-          privilege: 'arma vincolata',
-          description: 'può legare fino a 2 armi tramite un rituale di 1 ora (anche durante un riposo breve). Può evocarle nella propria mano con un’azione bonus. Può essere disarmato solo se è incapacitato.'
+          privilege: "arma vincolata",
+          description: "può legare fino a 2 armi tramite un rituale di 1 ora (anche durante un riposo breve). Può evocarle nella propria mano con un’azione bonus. Può essere disarmato solo se è incapacitato.",
         },
         {
           level: 7,
-          privilege: 'magia da guerra',
-          description: 'quando lancia un trucchetto, può effettuare un attacco con arma usando un’azione bonus.'
+          privilege: "magia da guerra",
+          description: "quando lancia un trucchetto, può effettuare un attacco con arma usando un’azione bonus.",
         },
         {
           level: 10,
-          privilege: 'colpo mistico',
-          description: 'se attacca una creatura e nel turno successivo lancia un incantesimo contro di essa, ha svantaggio al tiro salvezza.'
+          privilege: "colpo mistico",
+          description: "se attacca una creatura e nel turno successivo lancia un incantesimo contro di essa, ha svantaggio al tiro salvezza.",
         },
         {
           level: 15,
-          privilege: 'carica arcana',
-          description: 'quando usa "azione impetuosa", può teletrasportarsi fino a 9 metri in uno spazio libero che può vedere.'
+          privilege: "carica arcana",
+          description: "quando usa 'azione impetuosa', può teletrasportarsi fino a 9 metri in uno spazio libero che può vedere.",
         },
         {
           level: 17,
-          privilege: 'magia da guerra migliorata',
-          description: 'può effettuare un attacco con arma come azione bonus anche dopo aver lanciato un incantesimo (non solo un trucchetto).'
-        }
+          privilege: "magia da guerra migliorata",
+          description: "può effettuare un attacco con arma come azione bonus anche dopo aver lanciato un incantesimo (non solo un trucchetto).",
+        },
       ],
-      'cavaliere errante': [
+      "cavaliere errante": [
         {
           level: 3,
-          privilege: 'competenze bonus',
-          description: 'ottiene competenza in Addestrare Animali, Intrattenere, Intuizione, Persuasione o Storia. In alternativa, può scegliere un linguaggio.'
+          privilege: "competenze bonus",
+          description: "ottiene competenza in Addestrare Animali, Intrattenere, Intuizione, Persuasione o Storia. In alternativa, può scegliere un linguaggio.",
         },
         {
           level: 3,
-          privilege: 'nato in sella',
-          description: 'ha vantaggio ai tiri salvezza per non essere disarcionato. Se cade da 1,5m o meno, atterra in piedi (se non è incapacitato). Montare o smontare da una cavalcatura costa solo 1,5m di movimento.'
+          privilege: "nato in sella",
+          description: "ha vantaggio ai tiri salvezza per non essere disarcionato. Se cade da 1,5m o meno, atterra in piedi (se non è incapacitato). Montare o smontare da una cavalcatura costa solo 1,5m di movimento.",
         },
         {
           level: 3,
-          privilege: 'marchio incrollabile',
-          description: 'quando colpisce con un’arma da mischia, può marchiare il bersaglio (uno alla volta). Il bersaglio ha svantaggio ai TpC contro creature diverse dal guerriero, se entro 1,5m da lui. Se infligge danni nonostante lo svantaggio, il guerriero può usare un’azione bonus nel suo turno successivo per un attacco aggiuntivo che infligge danni extra pari alla metà del livello da guerriero. Può usare questa reazione un numero di volte pari al mod FOR per riposo lungo.'
+          privilege: "marchio incrollabile",
+          description: "quando colpisce con un’arma da mischia, può marchiare il bersaglio (uno alla volta). Il bersaglio ha svantaggio ai TpC contro creature diverse dal guerriero, se entro 1,5m da lui. Se infligge danni nonostante lo svantaggio, il guerriero può usare un’azione bonus nel suo turno successivo per un attacco aggiuntivo che infligge danni extra pari alla metà del livello da guerriero. Può usare questa reazione un numero di volte pari al mod FOR per riposo lungo.",
         },
         {
           level: 7,
-          privilege: 'manovra protettrice',
-          description: 'se impugna un’arma da mischia o uno scudo e una creatura entro 1,5m subisce un attacco, può usare la reazione per aggiungere 1d8 alla CA di quella creatura e conferirle resistenza ai danni subiti. Può farlo un numero di volte pari al modificatore di COS per riposo lungo.'
+          privilege: "manovra protettrice",
+          description: "se impugna un’arma da mischia o uno scudo e una creatura entro 1,5m subisce un attacco, può usare la reazione per aggiungere 1d8 alla CA di quella creatura e conferirle resistenza ai danni subiti. Può farlo un numero di volte pari al modificatore di COS per riposo lungo.",
         },
         {
           level: 10,
-          privilege: 'mantenere la posizione',
-          description: 'se una creatura si muove di almeno 1,5m all’interno della sua portata, provoca un attacco di opportunità. Se colpisce, la velocità della creatura diventa 0 fino alla fine del turno.'
+          privilege: "mantenere la posizione",
+          description: "se una creatura si muove di almeno 1,5m all’interno della sua portata, provoca un attacco di opportunità. Se colpisce, la velocità della creatura diventa 0 fino alla fine del turno.",
         },
         {
           level: 15,
-          privilege: 'carica feroce',
-          description: 'una volta per turno, se si muove in linea retta di almeno 3m e colpisce subito una creatura, quest’ultima deve superare un TS su FOR (CD 8 + BC + mod FOR) o cade **prona**.'
+          privilege: "carica feroce",
+          description: "una volta per turno, se si muove in linea retta di almeno 3m e colpisce subito una creatura, quest’ultima deve superare un TS su FOR (CD 8 + BC + mod FOR) o cade prona.",
         },
         {
           level: 18,
-          privilege: 'difensore vigile',
-          description: 'ottiene una reazione speciale da usare **una volta per turno di ogni creatura**, ma solo per effettuare attacchi di opportunità.'
-        }
+          privilege: "difensore vigile",
+          description: "ottiene una reazione speciale da usare una volta per turno di ogni creatura, ma solo per effettuare attacchi di opportunità.",
+        },
       ],
-    }, //guerriero
-    ranger: [
-      {
-        nome: "Cacciatore",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Preda del cacciatore",
-            description: "Scegli un'opzione tra le seguenti:"
-          },
-          {
-            level: 3,
-            privilege: "Uccisore di Giganti",
-            description: "Quando una creatura di taglia Grande o maggiore entro 1,5 metri da te ti attacca, puoi usare la tua reazione per attaccare immediatamente quella creatura dopo il suo attacco, purché tu possa vedere la creatura."
-          },
-          {
-            level: 3,
-            privilege: "Devastatore dell’Orda",
-            description: "Una volta durante ciascun tuo turno in cui effettui un attacco con arma, puoi effettuare un altro attacco con la stessa arma contro una creatura diversa che sia entro 1,5 metri dal bersaglio originale e entro la gittata della tua arma."
-          },
-          {
-            level: 3,
-            privilege: "Sterminatore di Colossi",
-            description: "Quando colpisci una creatura con un attacco con arma, la creatura subisce 1d8 danni aggiuntivi se non è al massimo dei suoi punti ferita. Puoi infliggere questo danno aggiuntivo solo una volta per turno."
-          },
-          {
-            level: 9,
-            privilege: "Tattiche difensive",
-            description: "Scegli un'opzione tra le seguenti:"
-          },
-          {
-            level: 9,
-            privilege: "Difesa dal Multiattacco",
-            description: "Quando una creatura ti colpisce con un attacco, ottieni un bonus di +4 alla CA contro tutti gli attacchi successivi effettuati da quella creatura per il resto del turno."
-          },
-          {
-            level: 9,
-            privilege: "Sfuggire all’Orda",
-            description: "Gli attacchi di opportunità effettuati contro di te hanno svantaggio."
-          },
-          {
-            level: 9,
-            privilege: "Volontà di Acciaio",
-            description: "Hai vantaggio sui tiri salvezza contro l’essere spaventato."
-          },
-          {
-            level: 13,
-            privilege: "Multiattacco",
-            description: "Scegli un'opzione tra le seguenti:"
-          },
-          {
-            level: 13,
-            privilege: "Attacco Turbinante",
-            description: "Puoi usare la tua azione per effettuare un attacco da mischia contro un qualsiasi numero di creature entro 1,5 metri da te, effettuando un tiro per colpire separato per ogni bersaglio."
-          },
-          {
-            level: 13,
-            privilege: "Raffica",
-            description: "Puoi usare la tua azione per effettuare un attacco a distanza contro un qualsiasi numero di creature entro 3 metri da un punto che puoi vedere e che sia entro la gittata della tua arma. Devi avere munizioni sufficienti per tutti i bersagli, ed effettui un tiro per colpire separato per ciascuno di loro."
-          },
-          {
-            level: 17,
-            privilege: "Difesa superiore",
-            description: "Scegli un'opzione tra le seguenti:"
-          },
-          {
-            level: 17,
-            privilege: "Elusione",
-            description: "Quando sei vittima di un effetto che permette un tiro salvezza su Destrezza per dimezzare i danni, non subisci danni se superi il tiro salvezza, e solo la metà dei danni se lo fallisci."
-          },
-          {
-            level: 17,
-            privilege: "Opporsi alla Marea",
-            description: "Quando una creatura ostile ti manca con un attacco in mischia, puoi usare la tua reazione per obbligare quella creatura a ripetere lo stesso attacco contro un’altra creatura (che non sia se stessa) di tua scelta."
-          },
-          {
-            level: 17,
-            privilege: "Schivata Prodigiosa",
-            description: "Quando un attaccante che puoi vedere ti colpisce con un attacco, puoi usare la tua reazione per dimezzare il danno dell’attacco effettuato contro di te."
-          }
-        ]
-      },
-      {
-        nome: "Signore delle bestie",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Compagno Animale",
-            description: "Dopo un riposo lungo o usando uno slot magico, puoi evocare una bestia. Puoi scegliere la sua forma in base al territorio (Terra, Aria, Acqua). In combattimento ha la stessa iniziativa del Ranger e comincia il turno subito dopo di lui. Può muoversi e usare la reazione autonomamente, ma l'unica azione che ha è la schivata, a meno che il Ranger non ordini altro con un'azione bonus. Se il Ranger è incapacitato, la bestia può agire autonomamente. Se la bestia muore da meno di un'ora, puoi spendere un’azione e uno slot per resuscitarla dopo 1 minuto con tutti i PF."
-          },
-          {
-            level: 7,
-            privilege: "Addestramento straordinario",
-            description: "La bestia compagnia può usare Scatto, Disimpegno o Aiuto senza l'azione bonus del Ranger. Gli attacchi della bestia diventano magici."
-          },
-          {
-            level: 13,
-            privilege: "Furia bestiale",
-            description: "Se il Ranger ordina alla sua bestia di effettuare l’azione di Attacco, questa può effettuare due attacchi."
-          },
-          {
-            level: 17,
-            privilege: "Condividere incantesimi",
-            description: "Se il Ranger si lancia un incantesimo su se stesso, può influenzare la bestia compagnia, purché essa si trovi entro 9 metri da lui."
-          }
-        ]
-      },
-      {
-        nome: "Cacciatore delle tenebre",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Predatore del terrore",
-            description: "Aggiungi il modificatore di Saggezza al tiro d'iniziativa. All’inizio del tuo primo turno, la velocità di camminata aumenta di 3m. Se usi l’azione di attacco, puoi fare un attacco aggiuntivo in quell’azione e, se colpisci, infliggi 1d8 danni aggiuntivi."
-          },
-          {
-            level: 3,
-            privilege: "Vista ombrosa",
-            description: "Ottieni scurovisione 18m (se già presente, aumenta di 6m). Se sei nell’oscurità, sei invisibile alle creature che usano scurovisione per scovarti."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Camuffare se stesso."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Trucco della corda."
-          },
-          {
-            level: 7,
-            privilege: "Mente ferrea",
-            description: "Diventi competente nei tiri salvezza su Saggezza. Se già competente, scegli Carisma o Intelligenza per ottenere competenza."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Paura."
-          },
-          {
-            level: 11,
-            privilege: "Raffica del cacciatore",
-            description: "Una volta a turno, quando manchi una creatura con un attacco, puoi ripetere l’attacco."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Invisibilità superiore."
-          },
-          {
-            level: 15,
-            privilege: "Schivata oscura",
-            description: "Quando una creatura sta per attaccarti e non ha vantaggio nei tiri per colpire, puoi usare la tua reazione per dargli svantaggio ai tiri per colpire."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Sembrare."
-          }
-        ]
-      },
-      {
-        nome: "Compagno draconico",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Compagno draconico",
-            description: "Dopo un riposo lungo o usando uno slot magico, puoi evocare un drago di taglia Piccola, non ancora in grado di volare. Puoi scegliere la sua essenza (Acido, Freddo, Fulmine, Fuoco, Veleno), a cui sarà immune, e la forma estetica. In combattimento ha la stessa iniziativa del Ranger e comincia il turno subito dopo di lui. Può muoversi e usare la reazione autonomamente, ma l'unica azione che ha è la schivata, a meno che il Ranger non ordini altro con un'azione bonus. Se il Ranger è incapacitato, il drago può agire autonomamente. Se uno dei due muore, il drago svanisce, lasciando cadere ciò che trasportava."
-          },
-          {
-            level: 3,
-            privilege: "Dono draconico",
-            description: "Impari il linguaggio draconico, oppure scegli una lingua a piacimento."
-          },
-          {
-            level: 7,
-            privilege: "Taglia",
-            description: "Il drago diventa di taglia Media."
-          },
-          {
-            level: 7,
-            privilege: "Legame",
-            description: "Appaiono delle ali che gli danno una velocità di volo pari a quella di camminata. Scegli uno dei seguenti benefici: Cavalcatura (puoi cavalcarlo senza volare se sei di taglia Media o inferiore), Zanna magica (il morso del drago infligge +1d6 danni dell’elemento del drago), Resistenza (sei resistente ai danni dell’elemento del drago)."
-          },
-          {
-            level: 11,
-            privilege: "Soffio",
-            description: "Tu e il drago potete esalare un soffio in un cono di 18m. Le creature nell’area devono superare un tiro salvezza su Destrezza o subire 8d6 danni dell’elemento (metà se riescono). Puoi usare questa abilità dopo un riposo lungo o spendendo uno slot di livello 3."
-          },
-          {
-            level: 15,
-            privilege: "Taglia",
-            description: "Il drago diventa di taglia Grande e può volare mentre lo cavalchi."
-          },
-          {
-            level: 15,
-            privilege: "Soffio",
-            description: "I danni del soffio aumentano a 10d6."
-          },
-          {
-            level: 15,
-            privilege: "Legame perfezionato",
-            description: "Essenza dragonica: i danni dell’elemento aumentano di 2d6. Resistenza fulminea: quando tu o il drago subite danni, puoi usare una reazione per rendervi resistenti a quel tipo di danno. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo."
-          }
-        ]
-      },
-      {
-        nome: "Padrone degli sciami",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Sciame di spiriti",
-            description: "Puoi evocare uno sciame di spiriti (uccelli, fatine o insetti) che si muove nel tuo spazio. Quando colpisci una creatura: aggiungi 1d6 danni perforanti, puoi spostarti di 1,5m, e se il bersaglio fallisce un tiro salvezza su Forza, viene spinto di 4,5m."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi",
-            description: "Impari gli incantesimi Mano magica e Luminescenza."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Ragnatela."
-          },
-          {
-            level: 9,
-            privilege: "Concentrare lo sciame",
-            description: "Con un'azione bonus, ottieni velocità di fluttuare pari a 3m per 1 minuto o fino a quando sei incapacitato. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Forma gassosa."
-          },
-          {
-            level: 9,
-            privilege: "Sciame potenziato",
-            description: "Potenziamento di 'Sciame di spiriti': i danni perforanti diventano 1d8, puoi spostarti di 1,5m e ottieni mezza copertura, e se il bersaglio fallisce un tiro salvezza su Forza, viene spinto di 4,5m e cade prono."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Occhio arcano."
-          },
-          {
-            level: 15,
-            privilege: "Disperdere lo sciame",
-            description: "Quando subisci danni, puoi usare la reazione per diventare resistente a quel danno e teletrasportarti in uno spazio non occupato entro 9m. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Piaga di insetti."
-          }
-        ]
-      },
-      {
-        nome: "Uccisore di mostri",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Sensi da cacciatore",
-            description: "Puoi spendere un’azione per scrutare una creatura entro 18m. Apprendi le sue immunità, resistenze e vulnerabilità. Se protetta da incantesimi di divinazione, capisci che non ha immunità, resistenze o vulnerabilità. Puoi usare questa abilità un numero di volte pari al modificatore di Saggezza, recuperandole dopo un riposo lungo."
-          },
-          {
-            level: 3,
-            privilege: "Preda dell’uccisore",
-            description: "Con un'azione bonus, puoi marchiare una creatura entro 18m. La prima volta per turno che la colpisci con un’arma, infliggi 1d6 danni aggiuntivi. Il marchio termina dopo un riposo breve/lungo o se marchi un'altra creatura."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Protezione dal bene e dal male."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Zona di verità."
-          },
-          {
-            level: 7,
-            privilege: "Difesa soprannaturale",
-            description: "Se il bersaglio di 'Preda dell’uccisore' ti costringe a fare un tiro salvezza o una prova, aggiungi 1d6 al tiro."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Cerchio magico."
-          },
-          {
-            level: 11,
-            privilege: "Nemesi degli incantatori",
-            description: "Dopo un riposo breve o lungo, quando vedi una creatura lanciare un incantesimo o teletrasportarsi entro 18m, puoi usare la reazione per farle fare un tiro salvezza su Saggezza. Se fallisce, l'effetto è annullato e sprecato."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Esilio."
-          },
-          {
-            level: 15,
-            privilege: "Contrattacco dell’uccisore",
-            description: "Se il bersaglio di 'Preda dell’uccisore' ti costringe a fare un tiro salvezza, puoi usare la reazione per attaccarlo con un’arma prima del tiro. Se colpisci, superi automaticamente il tiro salvezza."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Blocca mostri."
-          }
-        ]
-      },
-      {
-        nome: "Vagabondo fatato",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Colpi di terrore",
-            description: "Una volta per turno, quando colpisci un bersaglio, infliggi 1d4 danni psichici extra."
-          },
-          {
-            level: 3,
-            privilege: "Fascino ultraterreno",
-            description: "Aggiungi il modificatore di Saggezza alle prove di Carisma e ottieni competenza in una tra Intrattenere, Persuasione o Inganno."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Charme su persone."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Charme su persone."
-          },
-          {
-            level: 7,
-            privilege: "Invertire l’ascendente",
-            description: "Hai vantaggio sui tiri salvezza contro l’essere affascinato o spaventato. Se una creatura entro 36m supera un tiro salvezza contro affascinamento o spavento, puoi usare la reazione per rivoltare l’effetto contro chi lo ha lanciato. Il bersaglio ripete il tiro salvezza alla fine di ogni turno."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Dissolvi magia."
-          },
-          {
-            level: 11,
-            privilege: "Rinforzi fatati",
-            description: "Dopo un riposo lungo, puoi lanciare 'Convoca Fatato' senza componenti materiali. Puoi modificare l'incantesimo per non richiedere concentrazione, ma dura solo 1 minuto."
-          },
-          {
-            level: 11,
-            privilege: "Colpi di terrore",
-            description: "I danni psichici aumentano a 1d6."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Porta dimensionale."
-          },
-          {
-            level: 15,
-            privilege: "Camminatore velato",
-            description: "Dopo un riposo lungo, puoi lanciare 'Passo velato' senza consumare slot, per un numero di volte pari al modificatore di Saggezza. Puoi portare con te una creatura consenziente entro 1,5m."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Fuorviare."
-          }
-        ]
-      },
-      {
-        nome: "Viandante dell’orizzonte",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Individua portale",
-            description: "Dopo un riposo, con un’azione, puoi individuare direzione e distanza di un portale entro 1,5km."
-          },
-          {
-            level: 3,
-            privilege: "Guerriero planare",
-            description: "Con un'azione bonus, scegli una creatura entro 9m. Quando la colpisci, infliggi 1d8 danni da forza."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Protezione dal bene e dal male."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Passo velato."
-          },
-          {
-            level: 7,
-            privilege: "Passo etereo",
-            description: "Con un'azione bonus, puoi lanciare 'Forma Eterea' senza spendere slot, ma l'effetto termina alla fine del turno."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Velocità."
-          },
-          {
-            level: 11,
-            privilege: "Colpire distante",
-            description: "Quando usi l’azione di attacco, puoi teletrasportarti di 3m in uno spazio libero a vista. Se attacchi due creature, ottieni un attacco extra contro una terza."
-          },
-          {
-            level: 11,
-            privilege: "Guerriero planare",
-            description: "I danni da forza aumentano a 2d8."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Esilio."
-          },
-          {
-            level: 15,
-            privilege: "Difesa spettrale",
-            description: "Puoi usare la reazione per ottenere resistenza a tutti i danni dell’attacco in quel turno."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi",
-            description: "Impari l'incantesimo Cerchio di teletrasporto."
-          }
-        ]
+    },
+    ranger: {
+      "Cacciatore": [
+        {
+          level: 3,
+          privilege: "Preda del cacciatore",
+          description: "Scegli un'opzione tra le seguenti:",
+        },
+        {
+          level: 3,
+          privilege: "Uccisore di Giganti",
+          description: "Quando una creatura di taglia Grande o maggiore entro 1,5 metri da te ti attacca, puoi usare la tua reazione per attaccare immediatamente quella creatura dopo il suo attacco, purché tu possa vedere la creatura.",
+        },
+        {
+          level: 3,
+          privilege: "Devastatore dell’Orda",
+          description: "Una volta durante ciascun tuo turno in cui effettui un attacco con arma, puoi effettuare un altro attacco con la stessa arma contro una creatura diversa che sia entro 1,5 metri dal bersaglio originale e entro la gittata della tua arma.",
+        },
+        {
+          level: 3,
+          privilege: "Sterminatore di Colossi",
+          description: "Quando colpisci una creatura con un attacco con arma, la creatura subisce 1d8 danni aggiuntivi se non è al massimo dei suoi punti ferita. Puoi infliggere questo danno aggiuntivo solo una volta per turno.",
+        },
+        {
+          level: 9,
+          privilege: "Tattiche difensive",
+          description: "Scegli un'opzione tra le seguenti:",
+        },
+        {
+          level: 9,
+          privilege: "Difesa dal Multiattacco",
+          description: "Quando una creatura ti colpisce con un attacco, ottieni un bonus di +4 alla CA contro tutti gli attacchi successivi effettuati da quella creatura per il resto del turno.",
+        },
+        {
+          level: 9,
+          privilege: "Sfuggire all’Orda",
+          description: "Gli attacchi di opportunità effettuati contro di te hanno svantaggio.",
+        },
+        {
+          level: 9,
+          privilege: "Volontà di Acciaio",
+          description: "Hai vantaggio sui tiri salvezza contro l’essere spaventato.",
+        },
+        {
+          level: 13,
+          privilege: "Multiattacco",
+          description: "Scegli un'opzione tra le seguenti:",
+        },
+        {
+          level: 13,
+          privilege: "Attacco Turbinante",
+          description: "Puoi usare la tua azione per effettuare un attacco da mischia contro un qualsiasi numero di creature entro 1,5 metri da te, effettuando un tiro per colpire separato per ogni bersaglio.",
+        },
+        {
+          level: 13,
+          privilege: "Raffica",
+          description: "Puoi usare la tua azione per effettuare un attacco a distanza contro un qualsiasi numero di creature entro 3 metri da un punto che puoi vedere e che sia entro la gittata della tua arma. Devi avere munizioni sufficienti per tutti i bersagli, ed effettui un tiro per colpire separato per ciascuno di loro.",
+        },
+        {
+          level: 17,
+          privilege: "Difesa superiore",
+          description: "Scegli un'opzione tra le seguenti:",
+        },
+        {
+          level: 17,
+          privilege: "Elusione",
+          description: "Quando sei vittima di un effetto che permette un tiro salvezza su Destrezza per dimezzare i danni, non subisci danni se superi il tiro salvezza, e solo la metà dei danni se lo fallisci.",
+        },
+        {
+          level: 17,
+          privilege: "Opporsi alla Marea",
+          description: "Quando una creatura ostile ti manca con un attacco in mischia, puoi usare la tua reazione per obbligare quella creatura a ripetere lo stesso attacco contro un’altra creatura (che non sia se stessa) di tua scelta.",
+        },
+        {
+          level: 17,
+          privilege: "Schivata Prodigiosa",
+          description: "Quando un attaccante che puoi vedere ti colpisce con un attacco, puoi usare la tua reazione per dimezzare il danno dell’attacco effettuato contro di te.",
+        },
+      ],
+      "Signore delle bestie": [
+        {
+          level: 3,
+          privilege: "Compagno Animale",
+          description: "Dopo un riposo lungo o usando uno slot magico, puoi evocare una bestia. Puoi scegliere la sua forma in base al territorio (Terra, Aria, Acqua). In combattimento ha la stessa iniziativa del Ranger e comincia il turno subito dopo di lui. Può muoversi e usare la reazione autonomamente, ma l'unica azione che ha è la schivata, a meno che il Ranger non ordini altro con un'azione bonus. Se il Ranger è incapacitato, la bestia può agire autonomamente. Se la bestia muore da meno di un'ora, puoi spendere un’azione e uno slot per resuscitarla dopo 1 minuto con tutti i PF.",
+        },
+        {
+          level: 7,
+          privilege: "Addestramento straordinario",
+          description: "La bestia compagnia può usare Scatto, Disimpegno o Aiuto senza l'azione bonus del Ranger. Gli attacchi della bestia diventano magici.",
+        },
+        {
+          level: 13,
+          privilege: "Furia bestiale",
+          description: "Se il Ranger ordina alla sua bestia di effettuare l’azione di Attacco, questa può effettuare due attacchi.",
+        },
+        {
+          level: 17,
+          privilege: "Condividere incantesimi",
+          description: "Se il Ranger si lancia un incantesimo su se stesso, può influenzare la bestia compagnia, purché essa si trovi entro 9 metri da lui.",
+        },
+      ],
+      "Cacciatore delle tenebre": [
+        {
+          level: 3,
+          privilege: "Predatore del terrore",
+          description: "Aggiungi il modificatore di Saggezza al tiro d'iniziativa. All’inizio del tuo primo turno, la velocità di camminata aumenta di 3m. Se usi l’azione di attacco, puoi fare un attacco aggiuntivo in quell’azione e, se colpisci, infliggi 1d8 danni aggiuntivi.",
+        },
+        {
+          level: 3,
+          privilege: "Vista ombrosa",
+          description: "Ottieni scurovisione 18m (se già presente, aumenta di 6m). Se sei nell’oscurità, sei invisibile alle creature che usano scurovisione per scovarti.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Camuffare se stesso.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Trucco della corda.",
+        },
+        {
+          level: 7,
+          privilege: "Mente ferrea",
+          description: "Diventi competente nei tiri salvezza su Saggezza. Se già competente, scegli Carisma o Intelligenza per ottenere competenza.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Paura.",
+        },
+        {
+          level: 11,
+          privilege: "Raffica del cacciatore",
+          description: "Una volta a turno, quando manchi una creatura con un attacco, puoi ripetere l’attacco.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Invisibilità superiore.",
+        },
+        {
+          level: 15,
+          privilege: "Schivata oscura",
+          description: "Quando una creatura sta per attaccarti e non ha vantaggio nei tiri per colpire, puoi usare la tua reazione per dargli svantaggio ai tiri per colpire.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Sembrare.",
+        },
+      ],
+      "Compagno draconico": [
+        {
+          level: 3,
+          privilege: "Compagno draconico",
+          description: "Dopo un riposo lungo o usando uno slot magico, puoi evocare un drago di taglia Piccola, non ancora in grado di volare. Puoi scegliere la sua essenza (Acido, Freddo, Fulmine, Fuoco, Veleno), a cui sarà immune, e la forma estetica. In combattimento ha la stessa iniziativa del Ranger e comincia il turno subito dopo di lui. Può muoversi e usare la reazione autonomamente, ma l'unica azione che ha è la schivata, a meno che il Ranger non ordini altro con un'azione bonus. Se il Ranger è incapacitato, il drago può agire autonomamente. Se uno dei due muore, il drago svanisce, lasciando cadere ciò che trasportava.",
+        },
+        {
+          level: 3,
+          privilege: "Dono draconico",
+          description: "Impari il linguaggio draconico, oppure scegli una lingua a piacimento.",
+        },
+        {
+          level: 7,
+          privilege: "Taglia",
+          description: "Il drago diventa di taglia Media.",
+        },
+        {
+          level: 7,
+          privilege: "Legame",
+          description: "Appaiono delle ali che gli danno una velocità di volo pari a quella di camminata. Scegli uno dei seguenti benefici: Cavalcatura (puoi cavalcarlo senza volare se sei di taglia Media o inferiore), Zanna magica (il morso del drago infligge +1d6 danni dell’elemento del drago), Resistenza (sei resistente ai danni dell’elemento del drago).",
+        },
+        {
+          level: 11,
+          privilege: "Soffio",
+          description: "Tu e il drago potete esalare un soffio in un cono di 18m. Le creature nell’area devono superare un tiro salvezza su Destrezza o subire 8d6 danni dell’elemento (metà se riescono). Puoi usare questa abilità dopo un riposo lungo o spendendo uno slot di livello 3.",
+        },
+        {
+          level: 15,
+          privilege: "Taglia",
+          description: "Il drago diventa di taglia Grande e può volare mentre lo cavalchi.",
+        },
+        {
+          level: 15,
+          privilege: "Soffio",
+          description: "I danni del soffio aumentano a 10d6.",
+        },
+        {
+          level: 15,
+          privilege: "Legame perfezionato",
+          description: "Essenza dragonica: i danni dell’elemento aumentano di 2d6. Resistenza fulminea: quando tu o il drago subite danni, puoi usare una reazione per rendervi resistenti a quel tipo di danno. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo.",
+        },
+      ],
+      "Padrone degli sciami": [
+        {
+          level: 3,
+          privilege: "Sciame di spiriti",
+          description: "Puoi evocare uno sciame di spiriti (uccelli, fatine o insetti) che si muove nel tuo spazio. Quando colpisci una creatura: aggiungi 1d6 danni perforanti, puoi spostarti di 1,5m, e se il bersaglio fallisce un tiro salvezza su Forza, viene spinto di 4,5m.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi",
+          description: "Impari gli incantesimi Mano magica e Luminescenza.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Ragnatela.",
+        },
+        {
+          level: 9,
+          privilege: "Concentrare lo sciame",
+          description: "Con un'azione bonus, ottieni velocità di fluttuare pari a 3m per 1 minuto o fino a quando sei incapacitato. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Forma gassosa.",
+        },
+        {
+          level: 9,
+          privilege: "Sciame potenziato",
+          description: "Potenziamento di 'Sciame di spiriti': i danni perforanti diventano 1d8, puoi spostarti di 1,5m e ottieni mezza copertura, e se il bersaglio fallisce un tiro salvezza su Forza, viene spinto di 4,5m e cade prono.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Occhio arcano.",
+        },
+        {
+          level: 15,
+          privilege: "Disperdere lo sciame",
+          description: "Quando subisci danni, puoi usare la reazione per diventare resistente a quel danno e teletrasportarti in uno spazio non occupato entro 9m. Puoi usare questa abilità un numero di volte pari al tuo bonus di competenza, recuperandole dopo un riposo lungo.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Piaga di insetti.",
+        },
+      ],
+      "Uccisore di mostri": [
+        {
+          level: 3,
+          privilege: "Sensi da cacciatore",
+          description: "Puoi spendere un’azione per scrutare una creatura entro 18m. Apprendi le sue immunità, resistenze e vulnerabilità. Se protetta da incantesimi di divinazione, capisci che non ha immunità, resistenze o vulnerabilità. Puoi usare questa abilità un numero di volte pari al modificatore di Saggezza, recuperandole dopo un riposo lungo.",
+        },
+        {
+          level: 3,
+          privilege: "Preda dell’uccisore",
+          description: "Con un'azione bonus, puoi marchiare una creatura entro 18m. La prima volta per turno che la colpisci con un’arma, infliggi 1d6 danni aggiuntivi. Il marchio termina dopo un riposo breve/lungo o se marchi un'altra creatura.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Protezione dal bene e dal male.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Zona di verità.",
+        },
+        {
+          level: 7,
+          privilege: "Difesa soprannaturale",
+          description: "Se il bersaglio di 'Preda dell’uccisore' ti costringe a fare un tiro salvezza o una prova, aggiungi 1d6 al tiro.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Cerchio magico.",
+        },
+        {
+          level: 11,
+          privilege: "Nemesi degli incantatori",
+          description: "Dopo un riposo breve o lungo, quando vedi una creatura lanciare un incantesimo o teletrasportarsi entro 18m, puoi usare la reazione per farle fare un tiro salvezza su Saggezza. Se fallisce, l'effetto è annullato e sprecato.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Esilio.",
+        },
+        {
+          level: 15,
+          privilege: "Contrattacco dell’uccisore",
+          description: "Se il bersaglio di 'Preda dell’uccisore' ti costringe a fare un tiro salvezza, puoi usare la reazione per attaccarlo con un’arma prima del tiro. Se colpisci, superi automaticamente il tiro salvezza.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Blocca mostri.",
+        },
+      ],
+      "Vagabondo fatato": [
+        {
+          level: 3,
+          privilege: "Colpi di terrore",
+          description: "Una volta per turno, quando colpisci un bersaglio, infliggi 1d4 danni psichici extra.",
+        },
+        {
+          level: 3,
+          privilege: "Fascino ultraterreno",
+          description: "Aggiungi il modificatore di Saggezza alle prove di Carisma e ottieni competenza in una tra Intrattenere, Persuasione o Inganno.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Charme su persone.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Charme su persone.",
+        },
+        {
+          level: 7,
+          privilege: "Invertire l’ascendente",
+          description: "Hai vantaggio sui tiri salvezza contro l’essere affascinato o spaventato. Se una creatura entro 36m supera un tiro salvezza contro affascinamento o spavento, puoi usare la reazione per rivoltare l’effetto contro chi lo ha lanciato. Il bersaglio ripete il tiro salvezza alla fine di ogni turno.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Dissolvi magia.",
+        },
+        {
+          level: 11,
+          privilege: "Rinforzi fatati",
+          description: "Dopo un riposo lungo, puoi lanciare 'Convoca Fatato' senza componenti materiali. Puoi modificare l'incantesimo per non richiedere concentrazione, ma dura solo 1 minuto.",
+        },
+        {
+          level: 11,
+          privilege: "Colpi di terrore",
+          description: "I danni psichici aumentano a 1d6.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Porta dimensionale.",
+        },
+        {
+          level: 15,
+          privilege: "Camminatore velato",
+          description: "Dopo un riposo lungo, puoi lanciare 'Passo velato' senza consumare slot, per un numero di volte pari al modificatore di Saggezza. Puoi portare con te una creatura consenziente entro 1,5m.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Fuorviare.",
+        },
+      ],
+      "Viandante dell’orizzonte": [
+        {
+          level: 3,
+          privilege: "Individua portale",
+          description: "Dopo un riposo, con un’azione, puoi individuare direzione e distanza di un portale entro 1,5km.",
+        },
+        {
+          level: 3,
+          privilege: "Guerriero planare",
+          description: "Con un'azione bonus, scegli una creatura entro 9m. Quando la colpisci, infliggi 1d8 danni da forza.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Protezione dal bene e dal male.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Passo velato.",
+        },
+        {
+          level: 7,
+          privilege: "Passo etereo",
+          description: "Con un'azione bonus, puoi lanciare 'Forma Eterea' senza spendere slot, ma l'effetto termina alla fine del turno.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Velocità.",
+        },
+        {
+          level: 11,
+          privilege: "Colpire distante",
+          description: "Quando usi l’azione di attacco, puoi teletrasportarti di 3m in uno spazio libero a vista. Se attacchi due creature, ottieni un attacco extra contro una terza.",
+        },
+        {
+          level: 11,
+          privilege: "Guerriero planare",
+          description: "I danni da forza aumentano a 2d8.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Esilio.",
+        },
+        {
+          level: 15,
+          privilege: "Difesa spettrale",
+          description: "Puoi usare la reazione per ottenere resistenza a tutti i danni dell’attacco in quel turno.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi",
+          description: "Impari l'incantesimo Cerchio di teletrasporto.",
+        },
+      ],
+    },
+    paladino: {
+      "Giuramento di devozione": [
+        {
+          level: 3,
+          privilege: "Aura di devozione",
+          description: "Il paladino e le creature amiche entro 3m da lui non possono essere affascinate finché il paladino è cosciente.",
+        },
+        {
+          level: 3,
+          privilege: "Incantesimi conosciuti (livello 1)",
+          description: "Protezione dal bene e dal male (azione, contatto, concentrazione 10 minuti): una creatura consenziente affascinata, posseduta o spaventata da aberrazioni, celestiali, elementali, folletti, immondi o non morti ha vantaggio nei tiri salvezza; se non è sotto effetto, diventa immune per la durata. Santuario (azione bonus, 9m, 1 minuto): se una creatura protetta viene attaccata, l’attaccante deve superare un TS su Saggezza o attacca un altro bersaglio o perde l’attacco.",
+        },
+        {
+          level: 6,
+          privilege: "Incantesimi conosciuti (livello 2)",
+          description: "Ristorare inferiore (azione, contatto, istantanea): termina le condizioni accecato, assordato, avvelenato o paralizzato. Zona di verità (azione, 18m, concentrazione 10 minuti): creature che falliscono un TS Carisma non possono mentire; l’incantatore sa chi ha fallito.",
+        },
+        {
+          level: 7,
+          privilege: "Aura di devozione",
+          description: "Le creature entro 3m dal paladino non possono essere affascinate finché è cosciente.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi conosciuti (livello 3)",
+          description: "Dissolvi magie (azione, 36m, istantanea): termina incantesimi di livello inferiore a 4; quelli di livello 4 richiedono una prova caratteristica. Faro di speranza (azione, 9m, concentrazione 1 minuto): bersagli scelti hanno vantaggio in tiri salvezza su Saggezza, contro la morte e recuperano il massimo da ogni guarigione. Inoltre, per 8 ore rende fertile un’area di 750m, producendo il doppio del raccolto.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi conosciuti (livello 4)",
+          description: "Guardiano della fede (azione, 9m, 8 ore): compare un guardiano spettrale con spada e scudo; ogni nemico entro 3m deve superare un TS Destrezza o subisce 20 danni radiosi (10 se lo supera). Libertà di movimento (azione, contatto, concentrazione 1 ora): la creatura toccata è immune a terreno difficile, paralisi, trattenimento, rallentamento da incantesimi e può spendere 1,5m per sfuggire a manette o placcaggi.",
+        },
+        {
+          level: 15,
+          privilege: "Purezza di spirito",
+          description: "Il paladino è sempre sotto l'effetto dell’incantesimo Protezione dal bene e dal male.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi conosciuti (livello 5)",
+          description: "Colpo infuocato (azione, 18m, istantanea): cilindro di 3mx12m; chi fallisce un TS Destrezza subisce 4d6 danni fuoco e 4d6 radiosi (metà se lo supera). Comunione (1 minuto, incantatore, 1 minuto): contatta una divinità o un suo emissario e può porre 3 domande con risposta 'sì', 'no' o 'incerto'; se la domanda va contro gli interessi della divinità, può rispondere con brevi frasi.",
+        },
+        {
+          level: 20,
+          privilege: "Nube sacra",
+          description: "Luce intensa per 9m e fioca per altri 9m per ogni riposo lungo. I non morti e gli immondi che iniziano il turno nell’area subiscono 10 danni radiosi. Se lanciano incantesimi contro il paladino, questi ha vantaggio nei tiri salvezza.",
+        },
+      ],
+      "Giuramento degli antichi": [
+        {
+          level: 3,
+          privilege: "Incantesimi conosciuti (livello 1)",
+          description: "Colpo intrappolante (azione, 27m, concentrazione 1 minuto): quadrato di 6m diventa terreno difficile; chi è dentro deve superare un TS Forza o è trattenuto. La vittima può tentare un TS ogni azione bonus. Parlare con gli animali (azione, incantatore, concentrazione 10 minuti): l’incantatore può comunicare con animali e ottenere informazioni in base alla loro percezione.",
+        },
+        {
+          level: 3,
+          privilege: "Incanalare divinità",
+          description: "Collera della natura: rampicanti intrappolano un nemico a vista entro 3m; richiede TS Forza o Destrezza. Scacciare gli infedeli: folletti o immondi entro 9m devono superare un TS Saggezza; in caso di fallimento, devono allontanarsi il più possibile per 1 minuto o finché non subiscono danni. Se sotto incantesimo, l’azione lo rompe.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi conosciuti (livello 2)",
+          description: "Bagliore lunare (azione, 36m, concentrazione 1 minuto): cilindro di 1,5mx12m; chi fallisce un TS Costituzione subisce 2d10×(slot-2) danni radiosi (metà se lo supera). I mutaforma hanno svantaggio e assumono la forma originale. Può essere spostato con un’azione bonus (max 18m). Passo velato (azione bonus, istantanea): si teletrasporta di massimo 9m in uno spazio libero a vista, avvolto da foschia argentata.",
+        },
+        {
+          level: 7,
+          privilege: "Aura di interdizione",
+          description: "Le creature amiche entro 9m sono resistenti ai danni.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi conosciuti (livello 3)",
+          description: "Crescita vegetale (azione o 8 ore, 45m, istantanea): durante un’azione, i vegetali crescono (spendono 120cm per ogni 30cm). Può escludere aree. Protezione dall'energia (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente a un tipo di danno specifico.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi conosciuti (livello 4)",
+          description: "Pelle di pietra (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente ai danni da armi non magiche. Tempesta di ghiaccio (azione, 90m, istantanea): cilindro di 6mx12m; chi fallisce un TS Destrezza subisce 2d8+(liv-4) danni contundenti e 4d6 da freddo (metà se lo supera). Il terreno diventa difficile fino al prossimo turno dell’incantatore.",
+        },
+        {
+          level: 15,
+          privilege: "Sentinella imperitura",
+          description: "Dopo un riposo lungo, se il paladino arriva a 0 PF e non subisce ulteriori danni, recupera 1 punto ferita. Non subisce danni da vecchiaia.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi conosciuti (livello 5)",
+          description: "Comunione con la natura (1 minuto, istantanea): conosce 3 fatti entro 4,5km (o 90m sottoterra): 1) terreni e masse d’acqua; 2) minerali, animali, vegetali o popolazioni; 3) presenza di celestiali, elementali, folletti, immondi o non morti potenti; 4) edifici. Transazione arborea (azione, concentrazione 1 minuto): può muoversi tra alberi vivi di taglia superiore entro 150m; impiega 1,5m per entrare o uscire; deve terminare il turno fuori dall’albero.",
+        },
+        {
+          level: 20,
+          privilege: "Campione degli antichi",
+          description: "Assume un aspetto a sua scelta. Ogni turno recupera 10 PF. Gli incantesimi che richiedono un’azione possono essere lanciati con un’azione bonus. I nemici entro 3m hanno svantaggio ai tiri salvezza contro i suoi incantesimi e le sue opzioni di Incanalare Divinità.",
+        },
+      ],
+      "Giuramento di vendetta": [
+        {
+          level: 3,
+          privilege: "Incantesimi conosciuti (livello 1)",
+          description: "Anatema (azione, 9m, concentrazione 1 minuto): fino a 3 creature scelte devono superare un TS Saggezza o sottrarre 1d4 a tiri per colpire e tiri salvezza. Marchio del cacciatore (azione bonus, 27m, concentrazione 1 ora): marchia una creatura come preda; infligge 1d6 danni extra, ha vantaggio in Percezione e Natura per ricercarla; se muore, può cambiare preda con un’azione bonus.",
+        },
+        {
+          level: 3,
+          privilege: "Incanalare divinità",
+          description: "Abiurare nemico (azione, entro 18m): il paladino condanna un nemico; richiede TS Saggezza. Fallimento: velocità 0 e non può usare bonus velocità. Successo: dimezza la velocità. Finisce se colpito. Giuramento di inimicizia: un nemico a vista entro 3m ha vantaggio su tutti i tiri; dura 1 minuto o finché il nemico non ha 0 PF o è privo di sensi.",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi conosciuti (livello 2)",
+          description: "Blocca persone (azione, 18m, concentrazione 1 minuto): il bersaglio deve superare un TS Saggezza o è paralizzato. Passo velato (azione bonus, istantanea): si teletrasporta di massimo 9m in uno spazio libero a vista, avvolto da foschia argentata.",
+        },
+        {
+          level: 7,
+          privilege: "Vendicatore implacabile",
+          description: "Quando effettua un attacco di opportunità contro un nemico, può muoversi fino a metà della sua velocità senza provocare attacchi di opportunità.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi conosciuti (livello 3)",
+          description: "Protezione dall'energia (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente a un tipo di danno specifico. Velocità (azione, 9m, concentrazione 1 minuto): una creatura consenziente ottiene +2 CA, vantaggio in TS Destrezza, velocità raddoppiata e un’azione aggiuntiva (attacco, disimpegno, nascondersi, scatto o usare oggetto). Alla fine, non può muoversi o agire fino al prossimo turno.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi conosciuti (livello 4)",
+          description: "Esilio (azione, 18m, concentrazione 1 minuto): fino a 1+(liv-4) creature devono superare un TS Carisma o vengono esiliate in un piano inoffensivo e incapacitate. Al termine, tornano in uno spazio libero da dove sono partite. Porta dimensionale (azione, 150m, istantanea): teletrasporto istantaneo; oggetti e creature accompagnate non devono superare il peso trasportabile. Se il punto d’arrivo è occupato, subiscono 4d6 danni da forza.",
+        },
+        {
+          level: 15,
+          privilege: "Anima di vendetta",
+          description: "Quando una creatura sotto l'effetto di Giuramento di inimicizia effettua un attacco, il paladino può contrattaccare in mischia se il nemico è entro portata.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi conosciuti (livello 5)",
+          description: "Blocca mostri (azione, 27m, concentrazione 1 minuto): un bersaglio a vista deve superare un TS Saggezza a fine turno o rimane paralizzato. Scrutare (azione, concentrazione 10 minuti): osserva un bersaglio sullo stesso piano; il bersaglio deve superare un TS Saggezza. Modificatori: conoscenza diretta (-5), descrizione (-2), oggetto personale (-4), parte del corpo (-10).",
+        },
+        {
+          level: 20,
+          privilege: "Angelo vendicatore",
+          description: "Dura 1 ora. Velocità di volo 18m grazie a grandi ali. Ogni nemico entro 9m deve superare un TS Saggezza o è spaventato per 1 minuto o finché non viene colpito. Il paladino ha vantaggio ai tiri per colpire.",
+        },
+      ],
+      "Giuramento di conquista": [
+        {
+          level: 3,
+          privilege: "Incantesimi conosciuti",
+          description: "Armatura di Agathys, Comando.",
+        },
+        {
+          level: 3,
+          privilege: "Incanalare divinità",
+          description: "Colpo guidato: ottiene +10 ai tiri per colpire; può usarlo dopo aver visto il risultato ma prima di sapere se ha colpito. Presenza conquistatrice: ogni creatura scelta entro 9m deve superare un TS Saggezza o è spaventata per 1 minuto (può ripetere il TS a fine turno).",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi conosciuti",
+          description: "Arma spirituale, Blocca persone.",
+        },
+        {
+          level: 7,
+          privilege: "Area di conquista",
+          description: "Se una creatura che inizia il turno entro 3m dal paladino è spaventata da lui, la sua velocità è 0m e subisce danni psichici pari alla metà del livello del paladino.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi conosciuti",
+          description: "Paura, Scagliare maledizione.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi conosciuti",
+          description: "Dominare bestie, Pelle di pietra.",
+        },
+        {
+          level: 15,
+          privilege: "Intimorire sprezzante",
+          description: "Se il paladino non è incapacitato, una creatura che lo copre subisce danni pari al suo modificatore di Carisma.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi conosciuti",
+          description: "Dominare persone, Nube di persone.",
+        },
+        {
+          level: 18,
+          privilege: "Area di conquista",
+          description: "L’area di effetto aumenta a 9m.",
+        },
+        {
+          level: 20,
+          privilege: "Angelo vendicatore",
+          description: "Dopo un riposo lungo, il paladino può trasformarsi in un avatar della conquista per 1 minuto. Ha resistenza a tutti i danni, ottiene un attacco extra e i tiri per colpire 19 o 20 diventano critici.",
+        },
+      ],
+      "Giuramento di redenzione": [
+        {
+          level: 3,
+          privilege: "Incantesimi conosciuti",
+          description: "Santuario, Sonno.",
+        },
+        {
+          level: 3,
+          privilege: "Incanalare divinità",
+          description: "Emissario di pace: +5 alle prove di Persuasione per 10 minuti. Intimorire i violenti: quando una creatura entro 9m infligge danni, il paladino può usare la reazione per farle subire quei danni come danni radiosi (metà se supera un TS Saggezza).",
+        },
+        {
+          level: 5,
+          privilege: "Incantesimi conosciuti",
+          description: "Blocca persone, Calmare emozioni.",
+        },
+        {
+          level: 7,
+          privilege: "Aura del guardiano",
+          description: "Quando una creatura entro 3m subisce danni, il paladino può usare la reazione per subirli al posto suo. I danni non sono modificati.",
+        },
+        {
+          level: 9,
+          privilege: "Incantesimi conosciuti",
+          description: "Controincantesimo, Trama ipnotica.",
+        },
+        {
+          level: 13,
+          privilege: "Incantesimi conosciuti",
+          description: "Sfera elastica di Otiluke, Pelle di pietra.",
+        },
+        {
+          level: 15,
+          privilege: "Spirito protettivo",
+          description: "Se il paladino non è incapacitato e ha meno della metà dei PF, recupera d6 + metà del suo livello da paladino.",
+        },
+        {
+          level: 17,
+          privilege: "Incantesimi conosciuti",
+          description: "Blocca mostri, Muro di forza.",
+        },
+        {
+          level: 18,
+          privilege: "Area del guardiano",
+          description: "L’area di effetto dell’Aura del guardiano aumenta a 9m.",
+        },
+        {
+          level: 20,
+          privilege: "Emissario di redenzione",
+          description: "Dopo un riposo lungo, il paladino si trasforma in un avatar della pace. Ha resistenza a tutti i danni inflitti da altre creature. Quando una creatura lo attacca, subisce metà dei danni inflitti. Se il paladino infligge danni in qualsiasi modo (tranne tramite questo privilegio), quella creatura diventa immune ai suoi danni fino al prossimo riposo lungo.",
+        },
+      ],
+    },
+  } as Sottoclassi,
+
+  getSottoclasse(param: string): string[] {
+    if (param !== 'full') return [];
+    
+    const result: string[] = [];
+    const sottoclassiObj = this.sottoclassi as { [key: string]: { [key: string]: any } };
+
+    for (const classe of Object.keys(sottoclassiObj)) {
+      for (const sottoclasse of Object.keys(sottoclassiObj[classe])) {
+        const classeCapitalized = classe.charAt(0).toUpperCase() + classe.slice(1);
+        result.push(`${classeCapitalized} ${sottoclasse}`);
       }
-    ], //ranger
-    paladino: [
-      {
-        nome: "Giuramento di devozione",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Aura di devozione",
-            description: "Il paladino e le creature amiche entro 3m da lui non possono essere affascinate finché il paladino è cosciente."
-          },
-          {
-            level: 3,
-            privilege: "Incantesimi conosciuti (livello 1)",
-            description: "Protezione dal bene e dal male (azione, contatto, concentrazione 10 minuti): una creatura consenziente affascinata, posseduta o spaventata da aberrazioni, celestiali, elementali, folletti, immondi o non morti ha vantaggio nei tiri salvezza; se non è sotto effetto, diventa immune per la durata. Santuario (azione bonus, 9m, 1 minuto): se una creatura protetta viene attaccata, l’attaccante deve superare un TS su Saggezza o attacca un altro bersaglio o perde l’attacco."
-          },
-          {
-            level: 6,
-            privilege: "Incantesimi conosciuti (livello 2)",
-            description: "Ristorare inferiore (azione, contatto, istantanea): termina le condizioni accecato, assordato, avvelenato o paralizzato. Zona di verità (azione, 18m, concentrazione 10 minuti): creature che falliscono un TS Carisma non possono mentire; l’incantatore sa chi ha fallito."
-          },
-          {
-            level: 7,
-            privilege: "Aura di devozione",
-            description: "Le creature entro 3m dal paladino non possono essere affascinate finché è cosciente."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi conosciuti (livello 3)",
-            description: "Dissolvi magie (azione, 36m, istantanea): termina incantesimi di livello inferiore a 4; quelli di livello 4 richiedono una prova caratteristica. Faro di speranza (azione, 9m, concentrazione 1 minuto): bersagli scelti hanno vantaggio in tiri salvezza su Saggezza, contro la morte e recuperano il massimo da ogni guarigione. Inoltre, per 8 ore rende fertile un’area di 750m, producendo il doppio del raccolto."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi conosciuti (livello 4)",
-            description: "Guardiano della fede (azione, 9m, 8 ore): compare un guardiano spettrale con spada e scudo; ogni nemico entro 3m deve superare un TS Destrezza o subisce 20 danni radiosi (10 se lo supera). Libertà di movimento (azione, contatto, concentrazione 1 ora): la creatura toccata è immune a terreno difficile, paralisi, trattenimento, rallentamento da incantesimi e può spendere 1,5m per sfuggire a manette o placcaggi."
-          },
-          {
-            level: 15,
-            privilege: "Purezza di spirito",
-            description: "Il paladino è sempre sotto l'effetto dell’incantesimo Protezione dal bene e dal male."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi conosciuti (livello 5)",
-            description: "Colpo infuocato (azione, 18m, istantanea): cilindro di 3mx12m; chi fallisce un TS Destrezza subisce 4d6 danni fuoco e 4d6 radiosi (metà se lo supera). Comunione (1 minuto, incantatore, 1 minuto): contatta una divinità o un suo emissario e può porre 3 domande con risposta “sì”, “no” o “incerto”; se la domanda va contro gli interessi della divinità, può rispondere con brevi frasi."
-          },
-          {
-            level: 20,
-            privilege: "Nube sacra",
-            description: "Luce intensa per 9m e fioca per altri 9m per ogni riposo lungo. I non morti e gli immondi che iniziano il turno nell’area subiscono 10 danni radiosi. Se lanciano incantesimi contro il paladino, questi ha vantaggio nei tiri salvezza."
-          }
-        ]
-      },
-      {
-        nome: "Giuramento degli antichi",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Incantesimi conosciuti (livello 1)",
-            description: "Colpo intrappolante (azione, 27m, concentrazione 1 minuto): quadrato di 6m diventa terreno difficile; chi è dentro deve superare un TS Forza o è trattenuto. La vittima può tentare un TS ogni azione bonus. Parlare con gli animali (azione, incantatore, concentrazione 10 minuti): l’incantatore può comunicare con animali e ottenere informazioni in base alla loro percezione."
-          },
-          {
-            level: 3,
-            privilege: "Incanalare divinità",
-            description: "Collera della natura: rampicanti intrappolano un nemico a vista entro 3m; richiede TS Forza o Destrezza. Scacciare gli infedeli: folletti o immondi entro 9m devono superare un TS Saggezza; in caso di fallimento, devono allontanarsi il più possibile per 1 minuto o finché non subiscono danni. Se sotto incantesimo, l’azione lo rompe."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi conosciuti (livello 2)",
-            description: "Bagliore lunare (azione, 36m, concentrazione 1 minuto): cilindro di 1,5mx12m; chi fallisce un TS Costituzione subisce 2d10×(slot-2) danni radiosi (metà se lo supera). I mutaforma hanno svantaggio e assumono la forma originale. Può essere spostato con un’azione bonus (max 18m). Passo velato (azione bonus, istantanea): si teletrasporta di massimo 9m in uno spazio libero a vista, avvolto da foschia argentata."
-          },
-          {
-            level: 7,
-            privilege: "Aura di interdizione",
-            description: "Le creature amiche entro 9m sono resistenti ai danni."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi conosciuti (livello 3)",
-            description: "Crescita vegetale (azione o 8 ore, 45m, istantanea): durante un’azione, i vegetali crescono (spendono 120cm per ogni 30cm). Può escludere aree. Protezione dall'energia (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente a un tipo di danno specifico."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi conosciuti (livello 4)",
-            description: "Pelle di pietra (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente ai danni da armi non magiche. Tempesta di ghiaccio (azione, 90m, istantanea): cilindro di 6mx12m; chi fallisce un TS Destrezza subisce 2d8+(liv-4) danni contundenti e 4d6 da freddo (metà se lo supera). Il terreno diventa difficile fino al prossimo turno dell’incantatore."
-          },
-          {
-            level: 15,
-            privilege: "Sentinella imperitura",
-            description: "Dopo un riposo lungo, se il paladino arriva a 0 PF e non subisce ulteriori danni, recupera 1 punto ferita. Non subisce danni da vecchiaia."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi conosciuti (livello 5)",
-            description: "Comunione con la natura (1 minuto, istantanea): conosce 3 fatti entro 4,5km (o 90m sottoterra): 1) terreni e masse d’acqua; 2) minerali, animali, vegetali o popolazioni; 3) presenza di celestiali, elementali, folletti, immondi o non morti potenti; 4) edifici. Transazione arborea (azione, concentrazione 1 minuto): può muoversi tra alberi vivi di taglia superiore entro 150m; impiega 1,5m per entrare o uscire; deve terminare il turno fuori dall’albero."
-          },
-          {
-            level: 20,
-            privilege: "Campione degli antichi",
-            description: "Assume un aspetto a sua scelta. Ogni turno recupera 10 PF. Gli incantesimi che richiedono un’azione possono essere lanciati con un’azione bonus. I nemici entro 3m hanno svantaggio ai tiri salvezza contro i suoi incantesimi e le sue opzioni di Incanalare Divinità."
-          }
-        ]
-      },
-      {
-        nome: "Giuramento di vendetta",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Incantesimi conosciuti (livello 1)",
-            description: "Anatema (azione, 9m, concentrazione 1 minuto): fino a 3 creature scelte devono superare un TS Saggezza o sottrarre 1d4 a tiri per colpire e tiri salvezza. Marchio del cacciatore (azione bonus, 27m, concentrazione 1 ora): marchia una creatura come preda; infligge 1d6 danni extra, ha vantaggio in Percezione e Natura per ricercarla; se muore, può cambiare preda con un’azione bonus."
-          },
-          {
-            level: 3,
-            privilege: "Incanalare divinità",
-            description: "Abiurare nemico (azione, entro 18m): il paladino condanna un nemico; richiede TS Saggezza. Fallimento: velocità 0 e non può usare bonus velocità. Successo: dimezza la velocità. Finisce se colpito. Giuramento di inimicizia: un nemico a vista entro 3m ha vantaggio su tutti i tiri; dura 1 minuto o finché il nemico non ha 0 PF o è privo di sensi."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi conosciuti (livello 2)",
-            description: "Blocca persone (azione, 18m, concentrazione 1 minuto): il bersaglio deve superare un TS Saggezza o è paralizzato. Passo velato (azione bonus, istantanea): si teletrasporta di massimo 9m in uno spazio libero a vista, avvolto da foschia argentata."
-          },
-          {
-            level: 7,
-            privilege: "Vendicatore implacabile",
-            description: "Quando effettua un attacco di opportunità contro un nemico, può muoversi fino a metà della sua velocità senza provocare attacchi di opportunità."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi conosciuti (livello 3)",
-            description: "Protezione dall'energia (azione, contatto, concentrazione 1 ora): una creatura consenziente diventa resistente a un tipo di danno specifico. Velocità (azione, 9m, concentrazione 1 minuto): una creatura consenziente ottiene +2 CA, vantaggio in TS Destrezza, velocità raddoppiata e un’azione aggiuntiva (attacco, disimpegno, nascondersi, scatto o usare oggetto). Alla fine, non può muoversi o agire fino al prossimo turno."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi conosciuti (livello 4)",
-            description: "Esilio (azione, 18m, concentrazione 1 minuto): fino a 1+(liv-4) creature devono superare un TS Carisma o vengono esiliate in un piano inoffensivo e incapacitate. Al termine, tornano in uno spazio libero da dove sono partite. Porta dimensionale (azione, 150m, istantanea): teletrasporto istantaneo; oggetti e creature accompagnate non devono superare il peso trasportabile. Se il punto d’arrivo è occupato, subiscono 4d6 danni da forza."
-          },
-          {
-            level: 15,
-            privilege: "Anima di vendetta",
-            description: "Quando una creatura sotto l'effetto di Giuramento di inimicizia effettua un attacco, il paladino può contrattaccare in mischia se il nemico è entro portata."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi conosciuti (livello 5)",
-            description: "Blocca mostri (azione, 27m, concentrazione 1 minuto): un bersaglio a vista deve superare un TS Saggezza a fine turno o rimane paralizzato. Scrutare (azione, concentrazione 10 minuti): osserva un bersaglio sullo stesso piano; il bersaglio deve superare un TS Saggezza. Modificatori: conoscenza diretta (-5), descrizione (-2), oggetto personale (-4), parte del corpo (-10)."
-          },
-          {
-            level: 20,
-            privilege: "Angelo vendicatore",
-            description: "Dura 1 ora. Velocità di volo 18m grazie a grandi ali. Ogni nemico entro 9m deve superare un TS Saggezza o è spaventato per 1 minuto o finché non viene colpito. Il paladino ha vantaggio ai tiri per colpire."
-          }
-        ]
-      },
-      {
-        nome: "Giuramento di conquista",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Incantesimi conosciuti",
-            description: "Armatura di Agathys, Comando."
-          },
-          {
-            level: 3,
-            privilege: "Incanalare divinità",
-            description: "Colpo guidato: ottiene +10 ai tiri per colpire; può usarlo dopo aver visto il risultato ma prima di sapere se ha colpito. Presenza conquistatrice: ogni creatura scelta entro 9m deve superare un TS Saggezza o è spaventata per 1 minuto (può ripetere il TS a fine turno)."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi conosciuti",
-            description: "Arma spirituale, Blocca persone."
-          },
-          {
-            level: 7,
-            privilege: "Area di conquista",
-            description: "Se una creatura che inizia il turno entro 3m dal paladino è spaventata da lui, la sua velocità è 0m e subisce danni psichici pari alla metà del livello del paladino."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi conosciuti",
-            description: "Paura, Scagliare maledizione."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi conosciuti",
-            description: "Dominare bestie, Pelle di pietra."
-          },
-          {
-            level: 15,
-            privilege: "Intimorire sprezzante",
-            description: "Se il paladino non è incapacitato, una creatura che lo copre subisce danni pari al suo modificatore di Carisma."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi conosciuti",
-            description: "Dominare persone, Nube di persone."
-          },
-          {
-            level: 18,
-            privilege: "Area di conquista",
-            description: "L’area di effetto aumenta a 9m."
-          },
-          {
-            level: 20,
-            privilege: "Angelo vendicatore",
-            description: "Dopo un riposo lungo, il paladino può trasformarsi in un avatar della conquista per 1 minuto. Ha resistenza a tutti i danni, ottiene un attacco extra e i tiri per colpire 19 o 20 diventano critici."
-          }
-        ]
-      },
-      {
-        nome: "Giuramento di redenzione",
-        privilegi: [
-          {
-            level: 3,
-            privilege: "Incantesimi conosciuti",
-            description: "Santuario, Sonno."
-          },
-          {
-            level: 3,
-            privilege: "Incanalare divinità",
-            description: "Emissario di pace: +5 alle prove di Persuasione per 10 minuti. Intimorire i violenti: quando una creatura entro 9m infligge danni, il paladino può usare la reazione per farle subire quei danni come danni radiosi (metà se supera un TS Saggezza)."
-          },
-          {
-            level: 5,
-            privilege: "Incantesimi conosciuti",
-            description: "Blocca persone, Calmare emozioni."
-          },
-          {
-            level: 7,
-            privilege: "Aura del guardiano",
-            description: "Quando una creatura entro 3m subisce danni, il paladino può usare la reazione per subirli al posto suo. I danni non sono modificati."
-          },
-          {
-            level: 9,
-            privilege: "Incantesimi conosciuti",
-            description: "Controincantesimo, Trama ipnotica."
-          },
-          {
-            level: 13,
-            privilege: "Incantesimi conosciuti",
-            description: "Sfera elastica di Otiluke, Pelle di pietra."
-          },
-          {
-            level: 15,
-            privilege: "Spirito protettivo",
-            description: "Se il paladino non è incapacitato e ha meno della metà dei PF, recupera d6 + metà del suo livello da paladino."
-          },
-          {
-            level: 17,
-            privilege: "Incantesimi conosciuti",
-            description: "Blocca mostri, Muro di forza."
-          },
-          {
-            level: 18,
-            privilege: "Area del guardiano",
-            description: "L’area di effetto dell’Aura del guardiano aumenta a 9m."
-          },
-          {
-            level: 20,
-            privilege: "Emissario di redenzione",
-            description: "Dopo un riposo lungo, il paladino si trasforma in un avatar della pace. Ha resistenza a tutti i danni inflitti da altre creature. Quando una creatura lo attacca, subisce metà dei danni inflitti. Se il paladino infligge danni in qualsiasi modo (tranne tramite questo privilegio), quella creatura diventa immune ai suoi danni fino al prossimo riposo lungo."
-          }
-        ]
-      }
-    ], //paladino
-  }, //classe
+    }
+    return result.sort((a, b) => a.localeCompare(b));
+  },
+  // restituisce tutte le sottoclassi, rimuovendo le sottoclassi già occupate
+  getSottoclassiDisponibili(personaggio: PersonaggioDND): string[] {
+    const tutteSottoclassi = this.getSottoclasse('full');
+    const sottoclassiPersonaggio = personaggio.privilegi.map(p => p.toLowerCase()) || [];
+
+    if (sottoclassiPersonaggio.length === 0) {
+      return tutteSottoclassi;
+    }
+
+    const classiOccupate = new Set<string>();
+    sottoclassiPersonaggio.forEach(privilegio => {
+      const classeBase = privilegio.split(' ')[0].toLowerCase();
+      classiOccupate.add(classeBase);
+    });
+
+    const sottoclassiFiltrate = tutteSottoclassi.filter(sottoclasse => {
+      const classeBase = sottoclasse.split(' ')[0].toLowerCase();
+      const stessaClasse = classiOccupate.has(classeBase);
+      const stessaSottoclasse = sottoclassiPersonaggio.includes(sottoclasse.toLowerCase());
+
+      return stessaSottoclasse || !stessaClasse;
+    }) .map(sub=> sub.charAt(0).toUpperCase() + sub.slice(1));
+
+    return sottoclassiFiltrate;
+  },
 
   sottorazze: [
     {
@@ -3261,6 +3223,15 @@ export const DND = {
     }
   ] as Sottorazza[],
 
+  getRazza(nomeRazza: string) {
+    if (!nomeRazza) return null;
+    const lowerNomeRazza = nomeRazza.toLowerCase().trim();
+    return this.sottorazze.find(r => {
+      const nomeCorrente = r.nome.toLowerCase().trim();
+      return nomeCorrente === lowerNomeRazza || nomeCorrente.includes(lowerNomeRazza);
+    }) || null;
+  },
+
   background: [
     {
       name: "Accolito",
@@ -3449,21 +3420,38 @@ export const DND = {
       ]
     }
   ] as Background[],
+
+  getBackground(nomeBackground: string) {
+    if (!nomeBackground) return null;
+    const lowerNomeBackground = nomeBackground.toLowerCase().trim();
+    return this.background.find(b => {
+      const nomeCorrente = b.name.toLowerCase().trim();
+      return nomeCorrente === lowerNomeBackground || nomeCorrente.includes(lowerNomeBackground);
+    }) || null;
+  },
   
   // cerca i privilegi tra classe e sottoclasse per un dato livello
-  getPrivilegi(classe ='', sottoclasse ='', livello =0) {
-    if (!classe || !sottoclasse || !livello) return null;
-    const cl = String(classe).trim().toLowerCase();
-    const sub = String(sottoclasse).trim().toLowerCase();
+  getPrivilegi(classeKey ='', sottoclasseKey ='', livello =0) {
+    const privilegiSottoclasse = (this.sottoclassi)[classeKey]?.[sottoclasseKey];
+    if (classeKey.length<5 || sottoclasseKey.length<5
+      || livello<1 || livello>20
+      ||!privilegiSottoclasse // sottoclasse non esistente
+    ){
+      console.error('parametri non validi:', classeKey, sottoclasseKey, livello);
+      return null;
+    } 
+    
+    // SOTTOCLASSE prima cerca nella sottoclasse, se specificata e valida
+    const privilegiLivello = privilegiSottoclasse?.filter((p:Privilegio) => p.level === livello) || [];   
+    if (privilegiLivello.length > 0) return privilegiLivello;
 
-    // prima cerca nella sottoclasse, se specificata e valida
-    const arrSub = (this.sottoclassi as any)[cl]?.[sub]?.filter((p:Privilegio) => p.level === livello) || [];
-    if (arrSub.length > 0) return arrSub;
-
-    // altrimenti cerca nel base
-    const arrBase = this.classi.filter(p => p.class === cl && p.level === livello) || [];
-    return arrBase;
+    // CLASSE altrimenti cerca nel base 
+    const classe = this.classi.filter(p => p.class.toLowerCase() === classeKey && p.level === livello) || [];
+    if(!classe.length) console.error('privilegio classe non trovato per', classeKey, livello);
+    
+    return classe;
   },
+
 
   oggetti:[
     { key: "abaco", prezzo: "2 mo", peso: 1 },
@@ -3654,6 +3642,7 @@ export const DND = {
     const [dadi, tipo] = arma.danno.split(' ');
     return {dadi, tipo};
   },
+
   
   //  LOGICA DI SCHEDA
   /**
@@ -3669,7 +3658,7 @@ export const DND = {
    * @param {boolean} checkAbilita
    * @returns {string|number} Valore con segno quando positivo
    */
-  abilityMod(character: Personaggio, punteggioCaratteristica: number, checkAbilita: boolean){
+  abilityMod(character: PersonaggioDND, punteggioCaratteristica: number, checkAbilita: boolean){
     let result = this.getModificatore(punteggioCaratteristica);
     if(checkAbilita){
       result += this.getBonusCompetenza(character);
@@ -3681,7 +3670,7 @@ export const DND = {
    * @param {any} character
    * @returns {number}
    */
-  getLivello(character: Personaggio) {
+  getLivello(character: PersonaggioDND) {
     const pe = character.generali.find(g => g.key === 'punti_esperienza')?.value;
     if (typeof pe !== 'number') return 1;
 
@@ -3717,75 +3706,17 @@ export const DND = {
     }
     return 1; // fallback (non dovrebbe mai arrivarci)
   },
+
   /**
    * Bonus di Competenza derivato dal livello corrente
    * @param {any} character
    * @returns {number}
    */
-  getBonusCompetenza(character: Personaggio) {
+  getBonusCompetenza(character: PersonaggioDND) {
     const livello = this.getLivello(character);
     if (typeof livello !== 'number' || livello < 1) return 0;
 
     return 2 + Math.floor((livello - 1) / 4);
-  },
-
-  /**
-   * Utility:
-   * - Se chiamata come renderPrivilegi(arr): raggruppa per classe base e ritorna tutti i privilegi di classe per ciascun livello raggiunto (conteggio occorrenze sottoclasse).
-   * - Se chiamata come renderPrivilegi(arr, voce, i): ritorna i privilegi dal livello 1 fino al livello cumulativo della classe alla posizione i.
-   * @param {any} character
-   * @param {string} [voce]
-   * @param {number} [voceIndex]
-   * @returns {object[]|''}
-   */
-  renderPrivilegi(character: Personaggio, voce='', voceIndex=0) {
-    const characterPrivilegi = character.privilegi;
-    // Modalità gruppo: solo array passato, nessuna voce specifica
-    if (!voce && (voceIndex === undefined || voceIndex === null)) {
-      const levelsByClass : {[key: string]: number} = {};
-      (characterPrivilegi || []).forEach(v => {
-        const cls = String(v || '').split(' ')[0].trim().toLowerCase();
-        if (!cls) return;
-        levelsByClass[cls] = (levelsByClass[cls] || 0) + 1;
-      });
-      const out : Privilegio[] = [];
-      Object.entries(levelsByClass).forEach(([cls, cnt]) => {
-        for (let L = 1; L <= cnt; L++) {
-          const base = DND.classi.find(p => p.class === cls && p.level === L);
-          if (base) out.push(base);
-        }
-      });
-      return out;
-    }
-
-    const parts = String(voce || '').split(' ');
-    const classe = parts.shift() || '';
-    const sottoclasse = parts.join(' ') || '';
-    // normalizzazione case-insensitive
-    const classeKey = classe.trim().toLowerCase();
-    const sottoclasseKey = sottoclasse.trim().toLowerCase() || undefined;
-    // livello cumulativo: conta le occorrenze della classe fino a voceIndex (incluso)
-    const livelloCount = (characterPrivilegi || [])
-      .slice(0, Math.max(0, (voceIndex ?? 0) + 1))
-      .reduce((acc, v) => {
-        const first = String(v || '').split(' ')[0].trim().toLowerCase();
-        return acc + (first === classeKey ? 1 : 0);
-      }, 0);
-    const livello = livelloCount > 0 ? livelloCount : 1;
-
-    // Recupera l'elenco dei privilegi per livelli 1..livello,
-    // provando prima la sottoclasse tramite getPrivilegio; se assente o nullo,
-    // fallback al privilegio di classe base (DND.classi)
-    const lista = Array.from({ length: livello }, (_, k) => {
-        const L = k + 1;
-        const fromMethod = DND.getPrivilegi(classeKey, sottoclasseKey, L);
-        if (fromMethod) return fromMethod;
-        // se non c'è sottoclasse o non trovato, usa il base
-        return DND.classi.find(p => p.class === classeKey && p.level === L) || null;
-      })
-      .filter(Boolean);
-    if (!lista.length) return '';
-    return lista;
   },
 
   //!COLONNA CENTRALE
@@ -3794,7 +3725,7 @@ export const DND = {
    * @param {any} character
    * @returns {string|number}
    */
-  iniziativa(character :Personaggio){
+  iniziativa(character :PersonaggioDND){
     const destrezza = character.punteggi.find(p => p.key === 'destrezza');
     if (!destrezza) return 0;
     const value =this.getModificatore(destrezza.value);
@@ -3806,7 +3737,7 @@ export const DND = {
    * @param {any} character
    * @returns {{key:string, value:number}[]|[]}
    */
-  getVelocita(character :Personaggio){
+  getVelocita(character :PersonaggioDND){
     const razzaPersonaggio = String(character.generali.find(g => g.key === 'razza')?.value || '').trim().toLowerCase();
     if (!razzaPersonaggio){ 
       console.error('il personaggio non risulta avere una razza', razzaPersonaggio);
@@ -3836,11 +3767,11 @@ export const DND = {
    * @param {string} nomeClasse
    * @returns {number}
    */
-  dado_vita(nomeClasse :string) :number {
+  getDadoVita(nomeClasse :string) :number {
     const dadiVita = {
       'barbaro': 12, 'guerriero': 10, 'paladino': 10, 'ranger': 10,
       'chierico': 8, 'druido': 8, 'monaco': 8, 'ladro': 8, 'bardo': 8,
-      'stregone': 6, 'mago': 6,
+      'stregone': 6, 'mago': 6, 'artefice': 8,
     };
     return dadiVita[nomeClasse.toLowerCase() as keyof typeof dadiVita] || 6; // Ritorna 6 come default
   },
@@ -3850,10 +3781,10 @@ export const DND = {
    * @param {any} character
    * @returns {{livello:number, dado:number}[]}
    */
-  dadi_vita(character :Personaggio){
+  dadiVitaPersonaggio(character :PersonaggioDND){
     const result = this.classiCollegate(character).map(c => ({
       livello: c.livello,
-      dado: this.dado_vita(c.classe),
+      dado: this.getDadoVita(c.classe),
     }));
     return result.filter(r => r.dado !== 0 && r.livello !== 0);
   },
@@ -3863,7 +3794,7 @@ export const DND = {
    * @param {any} character
    * @returns {number}
    */
-  puntiFeritaMassimi(character :Personaggio){
+  puntiFeritaMassimi(character :PersonaggioDND){
     const costituzione = character.punteggi.find(p => p.key === 'costituzione')?.value;
     if (!costituzione){
       console.error('Punteggio non trovato');
@@ -3875,7 +3806,7 @@ export const DND = {
 
     const a = character.privilegi;
     a.forEach((nomeClasse, index) => {
-      const dadoVita = this.dado_vita(nomeClasse);
+      const dadoVita = this.getDadoVita(nomeClasse);
 
       if (index === 0) {
         pfTotali += dadoVita + conMod;
@@ -3894,7 +3825,7 @@ export const DND = {
    * @param {string} [nomeArma]
    * @returns {string} Formattato con segno, oppure '—' se non calcolabile
    */
-  bonusAttacco(character :Personaggio, nomeArma =''){
+  bonusAttacco(character :PersonaggioDND, nomeArma =''){
     const arma = DND.oggetti.find(d => String(nomeArma || '').toLowerCase().trim().includes(String(d.key || '').toLowerCase().trim()));
     const puntiForza = character.punteggi.find(p => p.key === 'forza');  
     const puntiDestrezza = character.punteggi.find(p => p.key === 'destrezza');
@@ -3917,7 +3848,7 @@ export const DND = {
    * @param {string} nomeArma
    * @returns {string} Stringa danno oppure '—' se non calcolabile
    */
-  bonusDanno(character :Personaggio, nomeArma :string){
+  bonusDanno(character :PersonaggioDND, nomeArma :string){
     const arma = DND.oggetti.find(d => String(nomeArma || '')
       .toLowerCase().trim().includes(String(d.key || '').toLowerCase().trim()));
     if(!arma || !arma.danno){
@@ -3955,7 +3886,7 @@ export const DND = {
    * @param {any} character
    * @returns {string} peso totale (kg)
    */
-  trasporto(character :Personaggio) :string{
+  trasporto(character :PersonaggioDND) :string{
     const pesoAttualeTrasportato :number = character.equipaggiamento
       .reduce((acc, e) => {
         const q = Number(e.qta) || 1;
@@ -3976,57 +3907,46 @@ export const DND = {
    * Mappa `character.privilegi` in oggetti con livello progressivo e privilegi risolti
    * @param {any} character
    * @returns {{name:string, privileges:any[], level:number, srcIndex?:number}[]}
-   */
-  privilegiMappati(character :Personaggio){
-    const result :{name:string, level:number, srcIndex?:number |null
-      privileges:{ privilege: string, description:string }[]
+  */
+  privilegiMappati(character: PersonaggioDND) {
+    const result: {
+      name: string,
+      level: number,
+      srcIndex?: number | null,
+      privileges: { privilege: string, description: string }[]
     }[] = [];
-    //  RAZZA
-    const characterRace = String(character.generali.find(g => g.key === 'razza')?.value ??'');
-    const allRaces = DND.sottorazze;
-    const raceMatch = allRaces?.find(race => race.nome.toLowerCase().includes(characterRace?.toLowerCase()));
-    if (characterRace && allRaces && raceMatch?.privilegi?.length) {
+
+    // CLASSE
+    // Oggetto per tenere traccia dei contatori per ogni classe+sottoclasse
+    const contatori: Record<string, number> = {};
+
+    (character.privilegi || []).forEach((privilegioClasse, srcIndex) => {
+      const [splittedClass, ...splittedSub] = String(privilegioClasse || '').split(' ');
+      const classe = splittedClass.toLowerCase();
+      const sottoclasse = splittedSub.join(' ').toLowerCase();
+      if(!classe || !sottoclasse) console.error('classe', classe, 'sottoclasse', sottoclasse);
+
+      // Incrementa il contatore per la combinazione classe+sottoclasse
+      const key = `${classe}_${sottoclasse}`;
+      contatori[key] = (contatori[key] || 0) + 1;
+      const count = contatori[key];
+      
+      // recupera i privilegi
+      const privileges = DND.getPrivilegi(classe, sottoclasse, count) ||[];
+      if(!privileges) console.error('privilegi non trovati per', classe, sottoclasse, count);    
+
       result.push({
-        name: 'Razza',
-        privileges: raceMatch.privilegi.map(p => ({ privilege: p.name, description: p.description })),
-        level: 0,
-        srcIndex: null
+        name: privilegioClasse.toLowerCase(),
+        privileges,
+        level: count,
+        srcIndex
       });
-    }
-    //  BACKGROUND
-    const characterBackground = character.generali.find(g => g.key === 'background')?.value ??'';
-    const backgroundMatch = DND.background
-      .find(x => String(x.name || '')
-      .toLowerCase().includes(String(characterBackground || '')
-      .toLowerCase()));
-    if (characterBackground && backgroundMatch?.privilegi?.length) {
-      result.push({
-        name: 'Background',
-        privileges: backgroundMatch.privilegi.map(p => ({ privilege: p.name, description: p.description })),
-        level: 0,
-        srcIndex: null
-      });
-    }
-    //  CLASSE
-    const contatori = new Map();
-    const classEntries = (character.privilegi || []).map((p, srcIndex) => {
-      const raw = String(p || '');
-      const rawLower = raw.toLowerCase();
-      const [classe, ...rest] = raw.split(' ');
-      const sottoclasse = rest.join(' ');
-      const classeKey = String(classe || '').toLowerCase();
-      const sottoclasseKey = String(sottoclasse || '').toLowerCase();
-      const count = (contatori.get(rawLower) || 0) + 1; // case-insensitive counter
-      contatori.set(rawLower, count);
-      const privileges = DND.getPrivilegi(classeKey, sottoclasseKey, count);
-      const name = [classe, sottoclasse].filter(Boolean).join(' ');
-      return { name, privileges, level: count, srcIndex };
     });
 
-    return result.concat(classEntries);
+    return result;
   },
   
-  getValorePassivoAbilita(nomeAbilita:string, personaggio:Personaggio): number {
+  getValorePassivoAbilita(nomeAbilita:string, personaggio:PersonaggioDND): number {
     let trovata =false
     let abilitaMatch =false;
     let modificatoreMatch =0;
@@ -4049,98 +3969,14 @@ export const DND = {
   }
 }
 
-
-export interface Personaggio {
-  nome_personaggio: string,
-  generali: [
-    { key: 'background', value: string, type: 'text' },
-    { key: 'nome_giocatore', value: string, type: 'text' },
-    { key: 'razza', value: string, type: 'text' },
-    { key: 'allineamento', value: string, type: 'text' },
-    { key: 'punti_esperienza', value: number, type: 'number' },
-  ],
-
-  // colonna sinistra
-  ispirazione: number,
-  punteggi: [
-    { key: 'forza', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }, 
-      { key: 'Atletica', value: boolean }
-    ]},
-    { key: 'destrezza', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }, 
-      { key: 'Acrobatica', value: boolean }, 
-      { key: 'Rapidità di Mano', value: boolean }, 
-      { key: 'Furtività', value: boolean }
-    ]},
-    { key: 'costituzione', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }
-    ]},
-    { key: 'intelligenza', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }, 
-      { key: 'Arcano', value: boolean }, 
-      { key: 'Indagare', value: boolean }, 
-      { key: 'Natura', value: boolean }, 
-      { key: 'Religione', value: boolean }, 
-      { key: 'Storia', value: boolean }
-    ]},
-    { key: 'saggezza', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }, 
-      { key: 'Addestrare Animali', value: boolean }, 
-      { key: 'Intuizione', value: boolean }, 
-      { key: 'Medicina', value: boolean }, 
-      { key: 'Percezione', value: boolean }, 
-      { key: 'Sopravvivenza', value: boolean }
-    ]},
-    { key: 'carisma', value: number, abilities: [
-      { key: 'Tiro Salvezza', value: boolean }, 
-      { key: 'Inganno', value: boolean }, 
-      { key: 'Intimidire', value: boolean }, 
-      { key: 'Intrattenere', value: boolean }, 
-      { key: 'Persuasione', value: boolean }
-    ]},
-  ],
-  competenze:[
-    {key:'linguaggi', value:string},
-    {key:'armi', value:string},
-    {key:'armature', value:string},
-    {key:'strumenti', value:string},
-  ],
-  
-  // colonna centrale
-  classe_armatura: number,
-  punti_ferita_attuali: number,
-  punti_ferita_temporanei: number,
-  ts_falliti: number,
-  ts_successi: number,
-  attacchi:string[],
-  equipaggiamento: {qta:number, value:string}[],
-  monete: [ 
-    { key: 'rame', value: number },
-    { key: 'argento', value: number },
-    { key: 'electrum', value: number },
-    { key: 'oro', value: number },
-    { key: 'platino', value: number }
-  ],
-
-  // colonna destra
-  personalita: [
-    {key:'tratti_caratteriali', value:string},
-    {key:'ideali', value:string},
-    {key:'legami', value:string},
-    {key:'difetti', value:string},
-  ],
-  privilegi:string[]
-}
-
-export function initCharacter() :Personaggio {
+export function inizializzaPersonaggio() :PersonaggioDND {
   return {
-    nome_personaggio: '',
+    nome_personaggio: 'Es: Bilbo Baggins',
     generali: [
-      { key: 'background', value: '', type: 'text' },
-      { key: 'nome_giocatore', value: '', type: 'text' },
-      { key: 'razza', value: '', type: 'text' },
-      { key: 'allineamento', value: '', type: 'text' },
+      { key: 'background', value: 'Forestiero', type: 'text' },
+      { key: 'nome_giocatore', value: 'Es: il tuo nome', type: 'text' },
+      { key: 'razza', value: 'Umano', type: 'text' },
+      { key: 'allineamento', value: 'Legale Buono', type: 'text' },
       { key: 'punti_esperienza', value: 0, type: 'number' },
     ],
 
@@ -4194,19 +4030,19 @@ export function initCharacter() :Personaggio {
     // colonna centrale
     classe_armatura: 10,
     punti_ferita_attuali: 10,
-    punti_ferita_temporanei: 10,
+    punti_ferita_temporanei: 0,
     ts_falliti: 0,
     ts_successi: 0,
     attacchi:[],
     equipaggiamento: [
-      {qta:1, value:'zaino'},
-      {qta:1, value:'giaciglio'},
-      {qta:1, value:'gavetta'},
-      {qta:1, value:'acciarino'},
-      {qta:1, value:'corda canapa'},
-      {qta:10, value:'torcia'},
-      {qta:1, value:'otre'},
-      {qta:10, value:'razioni'},
+      {qta:1, value:'Zaino'},
+      {qta:1, value:'Giaciglio'},
+      {qta:1, value:'Gavetta'},
+      {qta:1, value:'Acciarino'},
+      {qta:1, value:'Corda canapa'},
+      {qta:10, value:'Torchia'},
+      {qta:1, value:'Otre'},
+      {qta:10, value:'Razioni'},
     ],
     monete: [ 
       { key: 'rame', value: 0 },
@@ -4218,10 +4054,10 @@ export function initCharacter() :Personaggio {
 
     // colonna destra
     personalita: [
-      {key:'tratti_caratteriali', value:'Es: Mi piace spaccare le cose. Sono diretto e onesto.'},
-      {key:'ideali', value:'Es: La gloria della battaglia è tutto ciò che conta.'},
-      {key:'legami', value:'Es: Proteggerò i miei amici, specialmente Pike.'},
-      {key:'difetti', value:'Es: Non penso mai prima di agire. Mai.'},
+      {key:'tratti_caratteriali', value:''},
+      {key:'ideali', value:''},
+      {key:'legami', value:''},
+      {key:'difetti', value:''},
     ],
     privilegi:[]
   }

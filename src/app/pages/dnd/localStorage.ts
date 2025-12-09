@@ -1,15 +1,15 @@
+import PersonaggioDND from "../../interfaces/personaggioDND";
 import toast from "../../tools/toast";
-import { Personaggio } from "./dndManual";
 
 export const local = {
   async get(){
     const characterData = localStorage.getItem('character');
     return JSON.parse(characterData || '');
   },
-  async set(newCharacter: Personaggio){
+  async set(newCharacter: PersonaggioDND){
     localStorage.setItem('character', JSON.stringify(newCharacter));
   },
-  async copy(character: Personaggio){
+  async copy(character: PersonaggioDND){
     const data = JSON.stringify(character, null, 2);
     navigator.clipboard.writeText(data);
   },
