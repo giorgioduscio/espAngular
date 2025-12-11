@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
-<header style="border-bottom: 1px solid #6c757d;">
-  <div class="container p-3 d-flex justify-content-between gap-2" 
+
+<header id="localActions">
+  <div class="container p-2 d-flex justify-content-between gap-2" 
        style="max-width: max-content;">
     <button class="btn btn-secondary text-truncate" (click)="pasteCharacter()">
       <i class="bi bi-upload"></i> Importa
@@ -14,642 +15,560 @@
   </div>
 </header>
 
-<div *ngIf="isMobileView" class="d-flex flex-column" id="buttonsList">
-  @for (btn of mobileButtons; track $index) {
-    <button class="btn p-3 rounded-0 d-flex justify-content-between" 
-            style="border-bottom: 1px solid #6c757d"
-            type="button" data-bs-toggle="modal" 
-            [attr.data-bs-target]="'#'+btn.key">
-      <span>{{ btn.label }}</span> 
-      <i *ngIf="btn.info" class="small text-secondary">{{ btn.info() }}</i>
-      <i class="bi bi-arrow-bar-right"></i>
-    </button>
-  }
-</div>
 
-<article class="d-flex flex-wrap justify-content-center align-items-start gap-1 p-1 m-auto"
+<article class="d-flex flex-wrap align-items-start gap-1 m-auto"
          style="max-width: 1000px;"
          (change)="handleChange($event)">
 
   <!-- GENERALITA' -->
-  <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'"
-       [attr.id]="isMobileView ? 'generalita' : null"
-       [attr.tabindex]="isMobileView ? '-1' : null"
-       [attr.aria-labelledby]="isMobileView ? 'generalitaLabel' : null"
-       [attr.aria-hidden]="isMobileView ? 'true' : null"
-       [style.display]="!isMobileView ? 'block' : null">
-    <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-      <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-        <div [ngClass]="{'modal-body': isMobileView}">
+  @if(!isMobileView || activeSection === 'generalita') {
+    <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'">
+      <h5 *ngIf="isMobileView" class="p-2 fw-bold">Generalità</h5>
 
-          <h5 *ngIf="isMobileView" class="p-2 fw-bold">Generalità</h5>
-          <main class="d-flex flex-wrap justify-content-start gap-3">
+      <main class="d-flex flex-wrap justify-content-start gap-3">
+        <div class="d-flex flex-column gap-1">
+          <input [value]="character().nome_personaggio" 
+                  name="nome_personaggio" 
+                  id="nome_personaggio" 
+                  type="text" 
+                  class="form-control form-control-dnd"
+                  placeholder="Es: Bilbo Baggins">
+          <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
+        </div>
+
+        <div class="d-flex flex-column gap-1">
+          <div class="p-2 border rounded">{{ getClassesString() }}</div>
+          <label class="duckcase" for="classe">Classe</label>
+        </div>
+        <div class="d-flex flex-column gap-1">
+          <div class="p-2 border rounded">{{ liv() || '-' }}</div>
+          <label class="duckcase" for="livello">Livello</label>
+        </div>
+        @for (campo of character().generali; track campo.key; let i = $index) {
+          @if (campo.key === 'allineamento') {
             <div class="d-flex flex-column gap-1">
-              <input [value]="character().nome_personaggio" 
-                      name="nome_personaggio" 
-                      id="nome_personaggio" 
-                      type="text" 
+              <select name="generali-{{i}}-value" 
+                      [id]="campo.key" 
+                      class="form-control-dnd form-select">
+                @for (allineamento of allineamenti; track allineamento) {
+                  <option [selected]="campo.value===allineamento" 
+                          [value]="allineamento"
+                          >{{ allineamento }}</option>
+                }
+              </select>
+              <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
+            </div>
+
+          } @else if (campo.key === 'background') {
+            <div class="d-flex flex-column gap-1">
+              <select name="generali-{{i}}-value" 
+                      [id]="campo.key" 
+                      class="form-control-dnd form-select">
+                <option value="">Nessuno</option>
+                @for (b of dnd.background; track b.name) {
+                  <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" 
+                          [value]="b.name"
+                          >{{ b.name }}</option>
+                }
+              </select>
+              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+            </div>
+
+          } @else if (campo.key === 'razza') {
+            <div class="d-flex flex-column gap-1">
+              <select name="generali-{{i}}-value" 
+                      [id]="campo.key" 
+                      class="form-control-dnd form-select">
+                <option value="">Nessuna</option>
+                @for (r of dnd.sottorazze; track r.nome) {
+                  <option [selected]="(campo.value||'').toLowerCase()===r.nome.toLowerCase()" 
+                          [value]="r.nome"
+                          >{{ r.nome }}</option>
+                }
+              </select>
+              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+            </div>
+          
+          } @else {
+            <div class="d-flex flex-column gap-1">
+              <input [value]="campo.value" 
+                      name="generali-{{i}}-value" 
+                      [id]="campo.key" 
+                      [type]="campo.type" 
                       class="form-control form-control-dnd"
-                      placeholder="Es: Bilbo Baggins">
-              <label class="duckcase" for="nome_personaggio">Nome PersonaggioDND</label>
+                      [placeholder]="getPlaceholder(campo.key, campo.type)">
+              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
             </div>
-
-            <div class="d-flex flex-column gap-1">
-              <div class="p-2 border rounded">{{ getClassesString() }}</div>
-              <label class="duckcase" for="classe">Classe</label>
-            </div>
-            <div class="d-flex flex-column gap-1">
-              <div class="p-2 border rounded">{{ liv() || '-' }}</div>
-              <label class="duckcase" for="livello">Livello</label>
-            </div>
-            @for (campo of character().generali; track campo.key; let i = $index) {
-              @if (campo.key === 'allineamento') {
-                <div class="d-flex flex-column gap-1">
-                  <select name="generali-{{i}}-value" 
-                          [id]="campo.key" 
-                          class="form-control-dnd form-select">
-                    @for (allineamento of allineamenti; track allineamento) {
-                      <option [selected]="campo.value===allineamento" 
-                              [value]="allineamento"
-                              >{{ allineamento }}</option>
-                    }
-                  </select>
-                  <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
-                </div>
-
-              } @else if (campo.key === 'background') {
-                <div class="d-flex flex-column gap-1">
-                  <select name="generali-{{i}}-value" 
-                          [id]="campo.key" 
-                          class="form-control-dnd form-select">
-                    <option value="">Nessuno</option>
-                    @for (b of dnd.background; track b.name) {
-                      <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" 
-                              [value]="b.name"
-                              >{{ b.name }}</option>
-                    }
-                  </select>
-                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-                </div>
-
-              } @else if (campo.key === 'razza') {
-                <div class="d-flex flex-column gap-1">
-                  <select name="generali-{{i}}-value" 
-                          [id]="campo.key" 
-                          class="form-control-dnd form-select">
-                    <option value="">Nessuna</option>
-                    @for (r of dnd.sottorazze; track r.nome) {
-                      <option [selected]="(campo.value||'').toLowerCase()===r.nome.toLowerCase()" 
-                              [value]="r.nome"
-                              >{{ r.nome }}</option>
-                    }
-                  </select>
-                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-                </div>
-              
-              } @else {
-                <div class="d-flex flex-column gap-1">
-                  <input [value]="campo.value" 
-                          name="generali-{{i}}-value" 
-                          [id]="campo.key" 
-                          [type]="campo.type" 
-                          class="form-control form-control-dnd"
-                          [placeholder]="getPlaceholder(campo.key, campo.type)">
-                  <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
-                </div>
-              }
-            }
-          </main>
-        </div>
-        <div *ngIf="isMobileView" class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        </div>
-      </div>
+          }
+        }
+      </main>
     </div>
-  </div>
+  }
 
   <!--SINISTRA-->
   <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
             style="min-width: 250px; max-width: 400px;">
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
-         [attr.id]="isMobileView ? 'punteggi' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'punteggiLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-
+    @if(!isMobileView || activeSection === 'punteggi') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <!-- PUNTEGGI -->
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-            <h5 class="p-2 fw-bold">Punteggi</h5>
-            <main class="d-flex flex-column gap-2 p-2">
-              <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-                <label class="duckcase" for="ispirazione">Ispirazione:</label> 
-                <input [value]="character().ispirazione" 
-                        name="ispirazione" id="ispirazione" 
-                        type="number" inputmode="numeric" step="1" min="0" 
-                        class="form-control form-control-dnd" style="max-width: 80px;">
-              </div>
-              <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-                <label class="duckcase">Bonus Competenza:</label>
-                <b>+{{ BC() }}</b>
-              </div>
-              @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
-                <div style="display:grid; grid-template-columns: auto 1fr;">
-                  <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" 
-                        style="width: 80px; height: fit-content;">
-                    <label class="duckcase" [for]="punteggio.key" 
-                            style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
-                            >{{ punteggio.key }}</label> 
-                    <label [for]="punteggio.key" 
-                            class="fs-4 fw-bold duckcase" 
-                            style="transform: translateY(10px);"
-                            >{{ mod(punteggio.value) > 0 ? '+' + mod(punteggio.value) : mod(punteggio.value) }}</label>
-                    <input [value]="character().punteggi[i].value" 
-                            name="punteggi-{{i}}-value" 
-                            [id]="punteggio.key" 
-                            type="text" max="25" 
-                            class="form-control form-control-dnd" 
-                            style="transform: translateY(10px); width: 40px; text-align: center;"
-                            placeholder="Es: 10">
-                  </div>
-                  <ul class="ps-3 m-0">
-                    @for (abilita of punteggio.abilities; track abilita.key; let j = $index) {
-                      <li class="d-flex gap-2 align-items-center">
-                        <input [checked]="abilita.value" 
-                                type="checkbox" 
-                                id="punteggi-{{i}}-abilities-{{j}}-value"
-                                name="punteggi-{{i}}-abilities-{{j}}-value"> 
-                        <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">
-                          <b>{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
-                          {{ abilita.key }}</label>
-                      </li>
-                    }
-                  </ul>
-                </div>
-              }
-              <div class="pt-3 d-flex align-items-center justify-content-between">
-                <i>Saggezza Passiva (Percezione):</i> 
-                <b>{{ passiva("percezione") }}</b>
-              </div>
-            </main>
+        <h5 class="p-2 fw-bold">Punteggi</h5>
+        <main class="d-flex flex-column gap-2 p-2">
+          <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
+            <label class="duckcase" for="ispirazione">Ispirazione:</label> 
+            <input [value]="character().ispirazione" 
+                    name="ispirazione" id="ispirazione" 
+                    type="number" inputmode="numeric" step="1" min="0" 
+                    class="form-control form-control-dnd" style="max-width: 80px;">
           </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
+            <label class="duckcase">Bonus Competenza:</label>
+            <b>+{{ BC() }}</b>
           </div>
-        </div> <!-- MODAL-CONTENT -->
+          @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
+            <div class="d-grid mb-2" style="grid-template-columns: auto 1fr;">
+              <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" 
+                    style="width: 80px; height: fit-content;">
+                <label class="duckcase" [for]="punteggio.key" 
+                        style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
+                        >{{ punteggio.key }}</label> 
+                <label [for]="punteggio.key" 
+                        class="fs-4 fw-bold duckcase" 
+                        style="transform: translateY(10px);"
+                        >{{ mod(punteggio.value) > 0 ? '+' + mod(punteggio.value) : mod(punteggio.value) }}</label>
+                <input [value]="character().punteggi[i].value" 
+                        name="punteggi-{{i}}-value" 
+                        [id]="punteggio.key" 
+                        type="text" max="25" 
+                        class="form-control form-control-dnd" 
+                        style="transform: translateY(10px); width: 40px; text-align: center;"
+                        placeholder="Es: 10">
+              </div>
+              <ul class="ps-3 m-0">
+                @for (abilita of punteggio.abilities; track abilita.key; let j = $index) {
+                  <li class="d-flex gap-2 align-items-center">
+                    <input [checked]="abilita.value" 
+                            type="checkbox" 
+                            id="punteggi-{{i}}-abilities-{{j}}-value"
+                            name="punteggi-{{i}}-abilities-{{j}}-value"> 
+                    <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">
+                      <b>{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
+                      {{ abilita.key }}</label>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+          <div class="pt-3 d-flex align-items-center justify-content-between">
+            <i>Saggezza Passiva (Percezione):</i> 
+            <b>{{ passiva("percezione") }}</b>
+          </div>
+        </main>
       </div>
-    </div>
+    }
 
     <!-- COMPETENZE E LINGUAGGI -->
-    <div [class]="isMobileView ?'modal fade' :'rounded-2 w-100 mt-2 border flex-auto p-2'"
-         [attr.id]="isMobileView ? 'competenzeLinguaggi' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'competenzeLinguaggiLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-            <h5 class="p-2 fw-bold">Competenze e Linguaggi</h5>
-            <main class="d-flex flex-column gap-3">
-              @for (comp of character().competenze; track comp.key; let i = $index) {
-                <div>
-                  <label class="duckcase" 
-                          [for]="comp.key"
-                          >{{ comp.key }}:</label>
-                  <textarea name="competenze-{{i}}-value" 
-                            [id]="comp.key" 
-                            class="form-control form-control-dnd"
-                            placeholder="Es: Comune, Elfico"
-                            >{{ comp.value }}</textarea>
-                </div>
-              }
-            </main>
-          </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
+    @if(!isMobileView || activeSection === 'competenzeLinguaggi') {
+      <div [class]="isMobileView ?'w-100 p-2' :'rounded-2 w-100 mt-2 border flex-auto p-2'">
+        <h5 class="p-2 fw-bold">Competenze e Linguaggi</h5>
+        <main class="d-flex flex-column gap-3">
+          @for (comp of character().competenze; track comp.key; let i = $index) {
+            <div>
+              <label class="duckcase" 
+                      [for]="comp.key"
+                      >{{ comp.key }}:</label>
+              <textarea name="competenze-{{i}}-value" 
+                        [id]="comp.key" 
+                        class="form-control form-control-dnd"
+                        placeholder="Es: Comune, Elfico"
+                        >{{ comp.value }}</textarea>
+            </div>
+          }
+        </main>
       </div>
-    </div>
+    }
   </section>
 
   <!--CENTRO-->
   <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" style="min-width: 250px; max-width: 400px;">
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
-         [attr.id]="isMobileView ? 'combattimento' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'combattimentoLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-            <main class="p-2">
-              <h5 class="p-2 fw-bold">Combattimento</h5>
-              <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px">
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase" for="ca">Classe armatura</label>
-                  <input [value]="character().classe_armatura" 
-                          name="classe_armatura" id="classe_armatura" 
-                          type="number" 
-                          class="form-control form-control-dnd"
-                          placeholder="Es: 10">
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase">Iniziativa</label>
-                  <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase">Velocità</label>
-                  @for (velocita of dnd.getVelocita(character()); track velocita.key) {
-                    @if(velocita.value) {
-                      <small>{{ velocita.key }}: <b>{{ velocita.value }}m</b></small>
-                    }
-                  }
-                </div>
-              </div>
+    @if(!isMobileView || activeSection === 'combattimento') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
+        <main class="p-2">
+          <h5 class="p-2 fw-bold">Combattimento</h5>
 
-              <label class="duckcase">Punti Ferita</label>
-              <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase" for="pfm">Massimi</label>
-                  <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase" for="pfa">Attuali</label>
-                  <input [value]="character().punti_ferita_attuali" 
-                          name="punti_ferita_attuali" id="pfa" 
-                          type="number" 
-                          class="form-control form-control-dnd"
-                          placeholder="Es: 10">
-                </div>
-                <div class="d-flex flex-column gap-1">
-                  <label class="duckcase" for="pft">Temporanei</label>
-                  <input [value]="character().punti_ferita_temporanei" 
-                          name="punti_ferita_temporanei" id="pft" 
-                          type="number" 
-                          class="form-control form-control-dnd"
-                          placeholder="Es: 0">
-                </div>
-              </div>
-
-              <div  class="pt-3 d-grid gap-2 justify-items-center" 
-                    style="grid-template-columns: 1fr 1fr;">
-                <div>
-                  <label class="duckcase">Dadi Vita</label>
-                  <div class="p-2 border rounded">
-                    @if(dnd.dadiVitaPersonaggio(character()).length) {
-                      @for (dado of dnd.dadiVitaPersonaggio(character()); track dado.dado; let last = $last) {
-                        {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
-                      }
-                    } @else {
-                      -
-                    }
-                  </div>
-                </div>
-                <div>
-                  <label class="duckcase">Tiri Salvezza</label>
-                  <div class="d-grid gap-2" style="grid-template-columns: 1fr auto auto auto;">
-                    <label class="duckcase">Successi</label>
-                    @for (value of [1, 2, 3]; track value) {
-                      <input  type="checkbox" 
-                              [checked]="character().ts_successi >= value" 
-                              [value]="value"
-                              name="ts_successi"
-                              id="ts_successi-{{value}}">
-                    }
-                    <label class="duckcase">Fallimenti</label>
-                    @for(value of [1, 2, 3]; track value) {
-                      <input  type="checkbox" 
-                              [checked]="character().ts_falliti >= value" 
-                              [value]="value"
-                              name="ts_falliti"
-                              id="ts_falliti-{{value}}">
-                    }
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
-         [attr.id]="isMobileView ? 'attacchiIncantesimi' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'attacchiIncantesimiLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-
-            <h5 class="p-2 fw-bold">Attacchi e Incantesimi</h5>
-            <main class="p-2">
-              <form class="d-flex gap-1 align-items-end" (ngSubmit)="addToList('attacchi', $event)">
-                <button type="submit" class="btn btn-success p-1 px-2" 
-                        aria-label="Aggiungi attacco">
-                        <i class="bi bi-plus-lg"></i>
-                </button>
-                <div>
-                  <label for="attacco-value">Seleziona Attacco</label>
-                  <input name="attacco-value" 
-                         id="attacco-value"
-                         type="search"
-                         autocomplete="off"
-                         class="form-control form-control-dnd"
-                         placeholder="Es: Ascia bipenne">
-                  <template autocomplete="attacco-value" chars="3" options="3">
-                    @for (obj of dnd.oggetti; track obj.key) {
-                      @if(obj.arma) {
-                        <li>{{ obj.key }}</li>
-                      }
-                    }
-                  </template>
-                </div>
-              </form>
-
-              @if (!character().attacchi.length) {
-                <div class="alert alert-info mt-3" role="alert">
-                  <i class="bi bi-info-circle text-primary"></i>
-                  Non ci sono attacchi
-                </div>
-
-              } @else {
-                <div  class="d-grid align-items-center gap-2 pt-3" 
-                      style="grid-template-columns: auto 100px auto 1fr;">
-                  <label></label><label>Nome</label> 
-                  <label>Attacco</label> <label>Danno</label>
-                  @for (attacco of character().attacchi; track attacco; let i = $index) {
-                    <button class="btn btn-danger p-1 px-2" 
-                            (click)="deleteFromList('attacchi', i)">
-                            <i class="bi bi-trash"></i>
-                    </button>
-                    <div style="position: relative; display: inline-block;">
-                      <input [value]="attacco" type="text" 
-                              id="attacchi-{{i}}" 
-                              name="attacchi-{{i}}" 
-                              class="form-control form-control-dnd">
-                    </div>
-                    <label class="duckcase" [for]="'attacchi-' + i">
-                      {{ dnd.bonusAttacco(character(), attacco) }}
-                    </label>
-                    <label class="duckcase" [for]="'attacchi-' + i">
-                      {{ dnd.bonusDanno(character(), attacco) }}
-                    </label>
-                  }
-                </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 2fr; gap: 5px">
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase" for="ca">Classe armatura</label>
+              <input [value]="character().classe_armatura" 
+                      name="classe_armatura" id="classe_armatura" 
+                      type="number" 
+                      class="form-control form-control-dnd"
+                      placeholder="Es: 10">
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase">Iniziativa</label>
+              <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase">Velocità</label>
+              @for (velocita of dnd.getVelocita(character()); track velocita.key) {
+                @if(velocita.value) {
+                  <small class="d-grid" style="grid-template-columns: auto 1fr auto;">
+                    <i class="bi {{ trovaIconaVelocita(velocita.key) }} me-2"></i>
+                    <small class="duckcase text-truncate">{{ velocita.key }}: </small>
+                    <b>{{ velocita.value }}m</b>
+                  </small>
+                }
               }
-            </main>
+            </div>
           </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
-         [attr.id]="isMobileView ? 'equipaggiamento' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'equipaggiamentoLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-            <h5 class="p-2 fw-bold">Equipaggiamento</h5> 
-                          
-            <main class="p-2">
-              <h6>Monete</h6>
-              <div class="d-grid gap-1 pb-3" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
-                @for (moneta of character().monete; track $index) {
-                  <div class="d-flex flex-column gap-1">
-                    <label class="duckcase" for="monete-{{ $index }}-value">
-                      {{moneta.key}}</label>
-                    <input [value]="moneta.value" 
-                            name="monete-{{ $index }}-value" 
-                            id="monete-{{ $index }}-value" 
-                            type="number" class="form-control form-control-dnd"
-                            placeholder="Es: 0">
-                  </div>
+          <label class="duckcase">Punti Ferita</label>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase" for="pfm">Massimi</label>
+              <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase" for="pfa">Attuali</label>
+              <input [value]="character().punti_ferita_attuali" 
+                      name="punti_ferita_attuali" id="pfa" 
+                      type="number" 
+                      class="form-control form-control-dnd"
+                      placeholder="Es: 10">
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <label class="duckcase" for="pft">Temporanei</label>
+              <input [value]="character().punti_ferita_temporanei" 
+                      name="punti_ferita_temporanei" id="pft" 
+                      type="number" 
+                      class="form-control form-control-dnd"
+                      placeholder="Es: 0">
+            </div>
+          </div>
+
+          <div  class="pt-3 d-grid gap-2 justify-items-center" 
+                style="grid-template-columns: 1fr 1fr;">
+            <div>
+              <label class="duckcase">Dadi Vita</label>
+              <div class="p-2 border rounded">
+                @if(dnd.dadiVitaPersonaggio(character()).length) {
+                  @for (dado of dnd.dadiVitaPersonaggio(character()); track dado.dado; let last = $last) {
+                    {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
+                  }
+                } @else {
+                  -
                 }
               </div>
+            </div>
+            <div>
+              <label class="duckcase">Tiri Salvezza</label>
+              <div class="d-grid gap-2" style="grid-template-columns: 1fr auto auto auto;">
+                <label class="duckcase">Successi</label>
+                @for (value of [1, 2, 3]; track value) {
+                  <input  type="checkbox" 
+                          [checked]="character().ts_successi >= value" 
+                          [value]="value"
+                          name="ts_successi"
+                          id="ts_successi-{{value}}">
+                }
+                <label class="duckcase">Fallimenti</label>
+                @for(value of [1, 2, 3]; track value) {
+                  <input  type="checkbox" 
+                          [checked]="character().ts_falliti >= value" 
+                          [value]="value"
+                          name="ts_falliti"
+                          id="ts_falliti-{{value}}">
+                }
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    }
 
-              <h6>Inventario ({{ dnd.trasporto(character()) }} kg)</h6>
-              <form class="d-grid pb-2 gap-2 align-items-center" 
-                    style="grid-template-columns: auto 60px 1fr;"
-                    (ngSubmit)="addToList('equipaggiamento', $event)">
-                <i></i> 
-                <label for="qta">Quantità</label> 
-                <label for="equip-value">Seleziona oggetto</label>
+    @if(!isMobileView || activeSection === 'attacchiIncantesimi') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
+        <h5 class="p-2 fw-bold">Attacchi e Incantesimi</h5>
 
-                <button type="submit" class="btn btn-success p-1 px-2" 
-                        aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i>
-                </button>
-                <input type="text" 
-                        placeholder="Es: 1" 
-                        name="qta" id="qta"
-                        class="form-control form-control-dnd"
-                        (input)="$event.stopPropagation()">
-                <input type="search"
-                        autocomplete="off"
-                        placeholder="Es: Abaco" 
-                        name="equip-value" 
-                        id="equip-value"
-                        class="form-control form-control-dnd">
-                <template autocomplete="equip-value" chars="3" options="3">
-                  @for (obj of dnd.oggetti; track obj.key) {
+        <main class="p-2">
+          <form class="d-flex gap-1 align-items-end" (ngSubmit)="addToList('attacchi', $event)">
+            <button type="submit" class="btn btn-success p-1 px-2" 
+                    aria-label="Aggiungi attacco">
+                    <i class="bi bi-plus-lg"></i>
+            </button>
+            <div>
+              <label for="attacco-value">Seleziona Attacco</label>
+              <input name="attacco-value" 
+                      id="attacco-value"
+                      type="search"
+                      autocomplete="off"
+                      class="form-control form-control-dnd"
+                      placeholder="Es: Ascia bipenne">
+              <template autocomplete="attacco-value" chars="3" options="3">
+                @for (obj of dnd.oggetti; track obj.key) {
+                  @if(obj.arma) {
                     <li>{{ obj.key }}</li>
                   }
-                </template>
-              </form>
-
-              <div class="d-grid pb-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
-                @for (e of character().equipaggiamento; track e.value; let i = $index) {
-                  <button class="btn btn-danger p-1 px-2" 
-                          (click)="deleteFromList('equipaggiamento', i)">
-                          <i class="bi bi-trash"></i>
-                        
-                  </button>
-                  <input [value]="e.qta || 1" 
-                          name="equipaggiamento-{{i}}-qta" 
-                          id="equipaggiamento-{{i}}-qta" 
-                          type="text" 
-                          class="form-control form-control-dnd">
-                  <div style="position: relative; display: inline-block;"> 
-                    <input [value]="e.value || ''" 
-                            name="equipaggiamento-{{i}}-value" 
-                            id="equipaggiamento-{{i}}-value'" 
-                            type="text" 
-                            placeholder="Nome oggetto" 
-                            class="form-control form-control-dnd">
-                  </div>
-                  <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
                 }
-              </div>
-            </main>
-          </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
+              </template>
+            </div>
+          </form>
+
+          @if (!character().attacchi.length) {
+            <div class="alert alert-info mt-3" role="alert">
+              <i class="bi bi-info-circle text-primary"></i>
+              Non ci sono attacchi
+            </div>
+
+          } @else {
+            <div  class="d-grid align-items-center gap-1 pt-3" 
+                  style="grid-template-columns: auto 100px auto 1fr;">
+              <label></label><label>Nome</label> 
+              <label>Attacco</label> <label>Danno</label>
+              @for (attacco of character().attacchi; track attacco; let i = $index) {
+                <button class="btn btn-danger p-1 px-2" 
+                        (click)="deleteFromList('attacchi', i)">
+                        <i class="bi bi-trash"></i>
+                </button>
+                <div style="position: relative; display: inline-block;">
+                  <input [value]="attacco" type="text" 
+                          id="attacchi-{{i}}" 
+                          name="attacchi-{{i}}" 
+                          class="form-control form-control-dnd">
+                </div>
+                <label class="duckcase text-center" [for]="'attacchi-' + i">
+                  {{ dnd.bonusAttacco(character(), attacco) }}
+                </label>
+                <label class="duckcase" [for]="'attacchi-' + i">
+                  {{ dnd.bonusDanno(character(), attacco) }}
+                </label>
+              }
+            </div>
+          }
+        </main>
       </div>
-    </div>
+    }
+
+    @if(!isMobileView || activeSection === 'equipaggiamento') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
+        <h5 class="p-2 fw-bold">Equipaggiamento</h5> 
+                      
+        <main class="p-2">
+          <h6>Monete</h6>
+          <div class="d-grid gap-1 pb-3" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+            @for (moneta of character().monete; track $index) {
+              <div class="d-flex flex-column gap-1">
+                <label class="duckcase" for="monete-{{ $index }}-value">
+                  {{moneta.key}}</label>
+                <input [value]="moneta.value" 
+                        name="monete-{{ $index }}-value" 
+                        id="monete-{{ $index }}-value" 
+                        type="number" class="form-control form-control-dnd"
+                        placeholder="Es: 0">
+              </div>
+            }
+          </div>
+
+          <h6>Inventario ({{ dnd.trasporto(character()) }} kg)</h6>
+          <form class="d-grid pb-2 gap-1 align-items-center" 
+                style="grid-template-columns: auto 60px 1fr;"
+                (ngSubmit)="addToList('equipaggiamento', $event)">
+            <i></i> 
+            <label for="qta">Quantità</label> 
+            <label for="equip-value">Seleziona oggetto</label>
+
+            <button type="submit" class="btn btn-success p-1 px-2" 
+                    aria-label="Aggiungi attacco"><i class="bi bi-plus-lg"></i>
+            </button>
+            <input type="text" 
+                    placeholder="Es: 1" 
+                    name="qta" id="qta"
+                    class="form-control form-control-dnd"
+                    (input)="$event.stopPropagation()">
+            <input type="search"
+                    autocomplete="off"
+                    placeholder="Es: Abaco" 
+                    name="equip-value" 
+                    id="equip-value"
+                    class="form-control form-control-dnd">
+            <template autocomplete="equip-value" chars="3" options="3">
+              @for (obj of dnd.oggetti; track obj.key) {
+                <li>{{ obj.key }}</li>
+              }
+            </template>
+          </form>
+
+          <div class="d-grid pb-2 gap-1 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
+            <i></i>
+            <label>Qta</label>
+            <label>Nome</label>
+            <label>Peso</label>
+            @for (e of character().equipaggiamento; track e.value; let i = $index) {
+              <button class="btn btn-danger p-1 px-2" 
+                      (click)="deleteFromList('equipaggiamento', i)">
+                      <i class="bi bi-trash"></i>
+                    
+              </button>
+              <input [value]="e.qta || 1" 
+                      name="equipaggiamento-{{i}}-qta" 
+                      id="equipaggiamento-{{i}}-qta" 
+                      type="text" 
+                      class="form-control form-control-dnd">
+              <div style="position: relative; display: inline-block;"> 
+                <input [value]="e.value || ''" 
+                        name="equipaggiamento-{{i}}-value" 
+                        id="equipaggiamento-{{i}}-value'" 
+                        type="text" 
+                        placeholder="Nome oggetto" 
+                        class="form-control form-control-dnd">
+              </div>
+              <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
+            }
+          </div>
+        </main>
+      </div>
+    }
   </section>
 
   <!--DESTRA-->
   <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
             style="min-width: 250px; max-width: 400px;">
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'"
-         [attr.id]="isMobileView ? 'personalita' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'personalitaLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-
-            <h5 class="p-2 fw-bold">Personalità</h5>
-            <main class="p-2 d-flex flex-column gap-3">
-              @for (p of character().personalita; track p.key; let i = $index) {
-                <div>
-                  <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
-                  <textarea name="personalita-{{i}}-value" 
-                            id="personalita-{{i}}-value" 
-                            class="form-control form-control-dnd"
-                            [placeholder]="getPlaceholder(p.key, 'textarea')"
-                            >{{ p.value }}</textarea>
-                </div>
-              }
-            </main>
-
-          </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
+    @if(!isMobileView || activeSection === 'personalita') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
+        <h5 class="p-2 fw-bold">Personalità</h5>
+        <main class="p-2 d-flex flex-column gap-3">
+          @for (p of character().personalita; track p.key; let i = $index) {
+            <div>
+              <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
+              <textarea name="personalita-{{i}}-value" 
+                        id="personalita-{{i}}-value" 
+                        class="form-control form-control-dnd"
+                        [placeholder]="getPlaceholder(p.key, 'textarea')"
+                        >{{ p.value }}</textarea>
+            </div>
+          }
+        </main>
       </div>
-    </div>
+    }
 
     <!-- TRATTI E PRIVILEGI -->
-    <div [class]="isMobileView ? 'modal fade' : 'rounded-2 w-100 mt-2 border flex-auto p-2'"
-         [attr.id]="isMobileView ? 'trattiPrivilegi' : null"
-         [attr.tabindex]="isMobileView ? '-1' : null"
-         [attr.aria-labelledby]="isMobileView ? 'trattiPrivilegiLabel' : null"
-         [attr.aria-hidden]="isMobileView ? 'true' : null"
-         [style.display]="!isMobileView ? 'block' : null">
-      <div [ngClass]="{'modal-dialog modal-dialog-centered modal-dialog-scrollable': isMobileView}">
-        <div [ngClass]="{'modal-content text-bg-dark': isMobileView}">
-          <div [ngClass]="{'modal-body': isMobileView}">
-
-            <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
-            <main>
-              @if (getPrivilegiRazza()) {
-                <label>Razza</label>
-                <ul>
-                  @for (privilegio of getPrivilegiRazza()?.privilegi; track $index) {
-                    <li><b>{{ privilegio.name }}</b>: {{ privilegio.description }}</li>
-                  }
-                </ul>
+    @if(!isMobileView || activeSection === 'trattiPrivilegi') {
+      <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 mt-2 border flex-auto p-2'">
+        <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
+        <main>
+          @if (getPrivilegiRazza()?.privilegi?.length) {
+            <label>Privilegi di Razza</label>
+            <ul>
+              @for (privilegio of getPrivilegiRazza()?.privilegi; track $index) {
+                <li class="duckcase small">
+                  <b>{{ privilegio.name }}</b>: 
+                  {{ privilegio.description }}</li>
               }
-              @if (getPrivilegiBackground()) {
-                <label>Background</label>
-                <ul>
-                  @for (privilegio of getPrivilegiBackground()?.privilegi; track $index) {
-                    <li><b>{{ privilegio.name }}</b>: {{ privilegio.description }}</li>
-                  }
-                </ul>
+            </ul>
+          }
+          @if (getPrivilegiBackground()) {
+            <label>Privilegi di Background</label>
+            <ul>
+              @for (privilegio of getPrivilegiBackground()?.privilegi; track $index) {
+                <li class="duckcase small">
+                  <b>{{ privilegio.name }}</b>: 
+                  {{ privilegio.description }}</li>
               }
+            </ul>
+          }
 
-              <label>Classe</label>
-              <form (ngSubmit)="addToList('privilegi', $event)" 
-                    class="d-flex gap-2 mb-2 align-items-end">
-                <button type="submit" class="btn btn-success p-1 px-2" 
-                        aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i>
-                </button>
+          <label>Privilegi di classe</label>
+          <form (ngSubmit)="addToList('privilegi', $event)" 
+                class="d-flex gap-2 mb-2 align-items-end">
+            <button type="submit" class="btn btn-success p-1 px-2" 
+                    aria-label="Aggiungi classe"><i class="bi bi-plus-lg"></i>
+            </button>
+            <div>
+              <label for="privilegio-value">Seleziona classe</label>
+              <input type="search"
+                      autocomplete="off"
+                      placeholder="Es: Guerriero campione" 
+                      name="privilegio-value" 
+                      id="privilegio-value"
+                      class="form-control form-control-dnd">
+              <template autocomplete="privilegio-value" chars="3" options="3">
+                @for (sottoclasse of dnd.getSottoclassiDisponibili(character()); track sottoclasse) {
+                  <li>{{ sottoclasse }}</li>
+                }
+              </template>
+            </div>
+          </form>
+
+          @if (!character().privilegi.length) {
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle text-primary"></i>
+              Nessun privilegio di classe
+            </div>
+            
+          } @else {
+            <div>
+              @for (classe of dnd.privilegiMappati(character()); track i; let i = $index) {
                 <div>
-                  <label for="privilegio-value">Seleziona classe</label>
-                  <input type="search"
-                         autocomplete="off"
-                         placeholder="Es: Guerriero campione" 
-                         name="privilegio-value" 
-                         id="privilegio-value"
-                         class="form-control form-control-dnd">
-                  <template autocomplete="privilegio-value" chars="3" options="3">
-                    @for (sottoclasse of dnd.getSottoclassiDisponibili(character()); track sottoclasse) {
-                      <li>{{ sottoclasse }}</li>
-                    }
-                  </template>
-                </div>
-              </form>
+                  <!-- INPUT CLASSE -->
+                  <section class="d-flex gap-2">
+                    <button class="btn btn-danger p-1 px-2" 
+                            (click)="deleteFromList('privilegi', classe.srcIndex ?? -1)"
+                            ><i class="bi bi-trash"></i></button>
+                    <input [value]="classe.name" 
+                            type="text" 
+                            id="privilegi-{{classe.srcIndex}}" 
+                            name="privilegi-{{classe.srcIndex}}" 
+                            class="form-control form-control-dnd">
+                  </section>
+                  <!-- DESCRIZIONE PRIVILEGI -->
+                  <section>
+                    <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
+                      @if (classe.privileges.length == 0) { 
+                        <i class="text-danger">Classe non riconosciuta</i>
 
-              @if (!character().privilegi.length) {
-                <div class="alert alert-info">
-                  <i class="bi bi-info-circle text-primary"></i>
-                  Nessun privilegio
-                </div>
-                
-              } @else {
-                <div>
-                  @for (classe of dnd.privilegiMappati(character()); track i; let i = $index) {
-                    <div>
-                      <!-- INPUT CLASSE -->
-                      <section class="d-flex gap-2">
-                        <button class="btn btn-danger p-1 px-2" 
-                               (click)="deleteFromList('privilegi', classe.srcIndex ?? -1)"
-                               ><i class="bi bi-trash"></i></button>
-                        <input [value]="classe.name" 
-                                type="text" 
-                                id="privilegi-{{classe.srcIndex}}" 
-                                name="privilegi-{{classe.srcIndex}}" 
-                                class="form-control form-control-dnd">
-                      </section>
-                      <!-- DESCRIZIONE PRIVILEGI -->
-                      <section>
-                        <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                          @if (classe.privileges.length == 0) { 
-                            <i class="text-danger">Classe non riconosciuta</i>
-
-                          } @else {
-                            @for (privilegio of classe.privileges; track privilegio.privilege) {
-                              <li style="list-style: disc;">
-                                <div>
-                                  <b>{{ privilegio.privilege }}</b>
-                                  @if (privilegio.description) {
-                                    <span>: {{ privilegio.description }}</span>
-                                  } @else {
-                                    nessuna descrizione
-                                  }
-                                </div>
-                              </li>
-                            }
-                          }
-                        </ul>
-                      </section>
-                    </div>
-                  }
+                      } @else {
+                        @for (privilegio of classe.privileges; track privilegio.privilege) {
+                          <li style="list-style: disc;">
+                            <div>
+                              <b>{{ privilegio.privilege }}</b>
+                              @if (privilegio.description) {
+                                <span>: {{ privilegio.description }}</span>
+                              } @else {
+                                nessuna descrizione
+                              }
+                            </div>
+                          </li>
+                        }
+                      }
+                    </ul>
+                  </section>
                 </div>
               }
-            </main>
-
-          </div>
-          <div *ngIf="isMobileView" class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          </div>
-        </div>
+            </div>
+          }
+        </main>
       </div>
-    </div>
+    }
   </section>
 
 </article>
 
 
+<footer *ngIf="isMobileView" class="p-4">
+  <div class="d-flex gap-2 p-1 fixed-bottom text-bg-c1 shadow-lg" 
+        style="overflow-x: auto;"
+        id="buttonsList">
+    @for (btn of mobileButtons; track $index) {
+      <button class="btn p-1" 
+              [class.btn-secondary]="activeSection === btn.key" 
+              [class.btn-outline-secondary]="activeSection !== btn.key" 
+              (click)="showSection(btn.key)">
+  
+        <div class="text-truncate" style="max-width: 50px;">
+          <i class="bi bi-{{btn.icon}} mx-auto"></i> <br>
+          <small style="font-size: 10px;">{{ btn.label }}</small> 
+        </div>
+      </button>
+    }
+  </div>
+</footer>

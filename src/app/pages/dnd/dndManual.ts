@@ -3738,27 +3738,31 @@ export const DND = {
    * @returns {{key:string, value:number}[]|[]}
    */
   getVelocita(character :PersonaggioDND){
+    //  RAZZA PERSONAGGIO
     const razzaPersonaggio = String(character.generali.find(g => g.key === 'razza')?.value || '').trim().toLowerCase();
     if (!razzaPersonaggio){ 
       console.error('il personaggio non risulta avere una razza', razzaPersonaggio);
       return [];
     }
-    const lista = Array.isArray(DND.sottorazze) ? DND.sottorazze : [];
-    if(!lista.length){
-      console.error('lista sottorazze non trovata', lista);
+    //  TUTTE LE RAZZE
+    const sottorazze = Array.isArray(DND.sottorazze) ? DND.sottorazze : [];
+    if(!sottorazze.length){
+      console.error('lista sottorazze non trovata', sottorazze);
       return [];
     }
-    const razza = lista.find(r => {
+    //  MATCH RAZZA 
+    const razzaMatch = sottorazze.find(r => {
       const n = String(r?.nome || '').trim().toLowerCase();
       if (!n) return false;
       return n === razzaPersonaggio || n.includes(razzaPersonaggio) || razzaPersonaggio.includes(n);
     });
-    if (!razza){
+    if (!razzaMatch || !razzaMatch.velocita.length){
       console.error('razza non trovata nella lista', razzaPersonaggio);
       return [];
     }
-    let result = Array.isArray(razza.velocita) ? razza.velocita : [];
-    return result;
+    //  MOSTRA VELOCITA'
+    let velocita = razzaMatch.velocita  ||[];
+    return velocita;
   },
 
   /**

@@ -46,26 +46,43 @@ export class DndComponent implements OnInit { // Implement OnInit
         this.isMobileView = window.innerWidth < 768; 
       }
       mobileButtons = [
-        { key: 'generalita', label: 'Generalità', 
-          info:()=> this.character().nome_personaggio || '-' 
+        { key: 'generalita', 
+          label: 'Generalità', 
+          icon:'person'
         },
-        { key: 'punteggi', label: 'Punteggi', 
-          info:()=> this.character().punteggi
-                    .map(punteggio=> this.mod(punteggio.value))
-                    .join(' | ')
+        { key: 'punteggi', 
+          label: 'Punteggi', 
+          icon: 'bar-chart'
         },
-        { key: 'competenzeLinguaggi', label: 'Competenze e Linguaggi' },
-        { key: 'combattimento', label: 'Combattimento', 
-          info:()=>`CA: ${this.character().classe_armatura};
-          HP: ${this.character().punti_ferita_attuali}/${DND.puntiFeritaMassimi(this.character())}`,
+        { key: 'competenzeLinguaggi', 
+          label: 'Competenze e Linguaggi', 
+          icon: 'book'
         },
-        { key: 'attacchiIncantesimi', label: 'Attacchi e Incantesimi' },
-        { key: 'equipaggiamento', label: 'Equipaggiamento', 
-          info:()=> DND.trasporto(this.character()) +'kg'
+        { key: 'combattimento', 
+          label: 'Combattimento', 
+          icon: 'shield'
         },
-        { key: 'personalita', label: 'Personalità' },
-        { key: 'trattiPrivilegi', label: 'Tratti e Privilegi' },
+        { key: 'attacchiIncantesimi', 
+          label: 'Attacchi e Incantesimi', 
+          icon: 'arrow-through-heart'
+        },
+        { key: 'equipaggiamento', 
+          label: 'Equipaggiamento', 
+          icon: 'backpack2'
+        },
+        { key: 'personalita', 
+          label: 'Personalità', 
+          icon: 'person'
+        },
+        { key: 'trattiPrivilegi', 
+          label: 'Tratti e Privilegi', 
+          icon: 'person-vcard'
+        },
       ]
+      public activeSection: string = 'generalita';
+      public showSection(sectionId: string): void {
+        this.activeSection = sectionId;
+      }
 
 
   private loadCharacter(): PersonaggioDND {
@@ -78,6 +95,16 @@ export class DndComponent implements OnInit { // Implement OnInit
     'Neutrale buono', 'Neutrale', 'Neutrale malvagio', 
     'Legale buono', 'Legale neutrale', 'Legale malvagio'
   ];
+
+  trovaIconaVelocita(key:string){
+    switch (key) {
+      case 'nuotare': return 'bi-water';
+      case 'volare': return 'bi-airplane';
+      case 'scalare': return 'bi-person-arms-up';
+      case 'camminare': return 'bi-person-walking';
+      default: return 'bi-dot';
+    }
+  }
 
   handleChange(event: Event) {
     // se fa parte di un form, annulla

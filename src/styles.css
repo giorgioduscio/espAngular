@@ -35,10 +35,14 @@ input.form-control:focus{
   color: inherit !important;
 }
 
-/* PULSANTI */
+/* MODIFICA CLASSI BOOTSTRAP */
 a{
   text-underline-offset: 5px;
   font-style: italic; 
+}
+
+.form-control::placeholder{
+  color: #ffffff80 !important;
 }
 
 /* PSEUDO BOOTSTRAP */
@@ -54,6 +58,23 @@ a{
 .border{
   border-color: inherit !important;
 }
-.form-control::placeholder{
-  color: #ffffff80 !important;
+.text-bg-c1{
+  background-color: var(--c1);
+  color: var(--c5);
+}
+.text-bg-c2{
+  background-color: var(--c2);
+  color: var(--c5);
+}
+.text-bg-c3{
+  background-color: var(--c3);
+  color: var(--c5);
+}
+.text-bg-c4{
+  background-color: var(--c4);
+  color: var(--c5);
+}
+.text-bg-c5{
+  background-color: var(--c5);
+  color: var(--c1);
 }
