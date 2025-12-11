@@ -3977,11 +3977,11 @@ export function inizializzaPersonaggio() :PersonaggioDND {
   return {
     nome_personaggio: 'Es: Bilbo Baggins',
     generali: [
-      { key: 'background', value: 'Forestiero', type: 'text' },
-      { key: 'nome_giocatore', value: 'Es: il tuo nome', type: 'text' },
-      { key: 'razza', value: 'Umano', type: 'text' },
-      { key: 'allineamento', value: 'Legale Buono', type: 'text' },
-      { key: 'punti_esperienza', value: 0, type: 'number' },
+      { key: 'background', value: 'Forestiero' },
+      { key: 'nome_giocatore', value: 'Es: il tuo nome' },
+      { key: 'razza', value: 'Umano' },
+      { key: 'allineamento', value: 'Legale Buono' },
+      { key: 'punti_esperienza', value: 0 },
     ],
 
     // colonna sinistra
@@ -4033,6 +4033,7 @@ export function inizializzaPersonaggio() :PersonaggioDND {
     
     // colonna centrale
     classe_armatura: 10,
+    velocita: "Camminare: 9m",
     punti_ferita_attuali: 10,
     punti_ferita_temporanei: 0,
     ts_falliti: 0,

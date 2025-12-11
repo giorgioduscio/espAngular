@@ -37,11 +37,13 @@
         </div>
 
         <div class="d-flex flex-column gap-1">
-          <div class="p-2 border rounded">{{ getClassesString() }}</div>
+          <div class="p-2 border rounded" 
+                data-popover="click>Inserire privilegi di classe">{{ getClassesString() }}</div>
           <label class="duckcase" for="classe">Classe</label>
         </div>
         <div class="d-flex flex-column gap-1">
-          <div class="p-2 border rounded">{{ liv() || '-' }}</div>
+          <div class="p-2 border rounded"
+                data-popover="click>Derivati dai punti esperienza">{{ liv() || '-' }}</div>
           <label class="duckcase" for="livello">Livello</label>
         </div>
         @for (campo of character().generali; track campo.key; let i = $index) {
@@ -49,7 +51,7 @@
             <div class="d-flex flex-column gap-1">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
-                      class="form-control-dnd form-select">
+                      class="form-control-dnd">
                 @for (allineamento of allineamenti; track allineamento) {
                   <option [selected]="campo.value===allineamento" 
                           [value]="allineamento"
@@ -63,7 +65,7 @@
             <div class="d-flex flex-column gap-1">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
-                      class="form-control-dnd form-select">
+                      class="form-control-dnd">
                 <option value="">Nessuno</option>
                 @for (b of dnd.background; track b.name) {
                   <option [selected]="(campo.value||'').toLowerCase()===b.name.toLowerCase()" 
@@ -78,7 +80,7 @@
             <div class="d-flex flex-column gap-1">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
-                      class="form-control-dnd form-select">
+                      class="form-control-dnd">
                 <option value="">Nessuna</option>
                 @for (r of dnd.sottorazze; track r.nome) {
                   <option [selected]="(campo.value||'').toLowerCase()===r.nome.toLowerCase()" 
@@ -94,9 +96,9 @@
               <input [value]="campo.value" 
                       name="generali-{{i}}-value" 
                       [id]="campo.key" 
-                      [type]="campo.type" 
+                      type="text" 
                       class="form-control form-control-dnd"
-                      [placeholder]="getPlaceholder(campo.key, campo.type)">
+                      [placeholder]="getPlaceholder(campo.key)">
               <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
             </div>
           }
@@ -209,16 +211,8 @@
               <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
             </div>
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Velocità</label>
-              @for (velocita of dnd.getVelocita(character()); track velocita.key) {
-                @if(velocita.value) {
-                  <small class="d-grid" style="grid-template-columns: auto 1fr auto;">
-                    <i class="bi {{ trovaIconaVelocita(velocita.key) }} me-2"></i>
-                    <small class="duckcase text-truncate">{{ velocita.key }}: </small>
-                    <b>{{ velocita.value }}m</b>
-                  </small>
-                }
-              }
+              <label class="duckcase" for="velocita">Velocità</label>
+              <textarea [value]="character().velocita" name="velocita" id="velocita" class="form-control form-control-dnd"></textarea>
             </div>
           </div>
 
@@ -226,7 +220,8 @@
           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
             <div class="d-flex flex-column gap-1">
               <label class="duckcase" for="pfm">Massimi</label>
-              <div class="p-2 border rounded">{{ dnd.puntiFeritaMassimi(character()) }}</div>
+              <div class="p-2 border rounded"
+                    data-popover="click>Aggiungere privilegi di classe">{{ dnd.puntiFeritaMassimi(character()) }}</div>
             </div>
             <div class="d-flex flex-column gap-1">
               <label class="duckcase" for="pfa">Attuali</label>
@@ -250,7 +245,8 @@
                 style="grid-template-columns: 1fr 1fr;">
             <div>
               <label class="duckcase">Dadi Vita</label>
-              <div class="p-2 border rounded">
+              <div class="p-2 border rounded"
+                    data-popover="click>Aggiungere privilegi di classe">
                 @if(dnd.dadiVitaPersonaggio(character()).length) {
                   @for (dado of dnd.dadiVitaPersonaggio(character()); track dado.dado; let last = $last) {
                     {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
@@ -443,7 +439,7 @@
               <textarea name="personalita-{{i}}-value" 
                         id="personalita-{{i}}-value" 
                         class="form-control form-control-dnd"
-                        [placeholder]="getPlaceholder(p.key, 'textarea')"
+                        [placeholder]="getPlaceholder(p.key)"
                         >{{ p.value }}</textarea>
             </div>
           }

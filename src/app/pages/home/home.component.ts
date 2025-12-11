@@ -6,6 +6,7 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
 import { HomeDirective } from './home.directive';
 import { siteActions } from '../personalArea/siteActions';
+import { AutocompleteInline } from '../../tools/autocomplete';
 
 @Component({
   selector: 'app-home',
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
   // IMPLEMENTAZIONI
   ngOnInit(): void {
     //console.log('ngOninit')
+    new AutocompleteInline();
   }
   ngAfterContentChecked(): void {
     //console.log('ngAfterContentChecked')

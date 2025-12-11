@@ -8,6 +8,7 @@ import toast from '../../tools/toast';
 import agree from '../../tools/agree';
 import { Autocomplete } from '../../tools/autocomplete';
 import PersonaggioDND from '../../interfaces/personaggioDND';
+import popovers_init from '../../tools/popover';
 
 @Component({
   selector: 'app-dnd',
@@ -25,6 +26,7 @@ export class DndComponent implements OnInit { // Implement OnInit
 
   constructor() {
     new Autocomplete();
+    popovers_init();
     effect(() => {
       localStorage.setItem('character', JSON.stringify(this._character()));
       document.title =`Scheda di ${this._character().nome_personaggio}`;        
@@ -274,7 +276,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       mod = DND.getModificatore;
       passiva =(nomeAbilita:string)=> DND.getValorePassivoAbilita(nomeAbilita, this.character())
 
-  getPlaceholder(key: string, type: string): string {
+  getPlaceholder(key: string): string {
     switch (key) {
       case 'nome_giocatore':
         return 'Es: Mario Rossi';
@@ -289,7 +291,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       case 'difetti':
         return 'Es: Non penso mai prima di agire. Mai.';
       default:
-        return type === 'number' ? 'Es: 0' : 'Inserisci qui...';
+        return 'Inserisci qui...';
     }
   }
 

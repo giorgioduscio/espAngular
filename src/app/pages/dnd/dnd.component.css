@@ -73,6 +73,10 @@
       border-color: var(--dnd5);
       box-shadow: none;
     }
+    select.form-control-dnd{
+      padding: 8px;
+      border-radius: 0.375rem;
+    }
 
 
 /* TOAST */

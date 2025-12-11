@@ -47,9 +47,7 @@ export class Autocomplete {
   private _debouncedHandleChange!: DebouncedFunction<(e: InputEvent) => void>;
 
   // --- CONSTRUCTOR ---
-  /**
-   * Inizializza il componente Autocomplete
-   */
+  //  Inizializza il componente Autocomplete
   constructor() {
     if (this._bound) return;
     this._bound = true;
@@ -922,4 +920,217 @@ export class Autocomplete {
     // perché richiederebbero riferimenti alle funzioni originali.
     // Per una pulizia completa, considera l'uso di AbortController.
   }
+}
+
+
+
+/**
+AutocompleteInline - Classe per suggerimenti automatici in input HTML
+
+Questa classe implementa una funzionalità di autocompletamento in tempo reale
+per campi di input HTML, mostrando il suggerimento direttamente all'interno
+del campo di input stessa (sovrapposto in grigio) senza richiedere wrapper
+aggiuntivi o markup speciale.
+
+CARATTERISTICHE PRINCIPALI:
+- Non richiede alcun wrapper HTML aggiuntivo
+- Il suggerimento appare direttamente nell'input come testo grigio
+- Supporta l'attributo data-char per impostare il numero minimo di caratteri
+- Completamento con il tasto TAB
+- Posizionamento preciso basato sulle dimensioni reali dell'input
+- Stile automaticamente adattato all'input corrispondente
+
+ATTRIBUTI SUPPORTATI:
+- data-autocomplete="opzione1,opzione2,opzione3"
+  → Lista di opzioni separate da virgola per l'autocompletamento
+- data-char="3" (opzionale)
+  → Numero minimo di caratteri da digitare prima di mostrare suggerimenti
+  → Se omesso, il default è 1 carattere
+
+UTILIZZO:
+1. Includi questa classe nel tuo file HTML o JS
+2. Istanzia la classe una sola volta: new AutocompleteInline()
+3. Aggiungi gli attributi data-autocomplete agli input desiderati
+
+ESEMPI HTML:
+
+<!-- Suggerimento dopo 1 carattere (default) -->
+<input data-autocomplete="Roma,Milano,Napoli" placeholder="Città...">
+
+<!-- Suggerimento dopo 3 caratteri -->
+<input data-autocomplete="Apple,Android,iOS" data-char="3" placeholder="Sistema...">
+
+COMPORTAMENTO:
+- Mentre digiti, viene mostrata la parte rimanente del primo suggerimento
+  che corrisponde al testo digitato (in grigio, sovrapposto)
+- Premendo TAB, il suggerimento viene completato automaticamente
+- Il suggerimento scompare quando l'input perde il focus
+- Funziona con qualsiasi stile di input (padding, font, dimensioni, ecc.)
+
+NOTE:
+- La classe gestisce automaticamente l'iniezione degli stili CSS necessari
+- Gli stili vengono iniettati una sola volta, anche se crei più istanze
+- Non sono richieste dipendenze esterne (solo JavaScript vanilla)
+ */
+export class AutocompleteInline {
+  static styleInjected = false;
+  static activeSuggestions = new Map(); // input => suggestionSpan
+
+  constructor() {
+    if (!AutocompleteInline.styleInjected) {
+      this.injectStyles();
+      AutocompleteInline.styleInjected = true;
+    }
+    this.setupEventListeners();
+  }
+
+  injectStyles() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .autocomplete-suggestion {
+        position: absolute;
+        color: #999;
+        font: var(--autocomplete-font);
+        font-size: var(--autocomplete-font-size);
+        padding: var(--autocomplete-padding);
+        line-height: var(--autocomplete-line-height);
+        width: var(--autocomplete-width);
+        height: var(--autocomplete-height);
+        top: var(--autocomplete-top);
+        left: var(--autocomplete-left);
+        text-indent: var(--autocomplete-text-indent);
+        pointer-events: none;
+        user-select: none;
+        white-space: pre;
+        margin: 0;
+        border: none;
+        background: transparent;
+        z-index: 1000;
+        box-sizing: border-box;
+      }
+      .autocomplete-temp-measure {
+        visibility: hidden;
+        position: absolute;
+        white-space: pre;
+        font: var(--autocomplete-temp-font);
+        font-size: var(--autocomplete-temp-font-size);
+        padding-left: var(--autocomplete-temp-padding-left);
+        padding-right: var(--autocomplete-temp-padding-right);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  setupEventListeners() {
+    document.addEventListener("input", this.handleInput);
+    document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("focus", this.handleFocus, true);
+    document.addEventListener("blur", this.handleBlur, true);
+  }
+
+  handleInput = (event:Event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) || !input.dataset['autocomplete']) return;
+
+    const options = input.dataset['autocomplete'].split(",");
+    const minChars = parseInt(input.dataset['char'] || "1", 10) || 1;
+    let suggestionSpan = AutocompleteInline.activeSuggestions.get(input);
+
+    if (!suggestionSpan) {
+      suggestionSpan = document.createElement("span");
+      suggestionSpan.className = "autocomplete-suggestion";
+      AutocompleteInline.activeSuggestions.set(input, suggestionSpan);
+    }
+
+    // Imposta lo stile per abbinare esattamente l'input
+    const inputRect = input.getBoundingClientRect();
+    const inputStyle = window.getComputedStyle(input);
+
+    suggestionSpan.style.setProperty('--autocomplete-font', inputStyle.font);
+    suggestionSpan.style.setProperty('--autocomplete-font-size', inputStyle.fontSize);
+    suggestionSpan.style.setProperty('--autocomplete-padding', inputStyle.padding);
+    suggestionSpan.style.setProperty('--autocomplete-line-height', inputStyle.lineHeight);
+    suggestionSpan.style.setProperty('--autocomplete-width', `${inputRect.width}px`);
+    suggestionSpan.style.setProperty('--autocomplete-height', `${inputRect.height}px`);
+
+    const currentValue = input.value.trim();
+    if (currentValue.length < minChars) {
+      suggestionSpan.textContent = "";
+      // Rimuovi anche le variabili di posizionamento quando non ci sono suggerimenti
+      suggestionSpan.style.setProperty('--autocomplete-top', '0');
+      suggestionSpan.style.setProperty('--autocomplete-left', '0');
+      suggestionSpan.style.setProperty('--autocomplete-text-indent', '0');
+      return;
+    }
+
+    const match = options.find(option =>
+      option.toLowerCase().startsWith(currentValue.toLowerCase())
+    );
+
+    if (match) {
+      const remaining = match.slice(currentValue.length);
+      suggestionSpan.textContent = remaining;
+
+      // Posiziona il suggerimento esattamente sopra l'input
+      const inputRectFinal = input.getBoundingClientRect();
+      suggestionSpan.style.setProperty('--autocomplete-top', `${inputRectFinal.top + window.scrollY}px`);
+      suggestionSpan.style.setProperty('--autocomplete-left', `${inputRectFinal.left + window.scrollX}px`);
+
+      // Posiziona il testo rimanente alla posizione del cursore
+      const cursorPos = input.selectionStart || 0;
+      const textBeforeCursor = input.value.substring(0, cursorPos);
+      const tempSpan = document.createElement("span");
+      tempSpan.className = "autocomplete-temp-measure";
+      tempSpan.style.setProperty('--autocomplete-temp-font', inputStyle.font);
+      tempSpan.style.setProperty('--autocomplete-temp-font-size', inputStyle.fontSize);
+      tempSpan.style.setProperty('--autocomplete-temp-padding-left', inputStyle.paddingLeft);
+      tempSpan.style.setProperty('--autocomplete-temp-padding-right', inputStyle.paddingRight);
+      tempSpan.textContent = textBeforeCursor;
+      document.body.appendChild(tempSpan);
+      const offset = tempSpan.getBoundingClientRect().width;
+      document.body.removeChild(tempSpan);
+      suggestionSpan.style.setProperty('--autocomplete-text-indent', `${offset - parseFloat(inputStyle.paddingLeft)}px`);
+    } else {
+      suggestionSpan.textContent = "";
+    }
+
+    // Aggiungi al body se non presente
+    if (!suggestionSpan.parentElement) {
+      document.body.appendChild(suggestionSpan);
+    }
+  };
+
+  handleKeyDown = (event:Event) => {
+    if ((event as KeyboardEvent).key !== "Tab") return;
+
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) || !input.dataset['autocomplete']) return;
+
+    const suggestionSpan = AutocompleteInline.activeSuggestions.get(input);
+    if (suggestionSpan?.textContent) {
+      event.preventDefault();
+      input.value += suggestionSpan.textContent;
+      suggestionSpan.textContent = "";
+    }
+  };
+
+  handleFocus = (event:FocusEvent) => {
+    const input = event.target;
+    if (input instanceof HTMLInputElement && input.dataset['autocomplete']) {
+      const suggestionSpan = AutocompleteInline.activeSuggestions.get(input);
+      if (suggestionSpan) {
+        suggestionSpan.style.display = "block";
+      }
+    }
+  };
+
+  handleBlur = (event:FocusEvent) => {
+    const input = event.target;
+    if (input instanceof HTMLInputElement && input.dataset['autocomplete']) {
+      const suggestionSpan = AutocompleteInline.activeSuggestions.get(input);
+      if (suggestionSpan) {
+        suggestionSpan.style.display = "none";
+      }
+    }
+  };
 }

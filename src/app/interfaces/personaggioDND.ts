@@ -1,11 +1,11 @@
 export default interface PersonaggioDND {
   nome_personaggio: string,
   generali: [
-    { key: 'background', value: string, type: 'text' },
-    { key: 'nome_giocatore', value: string, type: 'text' },
-    { key: 'razza', value: string, type: 'text' },
-    { key: 'allineamento', value: string, type: 'text' },
-    { key: 'punti_esperienza', value: number, type: 'number' },
+    { key: 'background', value: string },
+    { key: 'nome_giocatore', value: string },
+    { key: 'razza', value: string },
+    { key: 'allineamento', value: string },
+    { key: 'punti_esperienza', value: number },
   ],
 
   // colonna sinistra
@@ -57,6 +57,7 @@ export default interface PersonaggioDND {
   
   // colonna centrale
   classe_armatura: number,
+  velocita: string, 
   punti_ferita_attuali: number,
   punti_ferita_temporanei: number,
   ts_falliti: number,
