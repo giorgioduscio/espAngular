@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest, filter, map, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';

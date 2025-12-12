@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { NgFor, NgIf } from "@angular/common";
 import { AssistantGdrService } from "./tools/assistant-gdr.service";
 import { OblioCardComponent } from "./oblioCard.component";

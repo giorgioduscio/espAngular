@@ -3,12 +3,10 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DND, inizializzaPersonaggio } from './dndManual';
 import { local } from './localStorage';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
-import toast from '../../tools/toast';
-import agree from '../../tools/agree';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import {toast, agree, popovers_init} from '../../tools/feedbacksUI';
 import { Autocomplete } from '../../tools/autocomplete';
 import PersonaggioDND from '../../interfaces/personaggioDND';
-import popovers_init from '../../tools/popover';
 
 @Component({
   selector: 'app-dnd',
@@ -164,7 +162,7 @@ export class DndComponent implements OnInit { // Implement OnInit
     if(await agree('Resettare il personaggio?', 'Reset', 'danger')){
       this._character.set(inizializzaPersonaggio());
       local.set(this.character());
-      toast("PersonaggioDND preimpostato", "danger")
+      toast("Personaggio resettato", "danger")
     }
   }
 
@@ -305,7 +303,7 @@ export class DndComponent implements OnInit { // Implement OnInit
           const pastedChar = await this.local.paste();
           if (pastedChar) {
             this._character.set(pastedChar);
-            toast('PersonaggioDND impostato dagli appunti')
+            toast('Personaggio impostato dagli appunti')
           }
         } catch (error) {
           console.error("Failed to parse character from clipboard", error);

@@ -2,7 +2,7 @@ import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit,
 import { FormsModule } from '@angular/forms';
 
 import { CommonModule, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
 import { HomeDirective } from './home.directive';
 import { siteActions } from '../personalArea/siteActions';
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, AfterContentChecked, AfterContentI
 
   // CARD
   // nasconde le card che richiedono autorizzazione
-  cards =siteActions('').filter(a=> !a.auth?.length)
+  cards =siteActions().filter(a=> !a.auth?.length)
   isVisible=true
   setIsVisible(){ this.isVisible= !this.isVisible }
 

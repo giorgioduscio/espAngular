@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { ListService } from '../../services/list.service';
 import { ListItem } from '../../interfaces/list';
 import { ParagraphPipe } from './paragraph.pipe';

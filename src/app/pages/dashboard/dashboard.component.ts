@@ -2,7 +2,7 @@ import { Component, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { NgFor, NgIf } from '@angular/common';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { RolesValues, User } from '../../interfaces/user';
 import { ParagraphPipe } from '../list/paragraph.pipe';
 import inputType from '../../tools/inputType';

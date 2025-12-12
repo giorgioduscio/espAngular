@@ -5,7 +5,7 @@ import { Chat, Message } from '../../../interfaces/chat';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
-import { randomNumber } from '../../../tools/randomCompiler';
+import { randomCompiler } from '../../../tools/randomCompiler';
 import { ChatModalsComponent } from "../chatModals/chatModals.component";
 
 @Component({
@@ -62,7 +62,7 @@ export class MessagesComponent {
     const time =`${new Date().getHours()}:${new Date().getMinutes()}`
     
     updatedChat.messages.push({
-      IDmessage: randomNumber(999999999),
+      IDmessage: randomCompiler.number(999999999),
       message: input.message,
       IDuser: user ?user.id :404,
       username: user ?user.username :'Sconosciuto',

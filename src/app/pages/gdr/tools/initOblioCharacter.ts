@@ -1,13 +1,13 @@
 import { OblioCard } from "../../../interfaces/oblioCard";
-import { randomNumber, randomString } from "../../../tools/randomCompiler";
+import { randomCompiler } from "../../../tools/randomCompiler";
 
 export default function initOblioCharacter(userKey:string):OblioCard {
   return {
-    id: randomNumber(999999999),
+    id: randomCompiler.number(999999999),
     userKey: userKey,
 
     head: {
-      nome: randomString(),
+      nome: randomCompiler.string(),
       ispirazione: 0,
       punti_vita: 40,
       monete: 20,

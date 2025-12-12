@@ -1,11 +1,11 @@
-import { Component, effect } from '@angular/core';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
-import { HierarchyService } from './hierarchy.service';
-import { ListItem } from '../../interfaces/list';
-import { NgFor } from '@angular/common';
-import { HierarchyAComponent } from "./hierarchyA.component";
 import { HierarchyBComponent } from "./hierarchyB.component";
-import { randomString } from '../../tools/randomCompiler';
+import { randomCompiler } from '../../tools/randomCompiler';
+import { NgFor } from "@angular/common";
+import { Component, effect } from "@angular/core";
+import { ListItem } from "../../interfaces/list";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
+import { HierarchyService } from "./hierarchy.service";
+import { HierarchyAComponent } from "./hierarchyA.component";
 
 @Component({
   selector: 'app-hierarchy',
@@ -70,7 +70,7 @@ export class HierarchyComponent{
   onAdd(){
     this.hierarchyService.addTodo({
       complete: false,
-      title: randomString()
+      title: randomCompiler.string()
     })
   }
   // TODO PATCH

@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NavChatComponent } from './navChat/nav-chat.component';
 import { EditModeService } from './edit-mode.service';
-import { randomImage, randomNumber } from '../../tools/randomCompiler';
+import { randomCompiler } from '../../tools/randomCompiler';
 import { ChatModalsComponent } from './chatModals/chatModals.component';
 
 @Component({
@@ -31,9 +31,9 @@ export class ChatComponent {
   //TODO AGGIUNGE UN ELEMENTO CHAT
   newGroup(form:NgForm){
     const newChat :Chat ={
-      idChat: randomNumber(999999999),
+      idChat: randomCompiler.number(999999999),
       titleChat: form.value.input,
-      imageUrl: randomImage(),
+      imageUrl: randomCompiler.image(),
       usersId: [],
       messages: [{
         IDmessage: 404,

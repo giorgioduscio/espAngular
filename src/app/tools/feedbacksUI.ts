@@ -1,3 +1,229 @@
+type ToastColor = "primary" | "secondary" | "danger" | "success";
+
+// Funzione di utilità per mantenere la sintassi originale
+export function toast(message: string, color?: ToastColor): void {
+  ToastManager.getInstance().show(message, color);
+}
+
+class ToastManager {
+  private static instance: ToastManager;
+  private toastPool: HTMLElement[] = [];
+  private readonly MAX_POOL_SIZE = 5;
+  private styleInjected = false;
+  private colors = {
+    primary: '#007bff',
+    secondary: '#6c757d',
+    danger: '#dc3545',
+    success: '#28a745',
+  };
+
+  // Costruttore privato per singleton
+  private constructor() {}
+
+  // Metodo per ottenere l'istanza singleton
+  public static getInstance(): ToastManager {
+    if (!ToastManager.instance) {
+      ToastManager.instance = new ToastManager();
+    }
+    return ToastManager.instance;
+  }
+
+  // Recupera un elemento dal pool o ne crea uno nuovo
+  private getToastElement(): HTMLElement {
+    return this.toastPool.pop() || document.createElement('div');
+  }
+
+  // Rilascia un elemento nel pool
+  private releaseToastElement(el: HTMLElement): void {
+    if (this.toastPool.length < this.MAX_POOL_SIZE) {
+      el.className = 'toast-notification';
+      this.toastPool.push(el);
+    }
+  }
+
+  // Inietta lo stile CSS se non già fatto
+  private injectStyle(): void {
+    if (!this.styleInjected) {
+      const style = document.createElement('style');
+      style.textContent = `
+        .toast-notification {
+          padding: 15px 20px;
+          margin: 0 auto;
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          max-width: 500px;
+          z-index: 9999;
+          transition: opacity 0.3s ease;
+          opacity: 1;
+          white-space: nowrap;
+          background-color: ${this.colors.secondary};
+          color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+          font-size: 14px;
+        }
+        .toast-notification.fade-out {
+          opacity: 0;
+        }
+      `;
+      document.head.appendChild(style);
+      this.styleInjected = true;
+    }
+  }
+
+  // Mostra un toast
+  public show(message: string, color: ToastColor = "secondary"): void {
+    this.injectStyle();
+
+    const notificaEl = this.getToastElement();
+    notificaEl.className = 'toast-notification';
+    notificaEl.style.backgroundColor = this.colors[color];
+    notificaEl.textContent = message;
+
+    document.body.appendChild(notificaEl);
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        notificaEl.classList.add('fade-out');
+        setTimeout(() => {
+          if (notificaEl.parentNode) {
+            document.body.removeChild(notificaEl);
+          }
+          this.releaseToastElement(notificaEl);
+        }, 300);
+      }, 1000);
+    });
+  }
+}
+
+
+//  funzione che imita confirm()
+export function agree(message:string, 
+  messaggioPulsante='Invio', 
+  colorePulsante: "primary" |"success" |"danger" ="primary") {
+  return new Promise((resolve) => {
+
+    //  STILE
+    const colori = {
+      primary: '#007bff',
+      success: '#28a745',
+      danger: '#dc3545'
+    }
+    if (!document.getElementById("agree-modal-style")) {
+      const style = document.createElement("style");
+      style.id = "agree-modal-style";
+      style.textContent = `
+        .agree-modal {
+          display: flex;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          justify-content: center;
+          padding-top: 50px; /* Imposta 50px di distanza dal bordo superiore */
+          z-index: 10000;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+        .agree-modal.visible {
+          opacity: 1;
+          visibility: visible;
+          transition-delay: 0s;
+        }
+        .agree-modal-content {
+          background-color: #2c2c2c;
+          color: #f1f1f1;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          max-width: 400px;
+          height: max-content;
+          text-align: center;
+        }
+        .agree-modal-message {
+          margin: 0 0 20px 0;
+        }
+        .agree-modal-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+        }
+        .agree-modal-ok {
+          background-color: ${colori[colorePulsante]};
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .agree-modal-cancel {
+          background-color: #6c757d;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .agree-modal-buttons button:active {
+          filter: brightness(85%);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    //  HTML
+    // Aggiungi il modale al body
+    document.body.insertAdjacentHTML("beforeend", `
+      <div class="agree-modal" id="agree-modal">
+        <div class="agree-modal-content">
+          <p class="agree-modal-message">${message}</p>
+          <div class="agree-modal-buttons">
+            <button class="agree-modal-ok" id="agree-ok">${messaggioPulsante}</button>
+            <button class="agree-modal-cancel" id="agree-cancel">Annulla</button>
+          </div>
+        </div>
+      </div>
+    `);
+
+    //  LOGICA
+    const modal = document.getElementById("agree-modal");
+    const okButton = document.getElementById("agree-ok");
+    const cancelButton = document.getElementById("agree-cancel");
+    if(!modal || !okButton || !cancelButton) 
+      return console.error('elementi non trovati', modal, okButton, cancelButton);
+
+    // Mostra il modale con animazione fade-in
+    setTimeout(() => {
+      modal.classList.add("visible");
+    }, 10);
+
+    // Funzione per rimuovere il modale con animazione fade-out
+    const cleanup = () => {
+      modal.classList.remove("visible");
+      setTimeout(() => {
+        document.body.removeChild(modal);
+      }, 300); // Tempo uguale alla durata della transizione CSS
+    };
+
+    // Gestione dei clic
+    okButton.onclick = () => {
+      cleanup();
+      resolve(true);
+    };
+
+    cancelButton.onclick = () => {
+      cleanup();
+      resolve(false);
+    };
+  });
+}
+
+
 /**
 # MODULO POPOVER - GESTIONE DI POPOVER DINAMICI PER ELEMENTI HTML
 Questo modulo fornisce un'implementazione leggera e modulare per la creazione
@@ -30,6 +256,13 @@ METODI DISPONIBILI:
 - initClickPopovers(): Inizializza i listener per il trigger `click`.
 - initCleanup(): Pulisce i popover quando gli elementi vengono rimossi.
 */
+
+export function popovers_init() {
+  Popover.injectStyle();
+  Popover.initFocusPopovers();
+  Popover.initClickPopovers();
+  Popover.initCleanup();
+}
 
 const Popover = {
   // Inietta gli stili CSS necessari
@@ -233,10 +466,3 @@ const Popover = {
   },
 };
 
-// Funzione di inizializzazione
-export default function popovers_init() {
-  Popover.injectStyle();
-  Popover.initFocusPopovers();
-  Popover.initClickPopovers();
-  Popover.initCleanup();
-}

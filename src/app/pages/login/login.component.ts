@@ -3,9 +3,9 @@ import { UsersService } from '../../services/users.service';
 import { User } from '../../interfaces/user';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import validation from './validation';
-import { randomNumber, randomImage } from '../../tools/randomCompiler';
+import { randomCompiler } from '../../tools/randomCompiler';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
@@ -45,10 +45,10 @@ export class LoginComponent {
       ...this.form.value,
     }
     this.usersService.addUser({
-      id: randomNumber(999999999),
+      id: randomCompiler.number(999999999),
       username: input.username,
       email: input.email,
-      imageUrl: randomImage(),
+      imageUrl: randomCompiler.image(),
       password: input.password,
       role: Number(input.role),
     })

@@ -1,5 +1,5 @@
 import PersonaggioDND from "../../interfaces/personaggioDND";
-import toast from "../../tools/toast";
+import {toast} from "../../tools/feedbacksUI";
 
 export const local = {
   async get(){

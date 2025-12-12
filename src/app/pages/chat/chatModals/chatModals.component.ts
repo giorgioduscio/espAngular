@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { ChatService } from '../../../services/chat.service';
+import { randomCompiler } from '../../../tools/randomCompiler';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent } from "../../../components/modal/modal.component";
 import { Chat } from '../../../interfaces/chat';
 import { UsersService } from '../../../services/users.service';
-import { randomImage, randomNumber } from '../../../tools/randomCompiler';
-import { ChatService } from '../../../services/chat.service';
+import { ModalComponent } from '../../../shared/modal/modal.component';
 
 @Component({
   selector: 'modal-chatModals',
@@ -58,7 +58,8 @@ export class ChatModalsComponent {
     if(match){
       element!.classList.remove('ng-invalid', 'ng-touched')
       this.errorMessagge =''
-    }else{ 
+    }
+    else{ 
       element!.classList.add('ng-invalid', 'ng-touched')
       this.errorMessagge ='Utente non trovato'
     }
@@ -91,8 +92,8 @@ export class ChatModalsComponent {
     if(this.form.idChat===0){
       if(confirm('Aggiungere il nuovo gruppo?')){
         // inizializzaimmagine e id
-        this.form.imageUrl =randomImage()
-        this.form.idChat =randomNumber(999999999)
+        this.form.imageUrl =randomCompiler.image()
+        this.form.idChat =randomCompiler.number(999999999)
         // aggiunge l'id di chi ha creato il gruppo
         let exist =localStorage.getItem('user')
         let userId =exist ?Number(exist.split('/')[0]) :null

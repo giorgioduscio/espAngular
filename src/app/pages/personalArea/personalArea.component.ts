@@ -1,5 +1,5 @@
 import { Component, effect } from '@angular/core';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../interfaces/user';
 import { siteActions } from './siteActions';
@@ -18,7 +18,7 @@ export class PersonalAreaComponent {
     effect(()=>{
       this.user =authService.user()
       this.ar.params.subscribe(p=> this.userKey =p['userKey'])
-      this.cards =siteActions(this.userKey)
+      this.cards =siteActions()
     })
   }
 
@@ -26,7 +26,7 @@ export class PersonalAreaComponent {
   userKey :string =''
   
   // AZIONI DEL SITO
-  cards =siteActions(this.userKey)
+  cards =siteActions()
   showCard(i:number){
     const requestedRoles =this.cards[i].auth    
     // se non sono richiesti ruoli o solo autenticazione

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NavbarComponent } from "../../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../../shared/navbar/navbar.component";
 import { EditModeService } from '../edit-mode.service';
 import { NgIf } from '@angular/common';
 

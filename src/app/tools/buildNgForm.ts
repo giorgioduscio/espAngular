@@ -10,7 +10,7 @@
 */
 
 import { FormControl } from "@angular/forms"
-import paragraph from "./paragraph"
+import duckcase from "./duckcase"
 
 export default function BuildNgForm(controlObject:{[k:string]:FormControl}, defaultType ='text'){ 
   // OGGETTO PER LA VALIDAZIONE
@@ -20,7 +20,7 @@ export default function BuildNgForm(controlObject:{[k:string]:FormControl}, defa
   const templateForm =Object.keys(controller).map(key=>{
     let input :TemplateField ={
       key :key,
-      title :paragraph(key),
+      title :duckcase(key),
       type :defaultType,
       value :'',
     }

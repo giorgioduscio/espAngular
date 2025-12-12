@@ -1,9 +1,10 @@
 import { Component, effect } from '@angular/core';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { NavbarComponent } from "../../shared/navbar/navbar.component";
 import { HierarchyService } from './hierarchy.service';
 import { ListItem } from '../../interfaces/list';
 import { NgFor } from '@angular/common';
 import { HierarchyBBComponent } from "./hierarchyBB.component";
+import { randomCompiler } from '../../tools/randomCompiler';
 
 @Component({
   selector: 'app-hierarchyB',
@@ -41,7 +42,7 @@ export class HierarchyBComponent{
   onAdd(){
     this.hierarchyService.addTodo({
       complete: false,
-      title: randomString()
+      title: randomCompiler.string()
     })
   }
   // TODO PATCH
@@ -52,8 +53,4 @@ export class HierarchyBComponent{
       ...item, [name]:newValue
     })
   }
-}
-
-function randomString(): string {
-  throw new Error('Function not implemented.');
 }
