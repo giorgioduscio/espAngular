@@ -55,6 +55,22 @@ a{
 .bg-transparent{
   background: transparent;
 }
+
+.font-size-1 {
+  font-size: 0.2rem;
+}
+.font-size-2 {
+  font-size: 0.4rem;
+}
+.font-size-3 {
+  font-size: 0.6rem;
+}
+.font-size-4 {
+  font-size: 0.8rem;
+}
+.font-size-5 {
+  font-size: 1rem;
+}
 .border{
   border-color: inherit !important;
 }

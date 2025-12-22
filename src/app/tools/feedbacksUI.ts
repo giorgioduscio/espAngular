@@ -230,51 +230,47 @@ Questo modulo fornisce un'implementazione leggera e modulare per la creazione
 e gestione di popover dinamici, attivati tramite l'attributo `data-popover`.
 
 CARATTERISTICHE PRINCIPALI:
-- Supporto per i trigger `focus` (mostra/nasconde al focus/blur) e `click` (mostra/nasconde al click).
+- Trigger `focus` per `input`/`textarea`: mostra/nasconde al focus/blur.
+- Trigger `click` per altri elementi: mostra al click e scompare dopo 3 secondi.
 - Animazioni fluide con CSS transitions.
 - Gestione automatica della pulizia del DOM.
-- Riutilizzo dei popover per evitare duplicazioni.
 - Iniezione automatica degli stili CSS.
 - Supporto per attributi ARIA per l'accessibilità.
-- Supporto per formati flessibili: `click>description` o `click>title>description`.
-
-FORMATO DELL'ATTRIBUTO `data-popover`:
-  - `focus>Titolo>Messaggio` (per il trigger focus)
-  - `click>Messaggio` o `click>Titolo>Messaggio` (per il trigger click)
+- Formato `data-popover`: `Titolo>Messaggio` o solo `Messaggio`.
 
 Esempio:
-  <input data-popover="focus>Titolo>Messaggio dettagliato">
-  <button data-popover="click>Solo messaggio">Clicca</button>
-  <button data-popover="click>Titolo>Messaggio dettagliato">Clicca</button>
+  <input data-popover="Titolo>Messaggio dettagliato">
+  <textarea data-popover="Solo messaggio"></textarea>
+  <button data-popover="Titolo>Messaggio per il bottone">Clicca</button>
 
 METODI DISPONIBILI:
 - injectStyle(): Inietta gli stili CSS necessari.
 - createPopover(): Crea un elemento popover.
 - positionPopover(): Posiziona il popover vicino all'elemento target.
 - hidePopover(): Nasconde il popover con animazione.
-- initFocusPopovers(): Inizializza i listener per il trigger `focus`.
-- initClickPopovers(): Inizializza i listener per il trigger `click`.
+- init(): Inizializza i listener per focus e click.
 - initCleanup(): Pulisce i popover quando gli elementi vengono rimossi.
 */
 
 export function popovers_init() {
   Popover.injectStyle();
-  Popover.initFocusPopovers();
-  Popover.initClickPopovers();
+  Popover.init();
   Popover.initCleanup();
 }
 
 const Popover = {
   // Inietta gli stili CSS necessari
   injectStyle: (): void => {
+    if (document.getElementById('popover-styles')) return;
     const style = document.createElement('style');
+    style.id = 'popover-styles';
     style.textContent = `
       .popover {
         padding: 6px 12px;
         z-index: 100;
-        max-width: 200px;
         display: none;
         opacity: 0;
+        word-wrap: break-word; /* Va a capo con parole lunghe */
         
         background: linear-gradient(0deg, #333, #555);
         border-radius: 4px;
@@ -282,6 +278,9 @@ const Popover = {
         position: absolute;
         transform: translateY(-5px);
         transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .popover.popover-top {
+        transform: translateY(5px);
       }
       .popover.visible {
         opacity: 1;
@@ -331,19 +330,59 @@ const Popover = {
     return popover;
   },
 
-  // Posiziona il popover vicino all'elemento target
+  // Posiziona il popover in modo intelligente per evitare l'overflow dello schermo
   positionPopover: (popover: HTMLElement, target: HTMLElement): void => {
     const rect = target.getBoundingClientRect();
-    popover.style.left = `${rect.left + window.scrollX}px`;
-    popover.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    const spacing = 5;
+
+    // Calcola e applica la larghezza (min 100px, max 400px, altrimenti larghezza del target)
+    const newWidth = Math.max(100, Math.min(rect.width, 400));
+    popover.style.width = `${newWidth}px`;
+
+    // Rendi il popover misurabile ma invisibile
     popover.style.display = 'block';
+    popover.style.visibility = 'hidden';
+    popover.classList.remove('popover-top');
+
+    const popoverWidth = popover.offsetWidth;
+    const popoverHeight = popover.offsetHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    let top = rect.bottom + spacing;
+    let left = rect.left;
+
+    // Collisione verticale: se esce in basso, posizionalo in alto
+    if (rect.bottom + popoverHeight + spacing > windowHeight) {
+      top = rect.top - popoverHeight - spacing;
+      popover.classList.add('popover-top');
+    }
+
+    // Collisione orizzontale: se esce a destra, allinea a destra
+    if (rect.left + popoverWidth > windowWidth) {
+      left = rect.right - popoverWidth;
+    }
+
+    // Assicurati che non esca a sinistra
+    if (left < spacing) {
+      left = spacing;
+    }
+    
+    // Applica le posizioni calcolate
+    popover.style.top = `${top + window.scrollY}px`;
+    popover.style.left = `${left + window.scrollX}px`;
+    
+    // Rendi visibile con animazione
+    popover.style.visibility = 'visible';
     target.setAttribute('aria-expanded', 'true');
     target.setAttribute('aria-controls', popover.id);
+    
     setTimeout(() => popover.classList.add('visible'), 10);
   },
 
   // Nasconde il popover con un'animazione fluida
   hidePopover: (popover: HTMLElement): void => {
+    if (!popover) return;
     const targetElement = document.querySelector(`[aria-controls="${popover.id}"]`) as HTMLElement;
     if (targetElement) {
       targetElement.setAttribute('aria-expanded', 'false');
@@ -351,30 +390,22 @@ const Popover = {
     popover.classList.remove('visible');
     setTimeout(() => {
       popover.style.display = 'none';
+      popover.classList.remove('popover-top');
     }, 200);
   },
 
-  // Inizializza i listener per gestire i popover attivati dal focus
-  initFocusPopovers: (): void => {
+  // Funzione unificata per la gestione dei popover
+  init: (): void => {
+    // Gestione del focus per input e textarea
     document.addEventListener('focusin', (e) => {
       const target = e.target as HTMLElement;
       const popoverData = target.getAttribute('data-popover');
+      const isInputOrTextarea = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
 
-      if (popoverData?.startsWith('focus>')) {
+      if (isInputOrTextarea && popoverData) {
         const parts = popoverData.split('>');
-        if (parts.length < 2) {
-          console.error('Formato data-popover non valido. Usa: focus>Titolo>Messaggio o focus>Messaggio');
-          return;
-        }
-
-        let title = null;
-        let message = '';
-        if (parts.length === 2) {
-          message = parts[1];
-        } else if (parts.length >= 3) {
-          title = parts[1];
-          message = parts[2];
-        }
+        const title = parts.length > 1 ? parts[0] : null;
+        const message = parts.length > 1 ? parts.slice(1).join('>') : parts[0];
 
         let popoverId = target.dataset['popoverId'];
         let popover: HTMLElement | null = null;
@@ -397,55 +428,39 @@ const Popover = {
 
     document.addEventListener('focusout', (e) => {
       const target = e.target as HTMLElement;
-      const popoverId = target.dataset['popoverId'];
-      if (popoverId) {
-        const popover = document.getElementById(popoverId);
+      const isInputOrTextarea = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+      if (isInputOrTextarea && target.dataset['popoverId']) {
+        const popover = document.getElementById(target.dataset['popoverId']);
         if (popover) {
           Popover.hidePopover(popover);
         }
       }
     });
-  },
 
-  // Inizializza i listener per gestire i popover attivati dal click
-  initClickPopovers: (): void => {
+    // Gestione del click per tutti gli altri elementi
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const popoverData = target.getAttribute('data-popover');
+      const isInputOrTextarea = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
 
-      if (popoverData?.startsWith('click>')) {
+      if (!isInputOrTextarea && popoverData) {
         const parts = popoverData.split('>');
-        if (parts.length < 2) {
-          console.error('Formato data-popover non valido. Usa: click>Messaggio o click>Titolo>Messaggio');
-          return;
-        }
+        const title = parts.length > 1 ? parts[0] : null;
+        const message = parts.length > 1 ? parts.slice(1).join('>') : parts[0];
+        
+        const popover = Popover.createPopover(title, message);
+        const popoverId = `popover-${Math.random().toString(36).substr(2, 9)}`;
+        popover.id = popoverId;
+        document.body.appendChild(popover);
 
-        let title = null;
-        let message = '';
-        if (parts.length === 2) {
-          message = parts[1];
-        } else if (parts.length >= 3) {
-          title = parts[1];
-          message = parts[2];
-        }
+        Popover.positionPopover(popover, target);
 
-        let popoverId = target.dataset['popoverId'];
-        let popover: HTMLElement | null = null;
+        const hideAndRemove = () => {
+          Popover.hidePopover(popover);
+          setTimeout(() => popover.remove(), 200);
+        };
 
-        if (popoverId) {
-          popover = document.getElementById(popoverId);
-        } else {
-          popover = Popover.createPopover(title, message);
-          popoverId = `popover-${Math.random().toString(36).substr(2, 9)}`;
-          popover.id = popoverId;
-          target.dataset['popoverId'] = popoverId;
-          document.body.appendChild(popover);
-        }
-
-        if (popover) {
-          Popover.positionPopover(popover, target);
-          setTimeout(() => Popover.hidePopover(popover), 2000);
-        }
+        setTimeout(hideAndRemove, 3000);
       }
     });
   },
@@ -465,4 +480,5 @@ const Popover = {
     observer.observe(document.body, { childList: true, subtree: true });
   },
 };
+
 

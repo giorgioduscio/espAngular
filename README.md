@@ -1,27 +1,43 @@
-# GggAngular
+# Angular demo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+Questo progetto è stato generato con [Angular CLI](https://github.com/angular/angular-cli) versione 17.3.7.
 
-## Development server
+## Server di sviluppo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Esegui `ng serve` per un server di sviluppo. Naviga su `http://localhost:4200/`. L'applicazione si ricaricherà automaticamente se modifichi uno qualsiasi dei file sorgente.
 
-## Code scaffolding
+## Scaffolding del codice
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Esegui `ng generate component nome-componente` per generare un nuovo componente. Puoi anche usare `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Compilazione (Build)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Esegui `ng build` per compilare il progetto. Gli artefatti della compilazione verranno memorizzati nella directory `dist/`.
 
-## Running unit tests
+## Esecuzione dei test unitari
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Esegui `ng test` per eseguire i test unitari tramite [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Esecuzione dei test end-to-end
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Esegui `ng e2e` per eseguire i test end-to-end tramite una piattaforma a tua scelta. Per utilizzare questo comando, devi prima aggiungere un pacchetto che implementi le funzionalità di test end-to-end.
 
-## Further help
+## Ulteriore aiuto
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Per ottenere ulteriore aiuto su Angular CLI usa `ng help` o consulta la pagina [Angular CLI Overview and Command Reference](https://angular.io/cli).
+
+## Funzionalità
+
+L'applicazione include le seguenti funzionalità:
+
+*   **Sistema di Login:** Gestione dell'accesso e autenticazione degli utenti.
+*   **Dashboard Utente:** Pagina riepilogativa personalizzata per l'utente.
+*   **Chat:** Sistema di messaggistica istantanea tra utenti.
+*   **Pagina DND:** Sezione dedicata a contenuti e strumenti per Dungeons & Dragons.
+*   **Pagina GDR:** Sezione dedicata a contenuti e strumenti per Giochi di Ruolo.
+*   **Calcolatrice:** Un semplice strumento di calcolo.
+*   **Gestione Liste:** Creazione e organizzazione di liste personalizzate.
+*   **Area Personale:** Sezione per la gestione del profilo e delle impostazioni utente.
+*   **Home Page:** La pagina principale di atterraggio del sito.
+*   **Gestione Gerarchica:** Visualizzazione e gestione di dati strutturati gerarchicamente.
+

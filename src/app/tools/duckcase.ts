@@ -13,9 +13,13 @@ const DuckcaseManager ={
       const spaces = phrase.replace(/([A-Z])/g, ' $1').toLowerCase()
       const primaMaiuscola = spaces.charAt(0).toUpperCase() + spaces.slice(1)
       return primaMaiuscola
+
+    } else if (typeof phrase =='string'){
+      return phrase[0].toUpperCase() +phrase.slice(1)
+
     } else {
       console.error('Stringa non valida', phrase);
-      return ''
+      return phrase
     }
   },
   styleInjected:false,

@@ -1,9 +1,28 @@
 import PersonaggioDND from "../../interfaces/personaggioDND";
+import duckcase from "../../tools/duckcase";
 
 interface Privilegio {
   level: number;
   privilege: string;
   description: string;
+}
+
+interface Classe_{
+  nome :string;
+  dadoVita: 6 | 8 | 10 | 12;
+  armature: string[];
+  strumenti :string;
+  tiriSalvezza :string[];
+  abilita :string;
+  linguaggi :string;
+
+  equipaggiamento :string;
+  privilegi :{
+    class: string,
+    level: number,
+    privilege: string,
+    description: string
+  }[];
 }
 
 interface Classe {
@@ -30,6 +49,7 @@ interface Sottorazza {
   taglia: "Piccola" | "Media" | "Grande";
   linguaggi: string[];
   privilegi: { name: string, description: string }[];
+  armi?: string[];
 }
 
 interface Background {
@@ -58,7 +78,7 @@ interface Oggetto {
 }
 
 export const DND = {
-
+  
   classi: [
     {
       class: 'Barbaro',
@@ -1729,24 +1749,6 @@ export const DND = {
       description: 'Accesso a creazioni e infusi straordinari.'
     },
   ] as Classe[],
-  
-  getClassi:()=> Object.keys(DND.sottoclassi) 
-                .sort((a, b) => a.localeCompare(b)) as string[],
-
-  classiCollegate(character: PersonaggioDND) {
-    const result = [{ classe: '', sottoclasse: '', livello: 0 }];
-    const source = character.privilegi;
-    source.forEach(val => {
-      const first = String(val || '').split(' ')[0].
-        replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
-      const second = String(val || '').split(' ').slice(1).join(' ');
-      if (!first) return;
-      const found = result.find(c => c.classe === first);
-      if (found) found.livello++;
-      else       result.push({ classe: first, sottoclasse: second, livello: 1 });
-    });
-    return result .filter(c => c.classe && c.livello);
-  },  
 
   sottoclassi: {
     barbaro: {
@@ -1808,12 +1810,12 @@ export const DND = {
         {
           level: 3,
           privilege: "spirito totemico",
-          description: "richiede un oggetto creato con resti animali. durante l’ira, puoi scegliere tra:\n- aquila: svantaggio agli attacchi di opportunità contro di te, puoi usare scatto come azione bonus.\n- lupo: vantaggio agli attacchi in mischia degli alleati entro 1,5m da te.\n- orso: resistenza a tutti i danni eccetto psichici.",
+          description: "(scelta) richiede un oggetto creato con resti animali. durante l’ira, puoi scegliere tra:\n- aquila: svantaggio agli attacchi di opportunità contro di te, puoi usare scatto come azione bonus.\n- lupo: vantaggio agli attacchi in mischia degli alleati entro 1,5m da te.\n- orso: resistenza a tutti i danni eccetto psichici.",
         },
         {
           level: 6,
           privilege: "aspetto della bestia",
-          description: "- aquila: vedi dettagli fino a 1,5km, nessun svantaggio in luce fioca.\n- lupo: segui tracce a passo veloce, muoviti furtivamente a passo normale.\n- orso: raddoppi capacità di carico, vantaggio a spingere, sollevare, trascinare, spezzare oggetti.",
+          description: "(scelta) - aquila: vedi dettagli fino a 1,5km, nessun svantaggio in luce fioca.\n- lupo: segui tracce a passo veloce, muoviti furtivamente a passo normale.\n- orso: raddoppi capacità di carico, vantaggio a spingere, sollevare, trascinare, spezzare oggetti.",
         },
         {
           level: 10,
@@ -1823,7 +1825,7 @@ export const DND = {
         {
           level: 14,
           privilege: "sintonia totemica",
-          description: "- aquila: puoi volare per brevi tratti alla velocità del cammino.\n- lupo: durante l’ira, se colpisci una creatura con un’arma da mischia, puoi usare un’azione bonus per buttarla a terra (taglia grande o inferiore).\n- orso: un nemico entro 1,5m ha svantaggio a colpire tutte le creature che non abbiano questo privilegio.",
+          description: "(scelta) - aquila: puoi volare per brevi tratti alla velocità del cammino.\n- lupo: durante l’ira, se colpisci una creatura con un’arma da mischia, puoi usare un’azione bonus per buttarla a terra (taglia grande o inferiore).\n- orso: un nemico entro 1,5m ha svantaggio a colpire tutte le creature che non abbiano questo privilegio.)",
         },
       ],
       "guardiano ancestrale": [
@@ -2957,7 +2959,24 @@ export const DND = {
     },
   } as Sottoclassi,
 
-  getSottoclasse(param: string): string[] {
+  // restituisce lista progressiva di privilegi
+  classiCollegate(character: PersonaggioDND) {
+    const result :{ classe: string, sottoclasse: string, livello: number }[] =[];
+    const privilegi = character.privilegi;
+    privilegi.forEach(privilegio => {
+      const nomeClasse = privilegio.classe.split(' ')[0]
+            .replace(/^[a-z]/, c => c.toUpperCase()); // la prima lettera è maiuscola
+      const nomeSottoclasse = privilegio.classe
+            .split(' ').slice(1).join(' ');
+      if (!nomeClasse) return;
+      const classeMatch = result.find(c => c.classe === nomeClasse);
+      if (classeMatch) classeMatch.livello++;
+      else result.push({ classe: nomeClasse, sottoclasse: nomeSottoclasse, livello: 1 });
+    });
+    return result
+  },  
+
+  getSottoclassi(param: string): string[] {
     if (param !== 'full') return [];
     
     const result: string[] = [];
@@ -2973,8 +2992,8 @@ export const DND = {
   },
   // restituisce tutte le sottoclassi, rimuovendo le sottoclassi già occupate
   getSottoclassiDisponibili(personaggio: PersonaggioDND): string[] {
-    const tutteSottoclassi = this.getSottoclasse('full');
-    const sottoclassiPersonaggio = personaggio.privilegi.map(p => p.toLowerCase()) || [];
+    const tutteSottoclassi = this.getSottoclassi('full');
+    const sottoclassiPersonaggio = personaggio.privilegi.map(p => duckcase(p.classe ||''));
 
     if (sottoclassiPersonaggio.length === 0) {
       return tutteSottoclassi;
@@ -3031,7 +3050,8 @@ export const DND = {
         { name: "addestramento armi elfiche", description: "Competenza con spada lunga, spada corta, arco corto e lungo." },
         { name: "trucchetto", description: "Conoscete un trucchetto da mago; Intelligenza è la caratteristica usata." },
         { name: "linguaggio extra", description: "Potete parlare, leggere e scrivere un linguaggio extra." }
-      ]
+      ],
+      armi: ['Spada lunga', 'Spada corta', 'Arco corto', 'Arco lungo']
     },
     {
       nome: "Elfo Dei Boschi",
@@ -3051,7 +3071,8 @@ export const DND = {
         { name: "addestramento armi elfiche", description: "Competenza con spada lunga, spada corta, arco corto e lungo." },
         { name: "piede lesto", description: "Velocità base aumentata (es. 10,5 m per elfo dei boschi)." },
         { name: "maschera della selva", description: "Potete nascondervi da sporadiche oscurazioni naturali." }
-      ]
+      ],
+      armi: ['Spada lunga', 'Spada corta', 'Arco corto', 'Arco lungo']
     },
     {
       nome: "Elfo Oscuro (Drow)",
@@ -3069,7 +3090,8 @@ export const DND = {
         { name: "retaggio fatato", description: "Vantaggio contro affascinato e immunità al sonno magico..." },
         { name: "incantesimi innati", description: "Potete lanciare magie innate (es. Luci Danzanti, Oscurità) usando Carisma." },
         { name: "sensibilità alla luce del sole", description: "Svantaggio ai tiri per colpire e Percezione quando esposti alla luce solare." }
-      ]
+      ],
+      armi: ['Stocco', 'Spada corta', 'Balestra a mano']
     },
     {
       nome: "Gnomo Delle Rocce",
@@ -3197,11 +3219,12 @@ export const DND = {
       privilegi: [
         { name: "scurovisione", description: "Potete vedere in condizioni di buio o luce fioca..." },
         { name: "resilienza nanica", description: "Vantaggio ai tiri salvezza contro il veleno e resistenza ai danni da veleno." },
-        { name: "addestramento combattimento nanico", description: "Competenza con ascia da battaglia/lancio, martello da lancio/guerra." },
+        { name: "addestramento combattimento nanico", description: "Competenza in ascia, ascia da battaglia, martello da guerra e martello leggero" },
         { name: "competenza strumenti nanici", description: "Competenza con strumenti da fabbro, birraio o muratore." },
         { name: "esperto minatore", description: "Raddoppio del bonus di competenza su Storia relativa a muratura." },
         { name: "robustezza nanica", description: "PF massimi aumentano di 1 e continuano a incrementare di 1 a ogni livello." }
-      ]
+      ],
+      armi: ['Ascia', 'Ascia da battaglia', 'Martello da guerra', 'Martello leggero']
     },
     {
       nome: "Nano Delle Montagne",
@@ -3219,7 +3242,8 @@ export const DND = {
         { name: "addestramento combattimento nanico", description: "Competenza con ascia da battaglia/lancio, martello da lancio/guerra." },
         { name: "competenza strumenti nanici", description: "Competenza con strumenti da fabbro, birraio o muratore." },
         { name: "esperto minatore", description: "Raddoppio del bonus di competenza su Storia relativa a muratura." }
-      ]
+      ],
+      armi: ['Ascia', 'Ascia da battaglia', 'Martello da guerra', 'Martello leggero']
     }
   ] as Sottorazza[],
 
@@ -3230,6 +3254,35 @@ export const DND = {
       const nomeCorrente = r.nome.toLowerCase().trim();
       return nomeCorrente === lowerNomeRazza || nomeCorrente.includes(lowerNomeRazza);
     }) || null;
+  },
+
+  getLinguaggiPersonaggio(personaggio:PersonaggioDND) :string{
+    let result :string[] =[]
+    //  RAZZA
+        const razzaPersonaggio =personaggio.generali.find(g => g.key == 'razza');
+        const razza = this.getRazza(razzaPersonaggio?.value +'');
+        if(!razzaPersonaggio || !razza){ 
+          console.error('linguaggi razza non trovati:', razzaPersonaggio, razza);
+          return ''
+        }
+        result.push(...razza.linguaggi)
+
+    //  CLASSE
+        const classiPersonaggio =personaggio.privilegi.map(priv=> priv.classe.toLowerCase()).join(', ')
+        if(!classiPersonaggio) console.error('nessuna classe');
+        if(classiPersonaggio.includes('druido')) result.push('Druidico');
+        if(classiPersonaggio.includes('ladro'))  result.push('Gergo ladresco');
+
+    //  BACKGROUND
+        const backgroundPersonaggio =personaggio.generali.find(g => g.key == 'background');
+        const backgroundMatch =this.getBackground(backgroundPersonaggio?.value +'')
+        if(!backgroundMatch) {
+          console.error('nessun background');
+          return ''
+        }
+        result.push(backgroundMatch?.linguaggi +'');
+    
+    return result .join(', ');
   },
 
   background: [
@@ -3431,14 +3484,14 @@ export const DND = {
   },
   
   // cerca i privilegi tra classe e sottoclasse per un dato livello
-  getPrivilegi(classeKey ='', sottoclasseKey ='', livello =0) {
-    const privilegiSottoclasse = (this.sottoclassi)[classeKey]?.[sottoclasseKey];
+  getPrivilegi(classeKey ='', sottoclasseKey ='', livello =0) {    
+    const privilegiSottoclasse = this.sottoclassi[classeKey.toLowerCase()]?.[sottoclasseKey.toLowerCase()];
     if (classeKey.length<5 || sottoclasseKey.length<5
       || livello<1 || livello>20
       ||!privilegiSottoclasse // sottoclasse non esistente
     ){
       console.error('parametri non validi:', classeKey, sottoclasseKey, livello);
-      return null;
+      return [];
     } 
     
     // SOTTOCLASSE prima cerca nella sottoclasse, se specificata e valida
@@ -3643,6 +3696,30 @@ export const DND = {
     return {dadi, tipo};
   },
 
+  getCompetenzeArmiPersonaggio(personaggio:PersonaggioDND) :string{
+    let result :string[] =[];
+    //  CLASSI
+        const classiPersonaggio = personaggio.privilegi.map(p => p.classe);
+        classiPersonaggio.forEach(classeCompleta=>{
+          const [classe, ...sottoclasse] =classeCompleta.split(' ')
+          const competenzePerClasse ={
+
+          }
+        }) 
+
+    //  RAZZA
+        const razzaPersonaggio = personaggio.generali.find(p => p.key === 'razza');
+        const razzaMatch =this.getRazza(razzaPersonaggio?.value +'')
+        if(!razzaMatch){
+          console.error('razza non trovata', razzaPersonaggio);
+          return '';
+        }
+        if(razzaMatch.armi?.length) razzaMatch.armi.forEach(arma=>{ result.push(arma) });
+        
+    console.log(result);
+    return result .join(', ');
+  },
+
   
   //  LOGICA DI SCHEDA
   /**
@@ -3808,9 +3885,9 @@ export const DND = {
     const conMod = this.getModificatore(costituzione);
     let pfTotali = 0;
 
-    const a = character.privilegi;
-    a.forEach((nomeClasse, index) => {
-      const dadoVita = this.getDadoVita(nomeClasse);
+    const privilegi = character.privilegi;
+    privilegi.forEach((privilegio, index) => {
+      const dadoVita = this.getDadoVita(privilegio.classe);
 
       if (index === 0) {
         pfTotali += dadoVita + conMod;
@@ -3914,9 +3991,9 @@ export const DND = {
   */
   privilegiMappati(character: PersonaggioDND) {
     const result: {
-      name: string,
+      classe: string,
+      note: string,
       level: number,
-      srcIndex?: number | null,
       privileges: { privilege: string, description: string }[]
     }[] = [];
 
@@ -3924,26 +4001,27 @@ export const DND = {
     // Oggetto per tenere traccia dei contatori per ogni classe+sottoclasse
     const contatori: Record<string, number> = {};
 
-    (character.privilegi || []).forEach((privilegioClasse, srcIndex) => {
-      const [splittedClass, ...splittedSub] = String(privilegioClasse || '').split(' ');
-      const classe = splittedClass.toLowerCase();
-      const sottoclasse = splittedSub.join(' ').toLowerCase();
-      if(!classe || !sottoclasse) console.error('classe', classe, 'sottoclasse', sottoclasse);
-
+    (character.privilegi || []).forEach((privilegio) => {
+      const [nomeClasse, ...nomeSottoclasse] = String(privilegio.classe || '').split(' ');
+      const classe = nomeClasse.toLowerCase();
+      const sottoclasse = nomeSottoclasse.join(' ').toLowerCase();
+      if(!classe ||typeof classe!='string' || 
+         !sottoclasse ||typeof sottoclasse!='string') console.error('classe', classe, 'sottoclasse', sottoclasse);
+      
       // Incrementa il contatore per la combinazione classe+sottoclasse
       const key = `${classe}_${sottoclasse}`;
       contatori[key] = (contatori[key] || 0) + 1;
-      const count = contatori[key];
+      const level = contatori[key];
       
       // recupera i privilegi
-      const privileges = DND.getPrivilegi(classe, sottoclasse, count) ||[];
-      if(!privileges) console.error('privilegi non trovati per', classe, sottoclasse, count);    
-
+      const privileges = DND.getPrivilegi(classe, sottoclasse, level) ||[];
+      if(!privileges) console.error('privilegi non trovati per', classe, sottoclasse, level);    
+      
       result.push({
-        name: privilegioClasse.toLowerCase(),
+        classe: privilegio.classe,
+        note: privilegio.note,
+        level,
         privileges,
-        level: count,
-        srcIndex
       });
     });
 

@@ -16,13 +16,13 @@
 </header>
 
 
-<article class="d-flex flex-wrap align-items-start gap-1 m-auto"
+<article class="container d-flex flex-wrap align-items-start gap-1 m-auto"
          style="max-width: 1000px;"
          (change)="handleChange($event)">
 
   <!-- GENERALITA' -->
   @if(!isMobileView || activeSection === 'generalita') {
-    <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'">
+    <div [class]="isMobileView ? 'container w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'">
       <h5 *ngIf="isMobileView" class="p-2 fw-bold">Generalità</h5>
 
       <main class="d-flex flex-wrap justify-content-start gap-3">
@@ -38,12 +38,12 @@
 
         <div class="d-flex flex-column gap-1">
           <div class="p-2 border rounded" 
-                data-popover="click>Inserire privilegi di classe">{{ getClassesString() }}</div>
+                data-popover="Derivato dai privilegi di classe">{{ getClassesString() }}</div>
           <label class="duckcase" for="classe">Classe</label>
         </div>
         <div class="d-flex flex-column gap-1">
           <div class="p-2 border rounded"
-                data-popover="click>Derivati dai punti esperienza">{{ liv() || '-' }}</div>
+                data-popover="Derivati dai punti esperienza">{{ liv() || '-' }}</div>
           <label class="duckcase" for="livello">Livello</label>
         </div>
         @for (campo of character().generali; track campo.key; let i = $index) {
@@ -58,7 +58,7 @@
                           >{{ allineamento }}</option>
                 }
               </select>
-              <label class="duckcase" [for]="campo.key">{{ campo.key}}</label>
+              <label class="duckcase" [for]="campo.key">{{ duckcase(campo.key)}}</label>
             </div>
 
           } @else if (campo.key === 'background') {
@@ -73,7 +73,7 @@
                           >{{ b.name }}</option>
                 }
               </select>
-              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+              <label class="duckcase" [for]="campo.key">{{ duckcase(campo.key)}}</label>
             </div>
 
           } @else if (campo.key === 'razza') {
@@ -88,7 +88,7 @@
                           >{{ r.nome }}</option>
                 }
               </select>
-              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+              <label class="duckcase" [for]="campo.key">{{ duckcase(campo.key) }}</label>
             </div>
           
           } @else {
@@ -99,7 +99,7 @@
                       type="text" 
                       class="form-control form-control-dnd"
                       [placeholder]="getPlaceholder(campo.key)">
-              <label class="duckcase" [for]="campo.key">{{ campo.key }}</label>
+              <label class="duckcase" [for]="campo.key">{{ duckcase(campo.key) }}</label>
             </div>
           }
         }
@@ -132,7 +132,7 @@
                     style="width: 80px; height: fit-content;">
                 <label class="duckcase" [for]="punteggio.key" 
                         style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
-                        >{{ punteggio.key }}</label> 
+                        >{{ duckcase(punteggio.key) }}</label> 
                 <label [for]="punteggio.key" 
                         class="fs-4 fw-bold duckcase" 
                         style="transform: translateY(10px);"
@@ -154,7 +154,7 @@
                             name="punteggi-{{i}}-abilities-{{j}}-value"> 
                     <label class="duckcase" for="punteggi-{{i}}-abilities-{{j}}-value">
                       <b>{{ dnd.abilityMod(character(), punteggio.value, abilita.value) }}</b>
-                      {{ abilita.key }}</label>
+                      {{ (abilita.key) }}</label>
                   </li>
                 }
               </ul>
@@ -173,16 +173,17 @@
       <div [class]="isMobileView ?'w-100 p-2' :'rounded-2 w-100 mt-2 border flex-auto p-2'">
         <h5 class="p-2 fw-bold">Competenze e Linguaggi</h5>
         <main class="d-flex flex-column gap-3">
-          @for (comp of character().competenze; track comp.key; let i = $index) {
+          @for (competenza of character().competenze; track competenza.key; let i = $index) {
             <div>
               <label class="duckcase" 
-                      [for]="comp.key"
-                      >{{ comp.key }}:</label>
+                      [for]="competenza.key"
+                      >{{ duckcase(competenza.key) }}:</label>
               <textarea name="competenze-{{i}}-value" 
-                        [id]="comp.key" 
+                        [id]="competenza.key" 
                         class="form-control form-control-dnd"
                         placeholder="Es: Comune, Elfico"
-                        >{{ comp.value }}</textarea>
+                        [attr.data-popover]="getGuida(competenza.key)"
+                        >{{ competenza.value }}</textarea>
             </div>
           }
         </main>
@@ -221,7 +222,7 @@
             <div class="d-flex flex-column gap-1">
               <label class="duckcase" for="pfm">Massimi</label>
               <div class="p-2 border rounded"
-                    data-popover="click>Aggiungere privilegi di classe">{{ dnd.puntiFeritaMassimi(character()) }}</div>
+                    data-popover="Derivato dai privilegi di classe">{{ dnd.puntiFeritaMassimi(character()) }}</div>
             </div>
             <div class="d-flex flex-column gap-1">
               <label class="duckcase" for="pfa">Attuali</label>
@@ -246,7 +247,7 @@
             <div>
               <label class="duckcase">Dadi Vita</label>
               <div class="p-2 border rounded"
-                    data-popover="click>Aggiungere privilegi di classe">
+                    data-popover="Derivato dai privilegi di classe">
                 @if(dnd.dadiVitaPersonaggio(character()).length) {
                   @for (dado of dnd.dadiVitaPersonaggio(character()); track dado.dado; let last = $last) {
                     {{ dado.livello }}d{{ dado.dado }}{{ !last ? ', ' : '' }}
@@ -355,7 +356,7 @@
             @for (moneta of character().monete; track $index) {
               <div class="d-flex flex-column gap-1">
                 <label class="duckcase" for="monete-{{ $index }}-value">
-                  {{moneta.key}}</label>
+                  {{duckcase(moneta.key)}}</label>
                 <input [value]="moneta.value" 
                         name="monete-{{ $index }}-value" 
                         id="monete-{{ $index }}-value" 
@@ -435,7 +436,7 @@
         <main class="p-2 d-flex flex-column gap-3">
           @for (p of character().personalita; track p.key; let i = $index) {
             <div>
-              <label class="duckcase" for="personalita-{{i}}-key">{{ p.key }}</label>
+              <label class="duckcase" for="personalita-{{i}}-key">{{ duckcase(p.key) }}</label>
               <textarea name="personalita-{{i}}-value" 
                         id="personalita-{{i}}-value" 
                         class="form-control form-control-dnd"
@@ -452,27 +453,30 @@
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 mt-2 border flex-auto p-2'">
         <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
         <main>
+          <!-- RAZZA -->
           @if (getPrivilegiRazza()?.privilegi?.length) {
             <label>Privilegi di Razza</label>
             <ul>
               @for (privilegio of getPrivilegiRazza()?.privilegi; track $index) {
                 <li class="duckcase small">
-                  <b>{{ privilegio.name }}</b>: 
+                  <b>{{ (privilegio.name) }}</b>: 
                   {{ privilegio.description }}</li>
               }
             </ul>
           }
+          <!-- BACKGROUND -->
           @if (getPrivilegiBackground()) {
             <label>Privilegi di Background</label>
             <ul>
               @for (privilegio of getPrivilegiBackground()?.privilegi; track $index) {
                 <li class="duckcase small">
-                  <b>{{ privilegio.name }}</b>: 
+                  <b>{{ (privilegio.name) }}</b>: 
                   {{ privilegio.description }}</li>
               }
             </ul>
           }
 
+          <!-- AGGIUNTA CLASSE -->
           <label>Privilegi di classe</label>
           <form (ngSubmit)="addToList('privilegi', $event)" 
                 class="d-flex gap-2 mb-2 align-items-end">
@@ -495,6 +499,7 @@
             </div>
           </form>
 
+          <!-- PRIVILEGI DI CLASSE -->
           @if (!character().privilegi.length) {
             <div class="alert alert-info">
               <i class="bi bi-info-circle text-primary"></i>
@@ -508,30 +513,39 @@
                   <!-- INPUT CLASSE -->
                   <section class="d-flex gap-2">
                     <button class="btn btn-danger p-1 px-2" 
-                            (click)="deleteFromList('privilegi', classe.srcIndex ?? -1)"
+                            (click)="deleteFromList('privilegi', i)"
                             ><i class="bi bi-trash"></i></button>
-                    <input [value]="classe.name" 
+                    <input [value]="classe.classe" 
                             type="text" 
-                            id="privilegi-{{classe.srcIndex}}" 
-                            name="privilegi-{{classe.srcIndex}}" 
+                            id="privilegi-{{i}}-classe" 
+                            name="privilegi-{{i}}-classe" 
                             class="form-control form-control-dnd">
                   </section>
+                  
                   <!-- DESCRIZIONE PRIVILEGI -->
                   <section>
-                    <ul style="margin: 0 0 10px 25px; display: grid; gap: 8px;">
-                      @if (classe.privileges.length == 0) { 
-                        <i class="text-danger">Classe non riconosciuta</i>
-
-                      } @else {
+                    <i *ngIf="classe.privileges.length==0" class="text-danger">Classe non riconosciuta</i>
+                    
+                    <ul class="pt-2 d-grid -gap-2">
+                      @if (classe.privileges.length) {
                         @for (privilegio of classe.privileges; track privilegio.privilege) {
                           <li style="list-style: disc;">
                             <div>
                               <b>{{ privilegio.privilege }}</b>
-                              @if (privilegio.description) {
+
+
+                              @if (privilegio.description.includes('(scelta)')) {
+                                <textarea name="privilegi-{{i}}-note" 
+                                          id="privilegi-{{i}}-note" 
+                                          class="my-2 form-control form-control-dnd"
+                                          placeholder="Trascrivi il privilegio scelto"
+                                          [attr.data-popover]="privilegio.description"
+                                          >{{ classe.note }}</textarea>
+
+                              }@else if (privilegio.description) {
                                 <span>: {{ privilegio.description }}</span>
-                              } @else {
-                                nessuna descrizione
-                              }
+
+                              } @else { Nessuna descrizione }
                             </div>
                           </li>
                         }
@@ -550,8 +564,8 @@
 </article>
 
 
-<footer *ngIf="isMobileView" class="p-4">
-  <div class="d-flex gap-2 p-1 fixed-bottom text-bg-c1 shadow-lg" 
+<footer *ngIf="isMobileView" class="pt-5 pb-3">
+  <div  class="d-flex justify-content-center gap-2 p-1 fixed-bottom text-bg-c1 shadow-lg" 
         style="overflow-x: auto;"
         id="buttonsList">
     @for (btn of mobileButtons; track $index) {
@@ -560,9 +574,11 @@
               [class.btn-outline-secondary]="activeSection !== btn.key" 
               (click)="showSection(btn.key)">
   
-        <div class="text-truncate" style="max-width: 50px;">
-          <i class="bi bi-{{btn.icon}} mx-auto"></i> <br>
-          <small style="font-size: 10px;">{{ btn.label }}</small> 
+        <div class="d-flex flex-column">
+          <i class="bi bi-{{btn.icon}} fs-2"></i>
+          <small  class="text-truncate font-size-3" 
+                  style="width: 50px;"
+                  >{{ btn.label }}</small> 
         </div>
       </button>
     }

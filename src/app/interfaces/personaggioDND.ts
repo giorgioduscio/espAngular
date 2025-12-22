@@ -79,5 +79,8 @@ export default interface PersonaggioDND {
     {key:'legami', value:string},
     {key:'difetti', value:string},
   ],
-  privilegi:string[]
+  privilegi:{
+    classe:string,
+    note:string,
+  }[]
 }

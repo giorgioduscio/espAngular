@@ -7,6 +7,7 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import {toast, agree, popovers_init} from '../../tools/feedbacksUI';
 import { Autocomplete } from '../../tools/autocomplete';
 import PersonaggioDND from '../../interfaces/personaggioDND';
+import duckcase from '../../tools/duckcase';
 
 @Component({
   selector: 'app-dnd',
@@ -18,6 +19,7 @@ import PersonaggioDND from '../../interfaces/personaggioDND';
 export class DndComponent implements OnInit { // Implement OnInit
   public dnd = DND;
   public local = local;
+  public duckcase =duckcase
 
   private _character: WritableSignal<PersonaggioDND> = signal(this.loadCharacter());
   public character = this._character.asReadonly();
@@ -25,9 +27,11 @@ export class DndComponent implements OnInit { // Implement OnInit
   constructor() {
     new Autocomplete();
     popovers_init();
+
     effect(() => {
       localStorage.setItem('character', JSON.stringify(this._character()));
-      document.title =`Scheda di ${this._character().nome_personaggio}`;        
+      document.title =`${this._character().nome_personaggio}`;      
+      // console.warn(this.character().privilegi);
     });
 
     setTimeout(()=> toast('Inizializzazione scheda'), 1000)
@@ -153,9 +157,9 @@ export class DndComponent implements OnInit { // Implement OnInit
       }
       currentLevel[keys[keys.length - 1]] = nuovoValore; // Imposta il valore finale
       
+      toast('Aggiornamento dati', 'primary');
       return personaggioNuovo;
     });
-    toast('Aggiornamento dati', 'primary');
   }
 
   async reset(){
@@ -217,34 +221,30 @@ export class DndComponent implements OnInit { // Implement OnInit
     console.warn(listName, qta||'', value);
 
     //  AGGIORNAMENTO DATI
-    this._character.update(char => {
-      const newChar: any = JSON.parse(JSON.stringify(char));
-
-      if (!Array.isArray(newChar[listName])) {
-        console.error('non è una lista', listName);
-        newChar[listName] = [];
-      }
+    this._character.update(personaggioAttuale => {
+      const nuovoPersonaggio: PersonaggioDND = JSON.parse(JSON.stringify(personaggioAttuale));
 
       if (listName === 'equipaggiamento') { // duplicati: aumenta quantità
-        const elementoEsistente = newChar.equipaggiamento.find((item: any) => 
+        const elementoEsistente = nuovoPersonaggio.equipaggiamento.find((item: any) => 
           item.value.toLowerCase() === value.toLowerCase()
         );
         if (elementoEsistente) {
           elementoEsistente.qta = (elementoEsistente.qta || 1) + qta;
         } else {
-          newChar.equipaggiamento.push({ qta, value: value });
+          nuovoPersonaggio.equipaggiamento.push({ qta, value: value });
         }
 
       } else if (listName === 'attacchi') { // niente duplicati
-        const list = newChar[listName] as string[];
+        const list = nuovoPersonaggio[listName] as string[];
         if (!list.some(item => item.toLowerCase() === value.toLowerCase())) {
           list.push(value);
         }
+        
       } else if (listName === 'privilegi') { // inserisce duplicati
-        const list = newChar[listName] as string[];
-        list.push(value);
+        const list = nuovoPersonaggio.privilegi;
+        list.push({classe:value, note:''});
       }
-      return newChar;
+      return nuovoPersonaggio;
     });
     toast('Inserimento eseguito', 'success');
     form.reset();
@@ -252,12 +252,12 @@ export class DndComponent implements OnInit { // Implement OnInit
 
   //  STAT
       getClassesString(): string {
-        const character = this.character();
-        const classes = DND.classiCollegate(character);
-        if (!classes || classes.length === 0) {
-          return '-';
+        const personaggio = this.character();
+        const classi = DND.classiCollegate(personaggio);
+        if (!classi || classi.length === 0) {
+          return 'Nessuna';
         }
-        return classes.map(c => `${c.classe} ${c.livello}`).join(', ');
+        return classi.map(c => `${c.classe} ${c.livello}`).join(', ');
       }
       getPrivilegiRazza(){
         const razza =this.character().generali.find(g=>g.key==="razza")?.value +'';
@@ -310,6 +310,14 @@ export class DndComponent implements OnInit { // Implement OnInit
         }
       }
 
+  //  GUIDE
+      getGuida(nomeSezione:string){
+        switch (nomeSezione) {
+          case 'linguaggi': return 'Linguaggi disponibili:>'+ DND.getLinguaggiPersonaggio(this.character())
+          case 'armi': return 'Armi disponibili:>'+ DND.getCompetenzeArmiPersonaggio(this.character())
+          default: return ''
+        }
+      }
 
 }
 
