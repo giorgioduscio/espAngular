@@ -31,6 +31,9 @@ input.form-control:focus{
   background: transparent;
   color: white;
 }
+textarea{
+  resize: none !important;
+}
 *::placeholder{
   color: inherit !important;
 }

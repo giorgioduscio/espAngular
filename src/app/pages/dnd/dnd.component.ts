@@ -16,7 +16,7 @@ import duckcase from '../../tools/duckcase';
   templateUrl: './dnd.component.html',
   styleUrl: './dnd.component.css'
 })
-export class DndComponent implements OnInit { // Implement OnInit
+export class DndComponent implements OnInit {
   public dnd = DND;
   public local = local;
   public duckcase =duckcase
@@ -47,7 +47,7 @@ export class DndComponent implements OnInit { // Implement OnInit
       }
       public isMobileView: boolean = false; // Add this line
       private checkScreenSize(): void {
-        this.isMobileView = window.innerWidth < 768; 
+        this.isMobileView = window.innerWidth < 900; 
       }
       mobileButtons = [
         { key: 'generalita', 
@@ -76,7 +76,7 @@ export class DndComponent implements OnInit { // Implement OnInit
         },
         { key: 'personalita', 
           label: 'Personalità', 
-          icon: 'person'
+          icon: 'chat'
         },
         { key: 'trattiPrivilegi', 
           label: 'Tratti e Privilegi', 
@@ -84,8 +84,12 @@ export class DndComponent implements OnInit { // Implement OnInit
         },
       ]
       public activeSection: string = 'generalita';
-      public showSection(sectionId: string): void {
+      public setSection(sectionId: string): void {
         this.activeSection = sectionId;
+      }
+      showSectionWith(values: string[]) :boolean{
+        const show = !this.isMobileView || values.includes(this.activeSection)
+        return show;
       }
 
 
@@ -311,12 +315,29 @@ export class DndComponent implements OnInit { // Implement OnInit
       }
 
   //  GUIDE
-      getGuida(nomeSezione:string){
+      getGuida(nomeSezione:string) :string{
+        let result ='';
         switch (nomeSezione) {
-          case 'linguaggi': return 'Linguaggi disponibili:>'+ DND.getLinguaggiPersonaggio(this.character())
-          case 'armi': return 'Armi disponibili:>'+ DND.getCompetenzeArmiPersonaggio(this.character())
-          default: return ''
+          case 'linguaggi': 
+              result ='Linguaggi disponibili:>'+ DND.getCompetenzeLinguaggi(this.character());
+              break;
+          case 'armi': 
+              result = 'Armi disponibili:>'+ DND.getCompetenzeArmi(this.character())
+              break; 
+          case 'strumenti': 
+              result = 'Strumenti disponibili:>'+ DND.getCompetenzeStrumenti(this.character())
+              break; 
+          case 'armature': 
+              result = 'Armature disponibili:>'+ DND.getCompetenzeArmature(this.character())
+              break; 
+          case 'classe_armatura': 
+              result = 'Classe armatura:>'+DND.getClasseArmatura( this.character())
+              break; 
+          case 'velocita': 
+              result = 'Velocità:>'+DND.getVelocita( this.character())
+              break; 
         }
+        return result.includes('*') ?result :'';
       }
 
 }

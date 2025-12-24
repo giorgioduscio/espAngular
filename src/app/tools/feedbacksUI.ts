@@ -54,7 +54,7 @@ class ToastManager {
           left: 50%;
           transform: translateX(-50%);
           max-width: 500px;
-          z-index: 9999;
+          z-index: 10;
           transition: opacity 0.3s ease;
           opacity: 1;
           white-space: nowrap;
@@ -93,7 +93,7 @@ class ToastManager {
           }
           this.releaseToastElement(notificaEl);
         }, 300);
-      }, 1000);
+      }, 2000);
     });
   }
 }
@@ -260,17 +260,25 @@ export function popovers_init() {
 
 const Popover = {
   // Inietta gli stili CSS necessari
-  injectStyle: (): void => {
+  injectStyle(): void {
     if (document.getElementById('popover-styles')) return;
     const style = document.createElement('style');
     style.id = 'popover-styles';
     style.textContent = `
+      [data-popover] :not(input) :not(textarea) {
+        position: relative;
+        cursor: pointer;
+      }
       .popover {
-        padding: 6px 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        
+        padding: 4px 8px;
         z-index: 100;
         display: none;
         opacity: 0;
         word-wrap: break-word; /* Va a capo con parole lunghe */
+        min-width: 100px; /* Larghezza minima */
         
         background: linear-gradient(0deg, #333, #555);
         border-radius: 4px;
@@ -288,50 +296,53 @@ const Popover = {
       }
       .popover-header {
         padding: 0;
+        margin-bottom: 5px;
         color: #fff !important;
         background: transparent !important;
         font-weight: bold;
-        margin-bottom: 5px;
+        font-size: 14px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
       }
       .popover-body {
         padding: 0;
         color: #fff !important;
-        font-size: 14px;
+        font-size: 12px; /* Dimensione del testo diminuita */
       }
     `;
     document.head.appendChild(style);
   },
 
   // Crea un elemento popover con titolo e messaggio
-  createPopover: (title: string | null, message: string): HTMLElement => {
-    const popover = document.createElement('div');
-    popover.className = 'popover';
-    popover.setAttribute('role', 'dialog');
-    popover.setAttribute('aria-live', 'polite');
+  createPopover(title: string | null, message: string): HTMLElement {
+    let popover = document.createElement('div');
+    const headerId = `popover-header-${Math.random().toString(36)}`;
+    const bodyId = `popover-body-${Math.random().toString(36)}`;
+    const formattedMessage = message .split('* ') .filter(item => item.trim());
+    popover.innerHTML =`
+      <div  class="popover" role="dialog" aria-live="polite" 
+            aria-labelledby="${headerId}" aria-describedby="${bodyId}">
+            
+        <div id="${headerId}" class="popover-header">${title ||''}</div>
 
-    let headerHTML = '';
-    let headerId = '';
-    if (title) {
-      headerId = `popover-header-${Math.random().toString(36).substr(2, 5)}`;
-      headerHTML = `<div id="${headerId}" class="popover-header">${title}</div>`;
-    }
-
-    const bodyId = `popover-body-${Math.random().toString(36).substr(2, 5)}`;
-    popover.innerHTML = `
-      ${headerHTML}
-      <div id="${bodyId}" class="popover-body">${message}</div>
+        <div id="${bodyId}" class="popover-body">
+          ${formattedMessage.length>1 ?`
+            <ol>
+              ${formattedMessage.map(messaggio=>`
+              <li>${messaggio}</li>
+            `).join('')}
+            </ol>
+          `:formattedMessage[0]}
+        </div>
+      </div>
     `;
-
-    if (title) {
-      popover.setAttribute('aria-labelledby', headerId);
-    }
-    popover.setAttribute('aria-describedby', bodyId);
-
+    popover =popover.querySelector('div[role]') as HTMLDivElement;
     return popover;
   },
 
   // Posiziona il popover in modo intelligente per evitare l'overflow dello schermo
-  positionPopover: (popover: HTMLElement, target: HTMLElement): void => {
+  positionPopover(popover: HTMLElement, target: HTMLElement): void {
     const rect = target.getBoundingClientRect();
     const spacing = 5;
 
@@ -348,14 +359,28 @@ const Popover = {
     const popoverHeight = popover.offsetHeight;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
+    const isInputOrTextarea = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
 
-    let top = rect.bottom + spacing;
+    let top: number;
     let left = rect.left;
 
-    // Collisione verticale: se esce in basso, posizionalo in alto
-    if (rect.bottom + popoverHeight + spacing > windowHeight) {
+    if (isInputOrTextarea) {
+      // Per input/textarea, preferisci in alto
       top = rect.top - popoverHeight - spacing;
       popover.classList.add('popover-top');
+      // Se non c'è spazio, vai in basso
+      if (top < 0) {
+        top = rect.bottom + spacing;
+        popover.classList.remove('popover-top');
+      }
+    } else {
+      // Per gli altri elementi, preferisci in basso
+      top = rect.bottom + spacing;
+      // Se non c'è spazio, vai in alto
+      if (rect.bottom + popoverHeight + spacing > windowHeight) {
+        top = rect.top - popoverHeight - spacing;
+        popover.classList.add('popover-top');
+      }
     }
 
     // Collisione orizzontale: se esce a destra, allinea a destra
@@ -381,7 +406,7 @@ const Popover = {
   },
 
   // Nasconde il popover con un'animazione fluida
-  hidePopover: (popover: HTMLElement): void => {
+  hidePopover(popover: HTMLElement): void {
     if (!popover) return;
     const targetElement = document.querySelector(`[aria-controls="${popover.id}"]`) as HTMLElement;
     if (targetElement) {
@@ -395,7 +420,7 @@ const Popover = {
   },
 
   // Funzione unificata per la gestione dei popover
-  init: (): void => {
+  init(): void {
     // Gestione del focus per input e textarea
     document.addEventListener('focusin', (e) => {
       const target = e.target as HTMLElement;
@@ -466,7 +491,7 @@ const Popover = {
   },
 
   // Inizializza un MutationObserver per pulire i popover quando gli elementi vengono rimossi
-  initCleanup: (): void => {
+  initCleanup(): void {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {

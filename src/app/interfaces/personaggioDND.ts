@@ -82,5 +82,6 @@ export default interface PersonaggioDND {
   privilegi:{
     classe:string,
     note:string,
+    scelta?:boolean
   }[]
 }

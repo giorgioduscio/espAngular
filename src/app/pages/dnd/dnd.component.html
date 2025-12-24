@@ -16,39 +16,40 @@
 </header>
 
 
-<article class="container d-flex flex-wrap align-items-start gap-1 m-auto"
+<article class="container d-flex flex-wrap justify-content-center align-items-start gap-1 m-auto"
          style="max-width: 1000px;"
          (change)="handleChange($event)">
 
   <!-- GENERALITA' -->
-  @if(!isMobileView || activeSection === 'generalita') {
-    <div [class]="isMobileView ? 'container w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'">
+  @if(showSectionWith(['generalita'])) {
+    <div [class]="isMobileView ? 'container w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden p-2 flex-auto'"
+         [style]="isMobileView ?'max-width: 400px;' :''">
       <h5 *ngIf="isMobileView" class="p-2 fw-bold">Generalità</h5>
 
       <main class="d-flex flex-wrap justify-content-start gap-3">
-        <div class="d-flex flex-column gap-1">
+        <div class="d-flex flex-column gap-1 flex-auto">
           <input [value]="character().nome_personaggio" 
                   name="nome_personaggio" 
                   id="nome_personaggio" 
                   type="text" 
                   class="form-control form-control-dnd"
                   placeholder="Es: Bilbo Baggins">
-          <label class="duckcase" for="nome_personaggio">Nome Personaggio</label>
+          <label for="nome_personaggio">Nome Personaggio</label>
         </div>
 
-        <div class="d-flex flex-column gap-1">
+        <div class="d-flex flex-column gap-1 flex-auto">
           <div class="p-2 border rounded" 
                 data-popover="Derivato dai privilegi di classe">{{ getClassesString() }}</div>
-          <label class="duckcase" for="classe">Classe</label>
+          <label for="classe">Classe</label>
         </div>
-        <div class="d-flex flex-column gap-1">
+        <div class="d-flex flex-column gap-1 flex-auto">
           <div class="p-2 border rounded"
                 data-popover="Derivati dai punti esperienza">{{ liv() || '-' }}</div>
-          <label class="duckcase" for="livello">Livello</label>
+          <label for="livello">Livello</label>
         </div>
         @for (campo of character().generali; track campo.key; let i = $index) {
           @if (campo.key === 'allineamento') {
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-1 flex-auto">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
                       class="form-control-dnd">
@@ -62,7 +63,7 @@
             </div>
 
           } @else if (campo.key === 'background') {
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-1 flex-auto">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
                       class="form-control-dnd">
@@ -77,7 +78,7 @@
             </div>
 
           } @else if (campo.key === 'razza') {
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-1 flex-auto">
               <select name="generali-{{i}}-value" 
                       [id]="campo.key" 
                       class="form-control-dnd">
@@ -92,7 +93,7 @@
             </div>
           
           } @else {
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-1 flex-auto">
               <input [value]="campo.value" 
                       name="generali-{{i}}-value" 
                       [id]="campo.key" 
@@ -109,28 +110,29 @@
 
   <!--SINISTRA-->
   <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
+            *ngIf="showSectionWith(['punteggi','competenzeLinguaggi'])"
             style="min-width: 250px; max-width: 400px;">
-    @if(!isMobileView || activeSection === 'punteggi') {
+    @if(showSectionWith(['punteggi'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <!-- PUNTEGGI -->
         <h5 class="p-2 fw-bold">Punteggi</h5>
         <main class="d-flex flex-column gap-2 p-2">
           <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-            <label class="duckcase" for="ispirazione">Ispirazione:</label> 
+            <label for="ispirazione">Ispirazione:</label> 
             <input [value]="character().ispirazione" 
                     name="ispirazione" id="ispirazione" 
                     type="number" inputmode="numeric" step="1" min="0" 
                     class="form-control form-control-dnd" style="max-width: 80px;">
           </div>
           <div class="d-flex flex-row align-items-center justify-content-between gap-1 rounded-2 py-1 px-2 border">
-            <label class="duckcase">Bonus Competenza:</label>
+            <label>Bonus Competenza:</label>
             <b>+{{ BC() }}</b>
           </div>
           @for (punteggio of character().punteggi; track punteggio.key; let i = $index) {
             <div class="d-grid mb-2" style="grid-template-columns: auto 1fr;">
               <div class="d-flex flex-column align-items-center rounded-2 py-0 px-2 border" 
                     style="width: 80px; height: fit-content;">
-                <label class="duckcase" [for]="punteggio.key" 
+                <label [for]="punteggio.key" 
                         style="transform: translateY(10px); max-width: 60px; overflow: hidden; text-overflow: ellipsis;"
                         >{{ duckcase(punteggio.key) }}</label> 
                 <label [for]="punteggio.key" 
@@ -169,7 +171,7 @@
     }
 
     <!-- COMPETENZE E LINGUAGGI -->
-    @if(!isMobileView || activeSection === 'competenzeLinguaggi') {
+    @if(showSectionWith(['competenzeLinguaggi'])) {
       <div [class]="isMobileView ?'w-100 p-2' :'rounded-2 w-100 mt-2 border flex-auto p-2'">
         <h5 class="p-2 fw-bold">Competenze e Linguaggi</h5>
         <main class="d-flex flex-column gap-3">
@@ -192,40 +194,46 @@
   </section>
 
   <!--CENTRO-->
-  <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" style="min-width: 250px; max-width: 400px;">
-    @if(!isMobileView || activeSection === 'combattimento') {
+  <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
+            *ngIf="showSectionWith(['combattimento','attacchiIncantesimi','equipaggiamento'])"
+            style="min-width: 250px; max-width: 400px;">
+    @if(showSectionWith(['combattimento'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <main class="p-2">
           <h5 class="p-2 fw-bold">Combattimento</h5>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr 2fr; gap: 5px">
+          <div style="display:grid; grid-template-columns: 2fr 1fr 2fr; gap: 5px">
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="ca">Classe armatura</label>
+              <label for="ca">Classe armatura</label>
               <input [value]="character().classe_armatura" 
                       name="classe_armatura" id="classe_armatura" 
                       type="number" 
                       class="form-control form-control-dnd"
-                      placeholder="Es: 10">
+                      placeholder="Es: 10"
+                      [attr.data-popover]="getGuida('classe_armatura')">
             </div>
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase">Iniziativa</label>
-              <div class="p-2 border rounded">{{ dnd.iniziativa(character()) }}</div>
+              <label>Iniziativa</label>
+              <div class="p-2 border rounded" data-popover="Derivata dal modificatore di Destrezza">{{ dnd.iniziativa(character()) }}</div>
             </div>
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="velocita">Velocità</label>
-              <textarea [value]="character().velocita" name="velocita" id="velocita" class="form-control form-control-dnd"></textarea>
+              <label for="velocita">Velocità</label>
+              <textarea [value]="character().velocita" 
+                        name="velocita" id="velocita" 
+                        class="form-control form-control-dnd"
+                        [attr.data-popover]="getGuida('velocita')"></textarea>
             </div>
           </div>
 
-          <label class="duckcase">Punti Ferita</label>
+          <label>Punti Ferita</label>
           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pfm">Massimi</label>
+              <label for="pfm">Massimi</label>
               <div class="p-2 border rounded"
                     data-popover="Derivato dai privilegi di classe">{{ dnd.puntiFeritaMassimi(character()) }}</div>
             </div>
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pfa">Attuali</label>
+              <label for="pfa">Attuali</label>
               <input [value]="character().punti_ferita_attuali" 
                       name="punti_ferita_attuali" id="pfa" 
                       type="number" 
@@ -233,7 +241,7 @@
                       placeholder="Es: 10">
             </div>
             <div class="d-flex flex-column gap-1">
-              <label class="duckcase" for="pft">Temporanei</label>
+              <label for="pft">Temporanei</label>
               <input [value]="character().punti_ferita_temporanei" 
                       name="punti_ferita_temporanei" id="pft" 
                       type="number" 
@@ -245,7 +253,7 @@
           <div  class="pt-3 d-grid gap-2 justify-items-center" 
                 style="grid-template-columns: 1fr 1fr;">
             <div>
-              <label class="duckcase">Dadi Vita</label>
+              <label>Dadi Vita</label>
               <div class="p-2 border rounded"
                     data-popover="Derivato dai privilegi di classe">
                 @if(dnd.dadiVitaPersonaggio(character()).length) {
@@ -258,9 +266,9 @@
               </div>
             </div>
             <div>
-              <label class="duckcase">Tiri Salvezza</label>
+              <label>Tiri Salvezza</label>
               <div class="d-grid gap-2" style="grid-template-columns: 1fr auto auto auto;">
-                <label class="duckcase">Successi</label>
+                <label>Successi</label>
                 @for (value of [1, 2, 3]; track value) {
                   <input  type="checkbox" 
                           [checked]="character().ts_successi >= value" 
@@ -268,7 +276,7 @@
                           name="ts_successi"
                           id="ts_successi-{{value}}">
                 }
-                <label class="duckcase">Fallimenti</label>
+                <label>Fallimenti</label>
                 @for(value of [1, 2, 3]; track value) {
                   <input  type="checkbox" 
                           [checked]="character().ts_falliti >= value" 
@@ -283,7 +291,7 @@
       </div>
     }
 
-    @if(!isMobileView || activeSection === 'attacchiIncantesimi') {
+    @if(showSectionWith(['attacchiIncantesimi'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <h5 class="p-2 fw-bold">Attacchi e Incantesimi</h5>
 
@@ -346,7 +354,7 @@
       </div>
     }
 
-    @if(!isMobileView || activeSection === 'equipaggiamento') {
+    @if(showSectionWith(['equipaggiamento'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <h5 class="p-2 fw-bold">Equipaggiamento</h5> 
                       
@@ -395,10 +403,10 @@
             </template>
           </form>
 
-          <div class="d-grid pb-2 gap-1 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
+          <div class="d-grid py-2 gap-2 align-items-center" style="grid-template-columns: auto 50px 1fr auto;">
             <i></i>
             <label>Qta</label>
-            <label>Nome</label>
+            <label>Oggetto</label>
             <label>Peso</label>
             @for (e of character().equipaggiamento; track e.value; let i = $index) {
               <button class="btn btn-danger p-1 px-2" 
@@ -414,12 +422,13 @@
               <div style="position: relative; display: inline-block;"> 
                 <input [value]="e.value || ''" 
                         name="equipaggiamento-{{i}}-value" 
-                        id="equipaggiamento-{{i}}-value'" 
+                        id="equipaggiamento-{{i}}-value" 
                         type="text" 
                         placeholder="Nome oggetto" 
                         class="form-control form-control-dnd">
               </div>
-              <label class="duckcase" [for]="'equipaggiamento.' + i + '.value'">{{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
+              <label class="border rounded p-2" for="equipaggiamento-{{i}}-value">
+                {{ (e.qta || 1) * dnd.peso(e.value) }}kg</label>
             }
           </div>
         </main>
@@ -429,8 +438,9 @@
 
   <!--DESTRA-->
   <section class="d-flex flex-wrap justify-content-center gap-2 flex-1 bg-transparent" 
+            *ngIf="showSectionWith(['personalita','trattiPrivilegi'])"
             style="min-width: 250px; max-width: 400px;">
-    @if(!isMobileView || activeSection === 'personalita') {
+    @if(showSectionWith(['personalita'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 shadow border overflow-hidden mt-2 flex-auto'">
         <h5 class="p-2 fw-bold">Personalità</h5>
         <main class="p-2 d-flex flex-column gap-3">
@@ -449,7 +459,7 @@
     }
 
     <!-- TRATTI E PRIVILEGI -->
-    @if(!isMobileView || activeSection === 'trattiPrivilegi') {
+    @if(showSectionWith(['trattiPrivilegi'])) {
       <div [class]="isMobileView ? 'w-100 p-2' : 'rounded-2 w-100 mt-2 border flex-auto p-2'">
         <h5 class="p-2 fw-bold">Tratti e Privilegi</h5>
         <main>
@@ -534,7 +544,7 @@
                               <b>{{ privilegio.privilege }}</b>
 
 
-                              @if (privilegio.description.includes('(scelta)')) {
+                              @if (privilegio.scelta) {
                                 <textarea name="privilegi-{{i}}-note" 
                                           id="privilegi-{{i}}-note" 
                                           class="my-2 form-control form-control-dnd"
@@ -565,14 +575,14 @@
 
 
 <footer *ngIf="isMobileView" class="pt-5 pb-3">
-  <div  class="d-flex justify-content-center gap-2 p-1 fixed-bottom text-bg-c1 shadow-lg" 
-        style="overflow-x: auto;"
+  <div  class="m-auto d-flex gap-2 p-1 fixed-bottom text-bg-c1 shadow-lg overflow-x-auto" 
+        style="max-width: max-content;"
         id="buttonsList">
     @for (btn of mobileButtons; track $index) {
       <button class="btn p-1" 
               [class.btn-secondary]="activeSection === btn.key" 
               [class.btn-outline-secondary]="activeSection !== btn.key" 
-              (click)="showSection(btn.key)">
+              (click)="setSection(btn.key)">
   
         <div class="d-flex flex-column">
           <i class="bi bi-{{btn.icon}} fs-2"></i>
